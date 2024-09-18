@@ -1,0 +1,40 @@
+.edit-goal-page {
+    padding: 20px;
+  
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  
+      label {
+        font-size: 1rem;
+        color: #666;
+      }
+  
+      input, select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #333;
+      }
+  
+      .submit-button {
+        padding: 12px 20px;
+        background-color: #4caf50;
+        color: white;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+    }
+  }
+  

@@ -1,0 +1,59 @@
+.session-page {
+    padding: 20px;
+  
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+  
+    .session-form {
+      display: flex;
+      flex-direction: column;
+  
+      label {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+  
+      select {
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+      }
+  
+      .exercises-section {
+        margin-top: 20px;
+  
+        h2 {
+          font-size: 1.5rem;
+          margin-bottom: 15px;
+        }
+  
+        .exercise-list {
+          display: flex;
+          flex-direction: column;
+        }
+  
+        .exercise-item {
+          background-color: #f9f9f9;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 5px;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+  
+      .submit-session-button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+    }
+  }
+  

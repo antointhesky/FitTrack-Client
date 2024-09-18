@@ -1,0 +1,49 @@
+.goals-page {
+  padding: 20px;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .goals-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .goal-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    .goal-name {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .goal-deadline {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+
+  .add-goal-button {
+    display: inline-block;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+}
