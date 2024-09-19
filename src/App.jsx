@@ -4,11 +4,13 @@ import AddGoalsPage from "./pages/AddGoalsPage/AddGoalsPage";
 import EditGoalsPage from "./pages/EditGoalsPage/EditGoalsPage";
 import SessionPage from "./pages/SessionPage/SessionPage";
 import ExercisesPage from "./pages/ExercisesPage/ExercisesPage"; 
-// import BottomNavBar from "./components/BottomNavBar/BottomNavBar";
+import Header from "./components/Header/Header";
+import BottomNavBar from "./components/BottomNavBar/BottomNavBar";
 
 export default function App() {
   return (
     <BrowserRouter>
+    <Header /> 
       <Routes>
         <Route path="/" element={<Navigate to="/goals" />} />
         <Route path="/goals" element={<GoalsPage />} /> 
@@ -17,7 +19,7 @@ export default function App() {
         <Route path="/session" element={<SessionPage />} /> 
         <Route path="/exercises/:workoutId" element={<ExercisesPage />} /> 
       </Routes>
-      {/* <BottomNavBar /> */}
+      <BottomNavBar /> 
     </BrowserRouter>
   );
 }

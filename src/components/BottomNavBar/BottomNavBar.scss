@@ -1,63 +1,35 @@
 .bottom-nav {
-    position: fixed;
-    bottom: 0; /* Start with bottom placement for mobile */
-    left: 0;
-    right: 0;
-    height: 60px;
-    background-color: #232940; /* Background color */
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-  }
-  
-  .nav-item {
-    text-decoration: none;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    transition: all 0.3s ease;
-  }
-  
-  .icon {
-    font-size: 24px;
-    margin-bottom: 4px;
-  }
-  
-  /* Hide text by default on mobile screens */
-  .nav-text {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #232940;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.icon {
+  font-size: 24px; 
+}
+
+.nav-item.active {
+  color: #61dafb; 
+}
+
+@media (min-width: 768px) {
+  .bottom-nav {
     display: none;
   }
-  
-  /* Media query for larger screens (e.g., desktop) */
-  @media (min-width: 768px) {
-    .bottom-nav {
-      top: 0; /* Move the navbar to the top for desktop */
-      bottom: auto; /* Remove bottom placement */
-      height: 80px;
-    }
-  
-    .nav-item {
-      flex-direction: row; /* Display icons and text side by side */
-    }
-  
-    .icon {
-      margin-bottom: 0;
-      margin-right: 8px; /* Add spacing between icon and text */
-    }
-  
-    .nav-text {
-      display: inline-block; /* Show text on larger screens */
-      font-size: 16px;
-    }
-  }
-  
-  /* Add styles for active state */
-  .nav-item.active {
-    color: #61dafb; /* Change color when active */
-  }
-  
+}
