@@ -14,8 +14,8 @@ export default function Header() {
       <NavLink to="/progress" className="nav-item" activeClassName="active">
         <span className="nav-text">Progress</span>
       </NavLink>
-      <NavLink to="/settings" className="nav-item" activeClassName="active">
-        <span className="nav-text">Settings</span>
+      <NavLink to="/goals" className="nav-item" activeClassName="active">
+        <span className="nav-text">Goals</span>
       </NavLink>
     </header>
   );

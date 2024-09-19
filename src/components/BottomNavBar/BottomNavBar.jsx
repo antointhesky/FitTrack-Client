@@ -15,7 +15,7 @@ export default function BottomNavBar() {
       <NavLink to="/progress" className="nav-item" activeClassName="active">
         <FaChartLine className="icon" />
       </NavLink>
-      <NavLink to="/settings" className="nav-item" activeClassName="active">
+      <NavLink to="/goals" className="nav-item" activeClassName="active">
         <FaCog className="icon" />
       </NavLink>
     </nav>

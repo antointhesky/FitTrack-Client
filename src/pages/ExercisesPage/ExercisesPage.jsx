@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "./ExercisesPage.scss";
 
 export default function ExercisesPage() {
   const { workoutId } = useParams();
+  const { state } = useLocation(); 
   const [exercises, setExercises] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState(new Set());
   const navigate = useNavigate();
+
+  const workoutName = state?.workoutName || "Unknown Workout"; 
 
   useEffect(() => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/exercises?workout_id=${workoutId}`);
-        setExercises(response.data); 
+        setExercises(response.data);
       } catch (error) {
         console.error("Error fetching exercises:", error);
       }
@@ -32,12 +35,12 @@ export default function ExercisesPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/session", { state: { selectedExercises: [...selectedExercises], workoutId } });
+    navigate("/session", { state: { selectedExercises: [...selectedExercises], workoutName } });
   };
 
   return (
     <div className="exercises-page">
-      <h1>Select Exercises</h1>
+      <h1>{workoutName} Exercises</h1> 
       <form onSubmit={handleSubmit} className="exercises-form">
         <div className="exercises-list">
           {exercises.map((exercise) => (
