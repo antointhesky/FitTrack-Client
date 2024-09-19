@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaDumbbell, FaChartLine, FaCog } from "react-icons/fa"; // Importing icons
-import "./BottomNavBar.scss"; // Importing the styles
+import { FaHome, FaDumbbell, FaChartLine, FaCog } from "react-icons/fa";
+import "./BottomNavBar.scss"; 
 
 export default function BottomNavBar() {
   return (

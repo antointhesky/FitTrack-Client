@@ -11,31 +11,27 @@ const WORKOUT_TYPES = [
 
 export default function SessionPage() {
   const navigate = useNavigate();
-  const location = useLocation(); // To get the state passed from the ExercisesPage
+  const { state } = useLocation(); 
   const [selectedWorkoutExercises, setSelectedWorkoutExercises] = useState({});
 
-  // Handle workout type selection and redirect to exercises page
   const handleWorkoutTypeSelect = (type) => {
     navigate(`/exercises/${type.id}`);
   };
 
-  // Update the state with exercises selected in the ExercisesPage
   useEffect(() => {
-    if (location.state && location.state.selectedExercises) {
-      const workoutId = location.state.workoutId;
-      const exercises = location.state.selectedExercises;
-      
-      // Update selected exercises for the workout type
+    if (state?.selectedExercises) {
+      const { workoutId, selectedExercises } = state;
+
       setSelectedWorkoutExercises((prev) => ({
         ...prev,
-        [workoutId]: exercises,
+        [workoutId]: selectedExercises,
       }));
     }
-  }, [location.state]);
+  }, [state]);
 
   return (
     <div className="session-page">
-      <h1>Select Workout Type</h1>
+      <h1>Current Session</h1>
 
       <div className="workout-types-container">
         {WORKOUT_TYPES.map((type) => (
@@ -47,8 +43,7 @@ export default function SessionPage() {
             <img src={type.imageUrl} alt={type.name} className="workout-image" />
             <h3>{type.name}</h3>
 
-            {/* Display selected exercises for this workout type */}
-            {selectedWorkoutExercises[type.id] && selectedWorkoutExercises[type.id].length > 0 && (
+            {selectedWorkoutExercises[type.id]?.length > 0 && (
               <ul>
                 {selectedWorkoutExercises[type.id].map((exercise, index) => (
                   <li key={index}>

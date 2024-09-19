@@ -27,7 +27,10 @@ export default function GoalsPage() {
       <ul className="goals-list">
         {goals.map((goal) => (
           <li key={goal.id} className="goal-item">
-            <Link to={`/goals/${goal.id}/edit`}>
+            <Link
+              to={`/goals/${goal.name}/edit`}
+              state={{ goalId: goal.id }} // Pass goalId via state
+            >
               <div className="goal-name">{goal.name}</div>
               <CircularProgressbar
                 value={goal.current_progress}

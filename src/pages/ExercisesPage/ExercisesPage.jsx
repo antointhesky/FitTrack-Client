@@ -6,18 +6,14 @@ import "./ExercisesPage.scss";
 export default function ExercisesPage() {
   const { workoutId } = useParams();
   const [exercises, setExercises] = useState([]);
-  const [selectedExercises, setSelectedExercises] = useState([]);
+  const [selectedExercises, setSelectedExercises] = useState(new Set());
   const navigate = useNavigate();
 
-  // Fetch exercises based on workout ID
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/exercises");
-        const filteredExercises = response.data.filter(
-          (exercise) => exercise.workout_id === parseInt(workoutId)
-        );
-        setExercises(filteredExercises);
+        const response = await axios.get(`http://localhost:3000/exercises?workout_id=${workoutId}`);
+        setExercises(response.data); 
       } catch (error) {
         console.error("Error fetching exercises:", error);
       }
@@ -27,18 +23,16 @@ export default function ExercisesPage() {
   }, [workoutId]);
 
   const handleExerciseSelect = (exercise) => {
-    if (selectedExercises.includes(exercise)) {
-      setSelectedExercises(selectedExercises.filter((ex) => ex.id !== exercise.id));
-    } else {
-      setSelectedExercises([...selectedExercises, exercise]);
-    }
+    setSelectedExercises((prev) => {
+      const updatedSet = new Set(prev);
+      updatedSet.has(exercise) ? updatedSet.delete(exercise) : updatedSet.add(exercise);
+      return updatedSet;
+    });
   };
 
-  // Handle form submission and navigate back to SessionPage with selected exercises
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Navigate back to the session page with selected exercises and workout ID
-    navigate("/session", { state: { selectedExercises, workoutId } });
+    navigate("/session", { state: { selectedExercises: [...selectedExercises], workoutId } });
   };
 
   return (
@@ -51,7 +45,7 @@ export default function ExercisesPage() {
               <label>
                 <input
                   type="checkbox"
-                  value={exercise.id}
+                  checked={selectedExercises.has(exercise)}
                   onChange={() => handleExerciseSelect(exercise)}
                 />
                 {exercise.name} - {exercise.duration} mins - {exercise.calories_burned} cal

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "./EditGoalsPage.scss";
 
 export default function EditGoalsPage() {
-  const { id } = useParams();
+  const { name } = useParams(); 
+  const { state } = useLocation();
   const [goal, setGoal] = useState({
     name: "",
     target: "",
@@ -17,20 +18,21 @@ export default function EditGoalsPage() {
   useEffect(() => {
     const fetchGoal = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/goals/${id}`);
+        const response = await axios.get(`http://localhost:3000/goals/${state.goalId}`);
         setGoal(response.data);
       } catch (error) {
         console.error("Error fetching goal:", error);
       }
     };
+
     fetchGoal();
-  }, [id]);
+  }, [state.goalId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:3000/goals/${id}`, goal);
+      await axios.put(`http://localhost:3000/goals/${state.goalId}`, goal);
       navigate("/goals");
     } catch (error) {
       console.error("Error updating goal:", error);
@@ -39,7 +41,7 @@ export default function EditGoalsPage() {
 
   return (
     <div className="edit-goal-page">
-      <h2>Edit Goal</h2>
+      <h2>Edit Goal: {name}</h2> 
       <form onSubmit={handleSubmit}>
         <label>
           Goal Name:
