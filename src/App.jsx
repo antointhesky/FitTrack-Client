@@ -10,16 +10,16 @@ import BottomNavBar from "./components/BottomNavBar/BottomNavBar";
 export default function App() {
   return (
     <BrowserRouter>
-    <Header /> 
+      <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/goals" />} />
         <Route path="/goals" element={<GoalsPage />} /> 
         <Route path="/goals/add" element={<AddGoalsPage />} /> 
-        <Route path="/goals/:name/edit" element={<EditGoalsPage />} /> 
-        <Route path="/session" element={<SessionPage />} /> 
-        <Route path="/exercises/:workoutId" element={<ExercisesPage />} /> 
+        <Route path="/goals/:name/edit" element={<EditGoalsPage />} />
+        <Route path="/session" element={<SessionPage />} />
+        <Route path="/exercises/:workoutName" element={<ExercisesPage />} />
       </Routes>
-      <BottomNavBar /> 
+      <BottomNavBar />
     </BrowserRouter>
   );
 }
