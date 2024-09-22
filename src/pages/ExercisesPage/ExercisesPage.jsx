@@ -10,7 +10,8 @@ export default function ExercisesPage() {
   const [selectedExercises, setSelectedExercises] = useState(new Set());
   const navigate = useNavigate();
 
-  const workoutType = state?.workoutType || workoutName; // Use state or fallback to param
+  const workoutType = state?.workoutType || workoutName;
+  const sessionId = state?.sessionId || null;
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -21,7 +22,6 @@ export default function ExercisesPage() {
         console.error("Error fetching exercises:", error);
       }
     };
-  
     fetchExercises();
   }, [workoutName]);
 
@@ -33,9 +33,15 @@ export default function ExercisesPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/session", { state: { selectedExercises: [...selectedExercises], workoutType } });
+    if (sessionId) {
+      // Update the existing session with new exercises
+      await axios.post(`http://localhost:3000/session/${sessionId}/exercise`, {
+        exercises: [...selectedExercises],
+      });
+    }
+    navigate("/session", { state: { selectedExercises: [...selectedExercises], workoutType, sessionId } });
   };
 
   return (
@@ -51,7 +57,11 @@ export default function ExercisesPage() {
                   checked={selectedExercises.has(exercise)}
                   onChange={() => handleExerciseSelect(exercise)}
                 />
-                {exercise.name} - {exercise.duration} mins - {exercise.calories_burned} cal
+                <div className="exercise-details">
+                  <span>{exercise.name}</span>
+                  <span>{exercise.duration} mins</span>
+                  <span>{exercise.calories_burned} cal</span>
+                </div>
               </label>
             </div>
           ))}
