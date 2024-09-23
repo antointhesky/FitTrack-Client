@@ -15,6 +15,7 @@ export default function EditGoalsPage() {
   });
   const navigate = useNavigate();
 
+  // Fetch the current goal data when the component mounts
   useEffect(() => {
     const fetchGoal = async () => {
       try {
@@ -25,17 +26,25 @@ export default function EditGoalsPage() {
       }
     };
 
-    fetchGoal();
+    if (state && state.goalId) {
+      fetchGoal();
+    } else {
+      console.error("No goal ID found in state.");
+    }
   }, [state.goalId]);
 
+  // Handle form submission to update the goal
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check and log the data being submitted
+    console.log("Goal data before update:", goal);
 
     try {
       await axios.put(`http://localhost:3000/goals/${state.goalId}`, goal);
       navigate("/goals");
     } catch (error) {
-      console.error("Error updating goal:", error);
+      console.error("Error updating goal:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -43,6 +52,7 @@ export default function EditGoalsPage() {
     <div className="edit-goal-page">
       <h2>Edit Goal: {name}</h2> 
       <form onSubmit={handleSubmit}>
+        {/* Goal Name Input */}
         <label>
           Goal Name:
           <input
@@ -52,6 +62,8 @@ export default function EditGoalsPage() {
             required
           />
         </label>
+
+        {/* Target Input */}
         <label>
           Target:
           <input
@@ -61,6 +73,8 @@ export default function EditGoalsPage() {
             required
           />
         </label>
+
+        {/* Unit Input */}
         <label>
           Unit:
           <select
@@ -69,20 +83,26 @@ export default function EditGoalsPage() {
             required
           >
             <option value="">Select Unit</option>
-            <option value="sessions">Sessions</option>
-            <option value="exercises">Exercises</option>
-            <option value="calories">Calories Burned</option>
+            <option value="kg">kg</option>
+            <option value="cal">cal</option>
+            <option value="km">km</option>
+            <option value="steps">steps</option>
+            <option value="workouts">workouts</option>
           </select>
         </label>
+
+        {/* Current Progress Input */}
         <label>
           Current Progress:
           <input
-            type="number"
-            value={goal.current_progress}
+            type="text"
+            value={goal.current_progress} // Changed to type="text" for more flexibility
             onChange={(e) => setGoal({ ...goal, current_progress: e.target.value })}
             required
           />
         </label>
+
+        {/* Deadline Input */}
         <label>
           Deadline:
           <input
@@ -92,6 +112,8 @@ export default function EditGoalsPage() {
             required
           />
         </label>
+
+        {/* Submit Button */}
         <button type="submit" className="submit-button">Update Goal</button>
       </form>
     </div>

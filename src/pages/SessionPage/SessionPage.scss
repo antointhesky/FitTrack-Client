@@ -3,72 +3,150 @@
   text-align: center;
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 20px;
+    color: #333;
   }
 
   .workout-types-container {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 20px;
+    position: relative;
+    height: 100%; 
   }
 
   .workout-card {
-    background: #fff;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 80%;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    border-radius: 20px;
     cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-
-    &:hover {
-      transform: scale(1.05);
-    }
-
-    .workout-image {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      margin-bottom: 10px;
-    }
+    text-align: center;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 
     h3 {
-      font-size: 1.2rem;
-      color: #333;
+      margin: 0;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+
+    &.expanded {
+      height: 600px;
+    }
+
+    .card-content {
+      display: block;
+      margin-top: 20px;
+      color: white;
     }
   }
 
   .exercises-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 10px;
   }
 
-  .exercise-card {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  .exercise-card-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .pink-container {
+    background-color: #f8bbd0;
+    width: 100%;
+    height: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .circle-image-container {
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 8px;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
 
+  .circle-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .white-container {
+    background-color: #ffffff;
+    padding: 10px;
+    width: 100%;
+    margin-top: -2rem;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 0;
+    text-align: center;
+    position: relative;
+
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      font-size: 0.9rem;
+    }
+
+    .add-button {
+      background-color: #4caf50;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #43a047;
+      }
+    }
+  }
+
+  .current-session {
+    margin-top: 40px;
+  }
+
   .session-list {
+    margin-top: 20px;
     list-style: none;
     padding: 0;
 
     .session-item {
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 10px;
       margin-bottom: 10px;
 
       .remove-button {
@@ -77,6 +155,11 @@
         padding: 5px 10px;
         border-radius: 5px;
         cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+          background-color: #d62c1a;
+        }
       }
     }
   }
@@ -89,5 +172,10 @@
     font-size: 1.2rem;
     cursor: pointer;
     margin-top: 20px;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #43a047;
+    }
   }
 }

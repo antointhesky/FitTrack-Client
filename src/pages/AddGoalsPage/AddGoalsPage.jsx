@@ -21,6 +21,8 @@ export default function AddGoalsPage() {
       deadline_progress: deadline,
     };
 
+    console.log(newGoal); // Debugging: log the new goal data
+
     try {
       await axios.post("http://localhost:3000/goals", newGoal);
       navigate("/goals");
@@ -45,9 +47,11 @@ export default function AddGoalsPage() {
           Unit:
           <select value={unit} onChange={(e) => setUnit(e.target.value)} required>
             <option value="">Select Unit</option>
-            <option value="sessions">Sessions</option>
-            <option value="exercises">Exercises</option>
-            <option value="calories">Calories Burned</option>
+            <option value="kg">kg</option>
+            <option value="cal">cal</option>
+            <option value="km">km</option>
+            <option value="steps">steps</option>
+            <option value="workouts">workouts</option>
           </select>
         </label>
         <label>
