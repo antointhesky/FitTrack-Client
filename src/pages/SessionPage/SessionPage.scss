@@ -8,9 +8,65 @@
     color: #333;
   }
 
+  .current-session {
+    margin-bottom: 20px;
+    h2 {
+      font-size: 1.8rem;
+      color: #333;
+    }
+    .session-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .session-item-card {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 200px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+      span {
+        font-size: 1rem;
+      }
+
+      .remove-button {
+        background-color: #e74c3c;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover {
+          background-color: #d62c1a;
+        }
+      }
+    }
+
+    .submit-session-button {
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #43a047;
+      }
+    }
+  }
+
   .workout-types-container {
     position: relative;
-    height: 100%; 
+    height: 100%;
   }
 
   .workout-card {
@@ -58,6 +114,12 @@
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
   }
 
   .pink-container {
@@ -113,69 +175,28 @@
       display: flex;
       justify-content: space-between;
       padding: 0 10px;
-      font-size: 0.9rem;
-    }
-
-    .add-button {
-      background-color: #4caf50;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      cursor: pointer;
       margin-top: 10px;
-      transition: background-color 0.2s ease-in-out;
-
-      &:hover {
-        background-color: #43a047;
-      }
+      font-size: 0.85rem; /* Make stats smaller */
+      color: black; /* Black text for stats visibility */
     }
-  }
 
-  .current-session {
-    margin-top: 40px;
-  }
-
-  .session-list {
-    margin-top: 20px;
-    list-style: none;
-    padding: 0;
-
-    .session-item {
+    .stat {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: #f9f9f9;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-
-      .remove-button {
-        background-color: #e74c3c;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-
-        &:hover {
-          background-color: #d62c1a;
-        }
-      }
+      margin-right: 10px;
+      font-size: 0.85rem;
+      color: black; /* Black text */
     }
-  }
 
-  .submit-session-button {
-    background-color: #4caf50;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.2s ease-in-out;
+    .stat svg {
+      margin-right: 5px; /* Space between icon and text */
+      font-size: 0.85rem; /* Smaller icon */
+      color: black; /* Black icon */
+    }
 
-    &:hover {
-      background-color: #43a047;
+    .stat span {
+      font-size: 0.85rem;
+      color: black;
     }
   }
 }
