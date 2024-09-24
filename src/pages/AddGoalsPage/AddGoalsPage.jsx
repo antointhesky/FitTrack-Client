@@ -24,7 +24,7 @@ export default function AddGoalsPage() {
     console.log(newGoal); // Debugging: log the new goal data
 
     try {
-      await axios.post("http://localhost:3000/goals", newGoal);
+      await axios.post("http://localhost:5050/goals", newGoal);
       navigate("/goals");
     } catch (error) {
       console.error("Error adding goal:", error);

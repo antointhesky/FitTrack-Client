@@ -1,202 +1,202 @@
 .session-page {
-  padding: 20px;
-  text-align: center;
-
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-
-  .current-session {
-    margin-bottom: 20px;
-    h2 {
-      font-size: 1.8rem;
+    padding: 20px;
+    text-align: center;
+  
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
       color: #333;
     }
-    .session-list {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .session-item-card {
-      background: #f0f0f0;
-      padding: 10px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 200px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-      span {
-        font-size: 1rem;
+  
+    .current-session {
+      margin-bottom: 20px;
+      h2 {
+        font-size: 1.8rem;
+        color: #333;
       }
-
-      .remove-button {
-        background-color: #e74c3c;
+      .session-list {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+  
+      .session-item-card {
+        background: #f0f0f0;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 200px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+        span {
+          font-size: 1rem;
+        }
+  
+        .remove-button {
+          background-color: #e74c3c;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.2s ease-in-out;
+  
+          &:hover {
+            background-color: #d62c1a;
+          }
+        }
+      }
+  
+      .submit-session-button {
+        background-color: #4caf50;
         color: white;
-        padding: 5px 10px;
+        padding: 12px 20px;
         border-radius: 5px;
+        font-size: 1.2rem;
         cursor: pointer;
+        margin-top: 20px;
         transition: background-color 0.2s ease-in-out;
-
+  
         &:hover {
-          background-color: #d62c1a;
+          background-color: #43a047;
         }
       }
     }
-
-    .submit-session-button {
-      background-color: #4caf50;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 5px;
-      font-size: 1.2rem;
+  
+    .workout-types-container {
+      position: relative;
+      height: 100%;
+    }
+  
+    .workout-card {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 80%;
+      padding: 20px;
+      border-radius: 20px;
       cursor: pointer;
-      margin-top: 20px;
+      text-align: center;
+      transition: all 0.4s ease-in-out;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  
+      h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: #fff;
+      }
+  
+      &.expanded {
+        height: 600px;
+      }
+  
+      .card-content {
+        display: block;
+        margin-top: 20px;
+        color: white;
+      }
+    }
+  
+    .exercises-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+  
+    .exercise-card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
       transition: background-color 0.2s ease-in-out;
-
+  
       &:hover {
-        background-color: #43a047;
+        background-color: #f0f0f0;
+      }
+    }
+  
+    .pink-container {
+      background-color: #f8bbd0;
+      width: 100%;
+      height: 8rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+  
+    .circle-image-container {
+      background-color: #ffffff;
+      border-radius: 50%;
+      padding: 8px;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .circle-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  
+    .white-container {
+      background-color: #ffffff;
+      padding: 10px;
+      width: 100%;
+      margin-top: -2rem;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 0;
+      text-align: center;
+      position: relative;
+  
+      h3 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+        color: #333;
+      }
+  
+      .stats-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        margin-top: 10px;
+        font-size: 0.85rem; /* Make stats smaller */
+        color: black; /* Black text for stats visibility */
+      }
+  
+      .stat {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        font-size: 0.85rem;
+        color: black; /* Black text */
+      }
+  
+      .stat svg {
+        margin-right: 5px; 
+        font-size: 0.85rem; 
+        color: black;
+      }
+  
+      .stat span {
+        font-size: 0.85rem;
+        color: black;
       }
     }
   }
-
-  .workout-types-container {
-    position: relative;
-    height: 100%;
-  }
-
-  .workout-card {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 80%;
-    padding: 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.4s ease-in-out;
-    overflow: hidden;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-
-    h3 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: #fff;
-    }
-
-    &.expanded {
-      height: 600px;
-    }
-
-    .card-content {
-      display: block;
-      margin-top: 20px;
-      color: white;
-    }
-  }
-
-  .exercises-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-  }
-
-  .exercise-card-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-  }
-
-  .pink-container {
-    background-color: #f8bbd0;
-    width: 100%;
-    height: 8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-
-  .circle-image-container {
-    background-color: #ffffff;
-    border-radius: 50%;
-    padding: 8px;
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .circle-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .white-container {
-    background-color: #ffffff;
-    padding: 10px;
-    width: 100%;
-    margin-top: -2rem;
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 0;
-    text-align: center;
-    position: relative;
-
-    h3 {
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .stats-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10px;
-      margin-top: 10px;
-      font-size: 0.85rem; /* Make stats smaller */
-      color: black; /* Black text for stats visibility */
-    }
-
-    .stat {
-      display: flex;
-      align-items: center;
-      margin-right: 10px;
-      font-size: 0.85rem;
-      color: black; /* Black text */
-    }
-
-    .stat svg {
-      margin-right: 5px; /* Space between icon and text */
-      font-size: 0.85rem; /* Smaller icon */
-      color: black; /* Black icon */
-    }
-
-    .stat span {
-      font-size: 0.85rem;
-      color: black;
-    }
-  }
-}

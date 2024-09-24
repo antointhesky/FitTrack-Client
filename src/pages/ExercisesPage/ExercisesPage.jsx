@@ -16,7 +16,7 @@ import "./ExercisesPage.scss";
 //   useEffect(() => {
 //     const fetchExercises = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:3000/exercises?workout_type=${workoutName}`);
+//         const response = await axios.get(`http://localhost:5050/exercises?workout_type=${workoutName}`);
 //         setExercises(response.data);
 //       } catch (error) {
 //         console.error("Error fetching exercises:", error);
@@ -37,7 +37,7 @@ import "./ExercisesPage.scss";
 //     e.preventDefault();
 //     if (sessionId) {
 //       // Update the existing session with new exercises
-//       await axios.post(`http://localhost:3000/session/${sessionId}/exercise`, {
+//       await axios.post(`http://localhost:5050/session/${sessionId}/exercise`, {
 //         exercises: [...selectedExercises],
 //       });
 //     }

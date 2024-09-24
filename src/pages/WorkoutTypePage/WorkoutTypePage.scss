@@ -1,0 +1,68 @@
+@use "../../styles/partials/breakpoints" as *;
+@use "../../styles/partials/colors" as *;
+@use "../../styles/partials/resets" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+
+.workout-type-page {
+  text-align: center;
+  margin: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .swiper {
+    width: 100%;
+    padding: 60px 0;
+  }
+
+  .swiper-slide {
+    position: relative;
+    width: 400px;
+    height: 520px;
+    background-color: #fff;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+    border-radius: 20% 6px 20% 6px;
+    overflow: hidden;
+    transition: 1s;
+    user-select: none;
+  }
+
+  .swiper-slide-active {
+    border: 3px solid #fff;
+    transition: 0.6s ease-in-out;
+  }
+
+  .exercise-card {
+    padding: 25px 25px 30px;
+    color: red;
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 1;
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      text-align: left;
+    }
+  }
+}

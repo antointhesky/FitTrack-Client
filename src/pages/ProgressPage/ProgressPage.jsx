@@ -17,7 +17,7 @@ export default function ProgressPage() {
     if (isEditing) {
       const fetchAvailableExercises = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/exercises`);
+          const response = await axios.get(`http://localhost:5050/exercises`);
           setAvailableExercises(response.data); // All exercises in the database
         } catch (error) {
           console.error("Error fetching available exercises:", error);
@@ -56,8 +56,8 @@ export default function ProgressPage() {
     };
 
     try {
-      await axios.put(`http://localhost:3000/session/${sessionId}`, sessionData);
-      setIsEditing(false); // Hide the edit view after saving
+      await axios.put(`http://localhost:5050/session/${sessionId}`, sessionData);
+      setIsEditing(false); 
       navigate(`/progress/${sessionId}`, { state: { session: sessionData } });
     } catch (error) {
       console.error("Error saving updates:", error);

@@ -19,7 +19,7 @@ export default function EditGoalsPage() {
   useEffect(() => {
     const fetchGoal = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/goals/${state.goalId}`);
+        const response = await axios.get(`http://localhost:/goals/${state.goalId}`);
         setGoal(response.data);
       } catch (error) {
         console.error("Error fetching goal:", error);
@@ -41,7 +41,7 @@ export default function EditGoalsPage() {
     console.log("Goal data before update:", goal);
 
     try {
-      await axios.put(`http://localhost:3000/goals/${state.goalId}`, goal);
+      await axios.put(`http://localhost:5050/goals/${state.goalId}`, goal);
       navigate("/goals");
     } catch (error) {
       console.error("Error updating goal:", error.response ? error.response.data : error.message);

@@ -1,91 +1,40 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFire, faDumbbell, faRedo } from '@fortawesome/free-solid-svg-icons';
 import "./SessionPage.scss";
 
-export default function SessionPage() {
-  const [workoutTypes, setWorkoutTypes] = useState([]);
-  const [selectedWorkout, setSelectedWorkout] = useState(null);
-  const [exercises, setExercises] = useState([]);
-  const [currentSession, setCurrentSession] = useState([]);
-  const [expandedCard, setExpandedCard] = useState(null);
+const SessionPage = () => {
+  const { sessionId } = useParams();
   const navigate = useNavigate();
-
-  const colorPalette = ["#0091ea", "#00bfa5", "#ffab00", "#d50000"];
+  const [exercises, setExercises] = useState([]);
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
-    const fetchWorkoutTypes = async () => {
+    const fetchSession = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/workouts");
-        setWorkoutTypes(response.data);
+        const response = await axios.get(`http://localhost:5050/session/${sessionId}`);
+        setSession(response.data.session);
+        setExercises(response.data.exercises);
       } catch (error) {
-        console.error("Error fetching workout types:", error);
+        console.error("Error fetching session:", error);
       }
     };
-    fetchWorkoutTypes();
-  }, []);
+    fetchSession();
+  }, [sessionId]);
 
-  const fetchExercises = async (workoutType) => {
+  const handleDelete = async (exerciseId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/exercises?workout_type=${workoutType}`
-      );
-      setExercises(response.data);
+      await axios.delete(`http://localhost:5050/session/${sessionId}/exercise/${exerciseId}`);
+      setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     } catch (error) {
-      console.error("Error fetching exercises:", error);
+      console.error("Error removing exercise:", error);
     }
   };
 
-  const handleWorkoutTypeSelect = (type) => {
-    setSelectedWorkout(type.name);
-    fetchExercises(type.name);
-    setExpandedCard(type.id === expandedCard ? null : type.id);
-  };
-
-  const addExerciseToSession = (exercise) => {
-    setCurrentSession((prevSession) => {
-      const updatedSession = [...prevSession];
-      const existingExerciseIndex = updatedSession.findIndex(
-        (e) => e.id === exercise.id && e.workout_type === selectedWorkout
-      );
-
-      if (existingExerciseIndex !== -1) {
-        updatedSession[existingExerciseIndex] = {
-          ...updatedSession[existingExerciseIndex],
-          count: updatedSession[existingExerciseIndex].count + 1,
-        };
-      } else {
-        updatedSession.push({ ...exercise, count: 1, workout_type: selectedWorkout });
-      }
-
-      return updatedSession;
-    });
-  };
-
-  const removeExerciseFromSession = (exerciseId) => {
-    setCurrentSession((prevSession) =>
-      prevSession.filter((e) => e.id !== exerciseId)
-    );
-  };
-
   const handleSaveSession = async () => {
-    const sessionData = {
-      exercises: currentSession.map((exercise) => ({
-        id: exercise.id,
-        name: exercise.name,
-        count: exercise.count,
-        workout_type: exercise.workout_type,
-      })),
-      date: new Date().toISOString().split(".")[0].replace("T", " "),
-    };
-
     try {
-      const response = await axios.post("http://localhost:3000/session", sessionData);
-      const sessionId = response.data.session_id;
-
-      navigate(`/progress/${sessionId}`, { state: { session: sessionData } });
+      await axios.put(`http://localhost:5050/session/${sessionId}`, { exercises });
+      navigate("/progress"); // Redirect to progress page after saving
     } catch (error) {
       console.error("Error saving session:", error);
     }
@@ -93,89 +42,26 @@ export default function SessionPage() {
 
   return (
     <div className="session-page">
-      {currentSession.length > 0 && (
-        <div className="current-session">
-          <h2>Current Session</h2>
-          <div className="session-list">
-            {currentSession.map((exercise) => (
-              <div key={exercise.id} className="session-item-card">
-                <span>{exercise.name} ({exercise.count}x)</span>
-                <button
-                  onClick={() => removeExerciseFromSession(exercise.id)}
-                  className="remove-button"
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-          <button onClick={handleSaveSession} className="submit-session-button">
-            Save Session
-          </button>
+      <h1>Current Session</h1>
+      {exercises.length > 0 ? (
+        <div className="exercise-list">
+          {exercises.map((exercise) => (
+            <div key={exercise.id} className="exercise-card">
+              <h3>{exercise.name}</h3>
+              <p><strong>Sets:</strong> {exercise.sets}</p>
+              <p><strong>Reps:</strong> {exercise.reps}</p>
+              <p><strong>Duration:</strong> {exercise.duration}</p>
+              <p><strong>Calories:</strong> {exercise.calories_burned}</p>
+              <button onClick={() => handleDelete(exercise.id)}>Remove</button>
+            </div>
+          ))}
         </div>
+      ) : (
+        <p>No exercises added to this session yet.</p>
       )}
-
-      <h1>Select Workout Type</h1>
-      <div className="workout-types-container">
-        {workoutTypes.map((type, index) => (
-          <div
-            key={type.id}
-            className={`workout-card ${expandedCard === type.id ? 'expanded' : ''}`}
-            onClick={() => handleWorkoutTypeSelect(type)}
-            style={{
-              backgroundColor: colorPalette[index % colorPalette.length],
-              top: `${index * 50}px`,
-              zIndex: expandedCard === type.id ? 10 : index,
-              height: expandedCard === type.id ? "600px" : "150px",
-            }}
-          >
-            <h3>{type.name}</h3>
-            {expandedCard === type.id && (
-              <div className="card-content">
-                <p>{type.description}</p>
-                <div className="exercises-list">
-                  {exercises.map((exercise) => (
-                    <div
-                      key={exercise.id}
-                      className="exercise-card-container"
-                      onClick={() => addExerciseToSession(exercise)} // Add this line
-                    >
-                      <div className="pink-container">
-                        <div className="circle-image-container">
-                          <img src={exercise.imageUrl} alt={exercise.name} className="circle-image" />
-                        </div>
-                      </div>
-                      <div className="white-container">
-                        <h3>{exercise.name}</h3>
-                        <div className="stats-row">
-                          {exercise.calories_burned > 0 && (
-                            <div className="stat">
-                              <FontAwesomeIcon icon={faFire} />
-                              <span>{exercise.calories_burned} cal</span>
-                            </div>
-                          )}
-                          {exercise.sets > 0 && (
-                            <div className="stat">
-                              <FontAwesomeIcon icon={faDumbbell} />
-                              <span>{exercise.sets} Sets</span>
-                            </div>
-                          )}
-                          {exercise.reps > 0 && (
-                            <div className="stat">
-                              <FontAwesomeIcon icon={faRedo} />
-                              <span>{exercise.reps} Reps</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      <button onClick={handleSaveSession}>Save Session</button>
     </div>
   );
-}
+};
+
+export default SessionPage;

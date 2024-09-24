@@ -11,7 +11,7 @@ export default function GoalsPage() {
   useEffect(() => {
     const fetchGoals = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/goals");
+        const response = await axios.get("http://localhost:5050/goals");
         setGoals(response.data);
       } catch (error) {
         console.error("Error fetching goals:", error);
