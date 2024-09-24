@@ -5,20 +5,19 @@ import "./ProgressPage.scss";
 
 export default function ProgressPage() {
   const { state } = useLocation();
-  const { sessionId } = useParams(); // Get session ID from URL
-  const session = state?.session || {}; // Get session data from state
+  const { sessionId } = useParams();
+  const session = state?.session || {}; 
   const [exercises, setExercises] = useState(session.exercises || []);
-  const [availableExercises, setAvailableExercises] = useState([]); // For adding new exercises
-  const [isEditing, setIsEditing] = useState(false); // Toggle editing state
+  const [availableExercises, setAvailableExercises] = useState([]); 
+  const [isEditing, setIsEditing] = useState(false); 
   const navigate = useNavigate();
 
-  // Fetch available exercises that are not yet in the session
   useEffect(() => {
     if (isEditing) {
       const fetchAvailableExercises = async () => {
         try {
           const response = await axios.get(`http://localhost:5050/exercises`);
-          setAvailableExercises(response.data); // All exercises in the database
+          setAvailableExercises(response.data); 
         } catch (error) {
           console.error("Error fetching available exercises:", error);
         }
@@ -28,28 +27,24 @@ export default function ProgressPage() {
     }
   }, [isEditing]);
 
-  // Add exercise to the session
   const addExerciseToSession = (exercise) => {
     setExercises((prevExercises) => [
       ...prevExercises,
-      { ...exercise, count: 1, workout_type: exercise.workout_type },
+      { ...exercise, workout_type: exercise.workout_type },
     ]);
   };
 
-  // Remove exercise from the session
   const removeExerciseFromSession = (exerciseId) => {
     setExercises((prevExercises) =>
       prevExercises.filter((exercise) => exercise.id !== exerciseId)
     );
   };
 
-  // Save updates to the session
   const handleSaveUpdates = async () => {
     const sessionData = {
       exercises: exercises.map((exercise) => ({
         id: exercise.id,
         name: exercise.name,
-        count: exercise.count,
         workout_type: exercise.workout_type,
       })),
       date: session.date,
@@ -76,7 +71,6 @@ export default function ProgressPage() {
             <div className="exercise-name">
               {exercise.name} ({exercise.workout_type})
             </div>
-            <div className="exercise-count">Count: {exercise.count}</div>
             {isEditing && (
               <button onClick={() => removeExerciseFromSession(exercise.id)}>
                 Remove
@@ -98,7 +92,7 @@ export default function ProgressPage() {
               .filter(
                 (availableExercise) =>
                   !exercises.some((exercise) => exercise.id === availableExercise.id)
-              ) // Only show exercises not already in the session
+              )
               .map((exercise, i) => (
                 <li key={i} className="exercise-card">
                   <div className="exercise-name">{exercise.name}</div>
