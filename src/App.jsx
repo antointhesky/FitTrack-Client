@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import BottomNavBar from "./components/BottomNavBar/BottomNavBar";
 import HomePage from "./pages/HomePage/HomePage";
 import WorkoutsOverviewPage from "./pages/WorkoutsOverviewPage/WorkoutsOverviewPage";
+import BodyPartExercisesPage from "./pages/BodyPartExercisesPage/BodyPartExercisesPage";
 import WorkoutTypePage from "./pages/WorkoutTypePage/WorkoutTypePage";
 import SessionPage from "./pages/SessionPage/SessionPage";
 import SessionsOverviewPage from "./pages/SessionsOverviewPage/SessionsOverviewPage";
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/workouts-overview" element={<WorkoutsOverviewPage />} />
+        <Route path="/exercises" element={<BodyPartExercisesPage />} />
         <Route path="/workouts" element={<WorkoutTypePage />} />
         <Route path="/session/:id" element={<SessionPage />} />
         <Route path="/sessions-overview" element={<SessionsOverviewPage />} />
