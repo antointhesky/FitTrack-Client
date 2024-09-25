@@ -6,13 +6,13 @@ export default function BottomNavBar() {
   return (
     <nav className="bottom-nav">
       <NavLink
-        to="/home"
+        to="/"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <FaHome className="icon" />
       </NavLink>
       <NavLink
-        to="/session"
+        to="/workouts"  // Navigate to all workouts page
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <FaDumbbell className="icon" />
@@ -32,3 +32,4 @@ export default function BottomNavBar() {
     </nav>
   );
 }
+

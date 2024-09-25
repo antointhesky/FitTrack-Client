@@ -1,40 +1,56 @@
+@use "../../styles/partials/colors" as *;
+
 .edit-goal-page {
-    padding: 20px;
-  
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #333;
+  padding: 20px;
+  background-color: $background-light; // Update to background from your palette
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: $font; // Use the palette color for text
+  }
+
+  form {
+    background-color: white; // Keep a clean white background for form
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2); // Add the shadow for card style
+    max-width: 600px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    label {
+      font-size: 1rem;
+      color: $font-light; // Use a lighter text color
     }
-  
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-  
-      label {
-        font-size: 1rem;
-        color: #666;
-      }
-  
-      input, select {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
-        color: #333;
-      }
-  
-      .submit-button {
-        padding: 12px 20px;
-        background-color: #4caf50;
-        color: white;
-        border-radius: 8px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        margin-top: 20px;
+
+    input, select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: $font;
+      background-color: white;
+    }
+
+    .submit-button {
+      padding: 12px 20px;
+      background-color: $yellow; // Use yellow from your palette
+      color: white;
+      border-radius: 50px; // Rounded button like in the session page
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-top: 20px;
+      border: none;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($yellow, 10%); // Darken button on hover
       }
     }
   }
-  
+}

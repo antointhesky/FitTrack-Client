@@ -22,36 +22,44 @@ export default function GoalsPage() {
   }, []);
 
   return (
-    <div className="goals-page">
+    <main className="goals-page">
       <h1>Your Goals</h1>
-      <ul className="goals-list">
+      <div className="goals-container">
         {goals.map((goal) => (
-          <li key={goal.id} className="goal-item">
+          <div key={goal.id} className="goal-card">
             <Link
               to={`/goals/${goal.name}/edit`}
-              state={{ goalId: goal.id }} // Pass goalId via state
+              state={{ goalId: goal.id }} 
+              className="goal-link"
             >
-              <div className="goal-name">{goal.name}</div>
-              <CircularProgressbar
-                value={goal.current_progress}
-                maxValue={goal.target}
-                text={`${goal.current_progress}/${goal.target}`}
-                styles={buildStyles({
-                  textColor: "#4caf50",
-                  pathColor: "#4caf50",
-                  trailColor: "#eee",
-                })}
-              />
-              <div className="goal-deadline">
-                Deadline: {new Date(goal.deadline_progress).toLocaleDateString("en-GB")}
+              <div className="goal-header">
+                <h2 className="goal-name">{goal.name}</h2>
+              </div>
+              <div className="goal-progress">
+                <CircularProgressbar
+                  value={goal.current_progress}
+                  maxValue={goal.target}
+                  text={`${goal.current_progress}/${goal.target}`}
+                  styles={buildStyles({
+                    textColor: "$orange", 
+                    pathColor: "$orange", 
+                    trailColor: "#eee", 
+                  })}
+                />
+              </div>
+              <div className="goal-footer">
+                <p className="goal-deadline">
+                  Deadline: {new Date(goal.deadline_progress).toLocaleDateString("en-GB")}
+                </p>
               </div>
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
+
       <Link to="/goals/add" className="add-goal-button">
         Add New Goal
       </Link>
-    </div>
+    </main>
   );
 }

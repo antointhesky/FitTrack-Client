@@ -5,10 +5,16 @@ export default function Header() {
   return (
     <header className="top-nav">
       <NavLink
-        to="/home"
+        to="/"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <span className="nav-text">Home</span>
+      </NavLink>
+      <NavLink
+        to="/workouts"  // Navigate to all workouts page
+        className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
+      >
+        <span className="nav-text">Workouts</span>
       </NavLink>
       <NavLink
         to="/session"
