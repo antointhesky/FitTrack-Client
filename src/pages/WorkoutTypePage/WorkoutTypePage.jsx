@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import "swiper/scss";
-import "swiper/scss/pagination";
 import "./WorkoutTypePage.scss";
 
 export default function WorkoutTypePage() {
   const [searchParams] = useSearchParams();
   const workoutType = searchParams.get("workout_type");
   const navigate = useNavigate();
-
+  
   const [exercises, setExercises] = useState([]);
+  const [selectedExercises, setSelectedExercises] = useState([]);
 
   useEffect(() => {
     if (workoutType) {
@@ -23,67 +20,77 @@ export default function WorkoutTypePage() {
           );
           setExercises(response.data);
         } catch (error) {
+          console.error("Error fetching exercises:", error);
         }
       };
       fetchExercises();
     }
   }, [workoutType]);
 
-  const handleAddExercise = async (exerciseId, workoutType) => {
+  const handleToggleExercise = (exerciseId) => {
+    if (selectedExercises.includes(exerciseId)) {
+      // Remove exercise if it's already selected
+      setSelectedExercises(selectedExercises.filter((id) => id !== exerciseId));
+    } else {
+      // Add exercise to selected list
+      setSelectedExercises([...selectedExercises, exerciseId]);
+    }
+  };
+
+  const handleGoToSession = async () => {
     const sessionData = {
-      exercises: [
-        {
-          id: exerciseId,
-          workout_type: workoutType,
-        },
-      ],
+      exercises: selectedExercises.map((id) => ({
+        id,
+        workout_type: workoutType,
+      })),
     };
 
     try {
       const response = await axios.post("http://localhost:5050/session", sessionData);
       const sessionId = response.data.session_id;
-      
       navigate(`/session/${sessionId}`);
     } catch (error) {
+      console.error("Error creating session:", error);
     }
   };
 
   return (
     <main className="workout-type-page">
       <h1>{`${workoutType} Workouts`}</h1>
-      <Swiper
-        modules={[Pagination]}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView="auto"
-        speed={800}
-        slideToClickedSlide={true}
-        pagination={{ clickable: true }}
-        breakpoints={{
-          320: { spaceBetween: 40 },
-          430: { spaceBetween: 50 },
-          580: { spaceBetween: 70 },
-          650: { spaceBetween: 30 },
-        }}
-      >
+      <div className="exercises-container">
         {exercises.map((exercise) => (
-          <SwiperSlide key={exercise.id}>
-            <div
-              className="exercise-card"
-              onClick={() => handleAddExercise(exercise.id, exercise.workout_type)}
-            >
-              <video src={`http://localhost:5050${exercise.video_url}`} controls />
-              <h3>{exercise.name}</h3>
-              <p>Body Part: {exercise.body_part}</p>
-              <p>Sets: {exercise.sets}</p>
-              <p>Reps: {exercise.reps}</p>
-              <p>Duration: {exercise.duration}</p>
-              <p>Calories Burned: {exercise.calories_burned}</p>
+          <div
+            key={exercise.id}
+            className={`exercise-card ${
+              selectedExercises.includes(exercise.id) ? "active" : ""
+            }`}
+            onClick={() => handleToggleExercise(exercise.id)}
+          >
+            <video src={`http://localhost:5050${exercise.video_url}`} controls />
+            <h3>{exercise.name}</h3>
+            <p>Body Part: {exercise.body_part}</p>
+            <p>Sets: {exercise.sets}</p>
+            <p>Reps: {exercise.reps}</p>
+            <p>Duration: {exercise.duration}</p>
+            <p>Calories Burned: {exercise.calories_burned}</p>
+
+            <div className={`exercise-toggle ${selectedExercises.includes(exercise.id) ? "active" : ""}`}>
+              <p>
+                {selectedExercises.includes(exercise.id) ? "-" : "+"}
+              </p>
             </div>
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
+      </div>
+
+      {/* Only show the button when exercises are selected */}
+      {selectedExercises.length > 0 && (
+        <div className="go-to-session-container">
+          <button className="go-to-session" onClick={handleGoToSession}>
+            <span> + Go to your session </span>
+          </button>
+        </div>
+      )}
     </main>
   );
 }
-

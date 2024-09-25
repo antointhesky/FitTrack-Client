@@ -7,46 +7,38 @@
 .workout-type-page {
   text-align: center;
   margin: 2rem;
+  background-color: white;
 
   h1 {
     font-size: 2rem;
     margin-bottom: 2rem;
+    color: $font;
   }
 
-  .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .swiper {
-    width: 100%;
-    padding: 60px 0;
-  }
-
-  .swiper-slide {
-    position: relative;
-    width: 400px;
-    height: 520px;
-    background-color: #fff;
-    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-    border-radius: 20% 6px 20% 6px;
-    overflow: hidden;
-    transition: 1s;
-    user-select: none;
-  }
-
-  .swiper-slide-active {
-    border: 3px solid #fff;
-    transition: 0.6s ease-in-out;
+  .exercises-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
   }
 
   .exercise-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: $yellow; // Default card background color
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+    border-radius: 20% 6px 20% 6px;
+    overflow: hidden;
+    transition: 0.5s;
     padding: 25px 25px 30px;
-    color: red;
+    color: white;
     font-size: 1.2rem;
     font-weight: 600;
-    opacity: 1;
+    cursor: pointer;
+
+    &.active {
+      background-color: $orange; // Change background to orange when selected
+    }
 
     video {
       width: 100%;
@@ -63,6 +55,72 @@
       font-size: 1rem;
       margin: 0.5rem 0;
       text-align: left;
+    }
+
+    &:hover {
+      transform: scale(1.05); // Slightly enlarge on hover
+    }
+
+    .exercise-toggle {
+      background-color: $background-light; // Inactive state background color
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem auto 0 auto;
+      transition: background-color 0.3s;
+
+      &.active {
+        background-color: $font-light; // Active state background color
+      }
+
+      p {
+        margin: 0;
+        font-size: 1.5rem; // For the "+" and "-" symbols
+        color: white;
+      }
+    }
+  }
+
+  .go-to-session-container {
+    margin-top: 2rem;
+    text-align: center;
+
+    .go-to-session {
+      background-color: $background-light;
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($background-light, 10%);
+      }
+
+      span {
+        font-size: 1.5rem; // For the plus icon in the session button
+      }
+    }
+  }
+
+  @include tablet {
+    .exercise-card {
+      max-width: 300px;
+    }
+  }
+
+  @include desktop {
+    .exercise-card {
+      max-width: 350px;
     }
   }
 }
