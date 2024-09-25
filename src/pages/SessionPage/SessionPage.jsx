@@ -7,8 +7,7 @@ const SessionPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
-  const [session, setSession] = useState(null);
-  const [allExercises, setAllExercises] = useState([]);
+  const [allExercises, setAllExercises] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,7 +16,6 @@ const SessionPage = () => {
       if (!id) return;
       try {
         const response = await axios.get(`http://localhost:5050/session/${id}`);
-        setSession(response.data.session);
         setExercises(response.data.exercises);
       } catch (error) {
         setError("Error fetching session data");
@@ -33,7 +31,14 @@ const SessionPage = () => {
     const fetchAllExercises = async () => {
       try {
         const response = await axios.get(`http://localhost:5050/exercises`);
-        setAllExercises(response.data);
+        const exercisesByWorkoutType = response.data.reduce((acc, exercise) => {
+          if (!acc[exercise.workout_type]) {
+            acc[exercise.workout_type] = [];
+          }
+          acc[exercise.workout_type].push(exercise);
+          return acc;
+        }, {});
+        setAllExercises(exercisesByWorkoutType);
       } catch (error) {
         setError("Error fetching all exercises");
         console.error("Error fetching exercises:", error);
@@ -45,7 +50,7 @@ const SessionPage = () => {
   const handleAddExercise = async (exerciseId) => {
     try {
       await axios.post(`http://localhost:5050/session/${id}/exercise`, { exerciseId });
-      const exercise = allExercises.find((ex) => ex.id === exerciseId);
+      const exercise = Object.values(allExercises).flat().find((ex) => ex.id === exerciseId);
       setExercises([...exercises, exercise]);
     } catch (error) {
       setError("Error adding exercise");
@@ -82,36 +87,55 @@ const SessionPage = () => {
   }
 
   return (
-    <div className="session-page">
+    <main className="session-page">
+      <div className="current-session">
       <h1>Current Session</h1>
-      {session && (
-        <h2>Workout Type: {session.workout_type}</h2>
-      )}
-      {exercises.length > 0 ? (
-        <div className="exercise-list minimalist">
-          {exercises.map((exercise) => (
-            <div key={exercise.id} className="exercise-card minimalist-card">
-              <h3>{exercise.name}</h3>
-              <button onClick={() => handleDelete(exercise.id)}>Remove</button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No exercises added to this session yet.</p>
-      )}
+        {exercises.length > 0 ? (
+          <div className="exercise-list">
+            {exercises.map((exercise) => (
+              <div key={exercise.id} className="exercise-card">
+                <h3>{exercise.name}</h3>
+                <div className="exercise-toggle" onClick={() => handleDelete(exercise.id)}>
+                  <span>−</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No exercises added to this session yet.</p>
+        )}
+      </div>
 
-      <h2>Add Exercises</h2>
-      <div className="available-exercises">
-        {allExercises.map((exercise) => (
-          <div key={exercise.id} className="exercise-card">
-            <h3>{exercise.name}</h3>
-            <p><strong>Body Part:</strong> {exercise.body_part}</p>
-            <button onClick={() => handleAddExercise(exercise.id)}>Add to Session</button>
+      <div className="add-exercises">
+        <h2>Add Exercises</h2>
+        {Object.keys(allExercises).map((workoutType) => (
+          <div key={workoutType} className="workout-section">
+            <h3 className="workout-type-title">{workoutType}</h3>
+            <div className="available-exercises">
+              {allExercises[workoutType].map((exercise) => (
+                <div key={exercise.id} className="exercise-card">
+                  <h3>{exercise.name}</h3>
+                  <p><strong>Body Part:</strong> {exercise.body_part}</p>
+                  <p>Sets: {exercise.sets}</p>
+                  <p>Reps: {exercise.reps}</p>
+                  <p>Duration: {exercise.duration}</p>
+                  <p>Calories Burned: {exercise.calories_burned}</p>
+                  <div className="exercise-toggle" onClick={() => handleAddExercise(exercise.id)}>
+                    <span>+</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
-      <button onClick={handleSaveSession}>Save Session</button>
-    </div>
+
+      <div className="save-session-container">
+        <button className="save-session" onClick={handleSaveSession}>
+          <span> + Save Session </span>
+        </button>
+      </div>
+    </main>
   );
 };
 

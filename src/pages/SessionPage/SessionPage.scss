@@ -1,96 +1,161 @@
+@use "../../styles/partials/colors" as *;
+@use "../../styles/partials/breakpoints" as *;
+
 .session-page {
   text-align: center;
   margin: 2rem;
 
   h1 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: $font;
   }
 
-  .exercise-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  .current-session {
+    background-color: white;  // White background for Current Session
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
 
-    .exercise-card {
-      width: 400px;
-      height: 520px;
-      background-color: #fff;
-      box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-      border-radius: 20% 6px 20% 6px;
-      padding: 25px;
-      transition: 1s;
+    .exercise-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
 
-      video {
+      .exercise-card {
         width: 100%;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-      }
-
-      h3 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-      }
-
-      p {
-        font-size: 1rem;
-        margin: 0.5rem 0;
-        text-align: left;
-      }
-
-      button {
-        background-color: #007bff;
+        max-width: 300px;
+        background-color: $yellow;
+        box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+        border-radius: 20% 6px 20% 6px;
+        padding: 25px;
         color: white;
-        border: none;
-        padding: 10px 15px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        font-size: 1.2rem;
+        font-weight: 600;
+        position: relative;
 
-        &:hover {
-          background-color: #0056b3;
+        h3 {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+          color: $orange;
+        }
+
+        .exercise-toggle {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 40px;
+          height: 40px;
+          background-color: $font-light;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          font-size: 1.5rem;
+          color: white;
+
+          &:hover {
+            background-color: darken($font-light, 10%);
+          }
         }
       }
     }
   }
 
-  .available-exercises {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  .add-exercises {
+    background-color: $background-light;
+    padding: 2rem;
+    border-radius: 10px;
 
-    .exercise-card {
-      width: 400px;
-      background-color: #f8f9fa;
-      padding: 25px;
-      box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
+    h2 {
+      color: white;
+      margin-bottom: 1rem;
+    }
 
-      h3 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
+    .workout-section {
+      margin-bottom: 2rem;
+
+      .workout-type-title {
+        color: $yellow;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
       }
 
-      p {
-        font-size: 1rem;
-        margin: 0.5rem 0;
-        text-align: left;
-      }
+      .available-exercises {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
 
-      button {
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        .exercise-card {
+          width: 100%;
+          max-width: 350px;
+          background-color: #f8f9fa;
+          padding: 25px;
+          box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+          border-radius: 10px;
+          color: $orange;
 
-        &:hover {
-          background-color: #218838;
+          h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: $orange;
+          }
+
+          p {
+            font-size: 1rem;
+            margin: 0.5rem 0;
+            text-align: left;
+            color: $orange;
+          }
+
+          .exercise-toggle {
+            width: 40px;
+            height: 40px;
+            background-color: $font-light;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            margin-top: 10px;
+
+            &:hover {
+              background-color: darken($font-light, 10%);
+            }
+          }
         }
+      }
+    }
+  }
+
+  .save-session-container {
+    background-color: $background-light;
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-radius: 10px;
+
+    .save-session {
+      background-color: $yellow;
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($yellow, 10%);
+      }
+
+      span {
+        font-size: 1.5rem;
       }
     }
   }

@@ -11,8 +11,32 @@
 
   h1 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     color: $font;
+  }
+
+  .go-back-button {
+    background-color: $background-light;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($background-light, 10%);
+    }
+
+    span {
+      font-size: 1.5rem;
+    }
   }
 
   .exercises-container {
@@ -25,7 +49,7 @@
   .exercise-card {
     width: 100%;
     max-width: 400px;
-    background-color: $yellow; // Default card background color
+    background-color: $yellow;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
     border-radius: 20% 6px 20% 6px;
     overflow: hidden;
@@ -35,15 +59,10 @@
     font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
+    position: relative;
 
     &.active {
-      background-color: $orange; // Change background to orange when selected
-    }
-
-    video {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 1rem;
+      background-color: $orange;
     }
 
     h3 {
@@ -57,28 +76,48 @@
       text-align: left;
     }
 
-    &:hover {
-      transform: scale(1.05); // Slightly enlarge on hover
+    .video-wrapper {
+      position: relative;
+      width: 120%;  // Make the video larger than the card width
+      margin-top: -25px;  // Lift the video above the card
+      margin-left: -10%;  // Center the video across the card
+      border-radius: 20% 6px 0 0;  // Match the top corners of the card
+      overflow: hidden;
+
+      video {
+        width: 100%;
+        border-radius: 20% 6px 0 0;  // Apply rounded corners only to the top
+      }
+    }
+
+    .info-icon {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 1.5rem;
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
     }
 
     .exercise-toggle {
-      background-color: $background-light; // Inactive state background color
+      background-color: $background-light;
       width: 40px;
       height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 1rem auto 0 auto;
-      transition: background-color 0.3s;
+      margin: 1rem auto 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
 
       &.active {
-        background-color: $font-light; // Active state background color
+        background-color: $font-light;
       }
 
-      p {
-        margin: 0;
-        font-size: 1.5rem; // For the "+" and "-" symbols
+      span {
+        font-size: 1.5rem;
         color: white;
       }
     }
@@ -107,7 +146,7 @@
       }
 
       span {
-        font-size: 1.5rem; // For the plus icon in the session button
+        font-size: 1.5rem;
       }
     }
   }

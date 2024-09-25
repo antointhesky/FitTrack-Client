@@ -57,6 +57,11 @@ export default function WorkoutTypePage() {
   return (
     <main className="workout-type-page">
       <h1>{`${workoutType} Workouts`}</h1>
+      {/* Go Back Button */}
+      <button className="go-back-button" onClick={() => navigate("/")}>
+        <span>← Go back to homepage</span>
+      </button>
+
       <div className="exercises-container">
         {exercises.map((exercise) => (
           <div
@@ -66,7 +71,10 @@ export default function WorkoutTypePage() {
             }`}
             onClick={() => handleToggleExercise(exercise.id)}
           >
-            <video src={`http://localhost:5050${exercise.video_url}`} controls />
+            <div className="video-wrapper">
+              <video src={`http://localhost:5050${exercise.video_url}`} controls />
+              <div className="info-icon" title="Watch the exercise tutorial video">ℹ️</div>
+            </div>
             <h3>{exercise.name}</h3>
             <p>Body Part: {exercise.body_part}</p>
             <p>Sets: {exercise.sets}</p>
@@ -75,15 +83,12 @@ export default function WorkoutTypePage() {
             <p>Calories Burned: {exercise.calories_burned}</p>
 
             <div className={`exercise-toggle ${selectedExercises.includes(exercise.id) ? "active" : ""}`}>
-              <p>
-                {selectedExercises.includes(exercise.id) ? "-" : "+"}
-              </p>
+              <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Only show the button when exercises are selected */}
       {selectedExercises.length > 0 && (
         <div className="go-to-session-container">
           <button className="go-to-session" onClick={handleGoToSession}>
@@ -94,3 +99,4 @@ export default function WorkoutTypePage() {
     </main>
   );
 }
+
