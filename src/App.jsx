@@ -1,4 +1,5 @@
 import "./App.scss";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import WorkoutTypePage from "./pages/WorkoutTypePage/WorkoutTypePage";

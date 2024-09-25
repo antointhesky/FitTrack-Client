@@ -1,0 +1,75 @@
+@use "../../styles/partials/colors" as *;
+@use "../../styles/partials/breakpoints" as *;
+
+.full-screen-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f8f9fa;
+    color: $orange;
+    padding: 25px;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    z-index: 1000;
+  
+    .modal-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+  
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: $orange;
+      }
+  
+      .new-goal-form {
+        input, select {
+          display: block;
+          width: 100%;
+          margin-bottom: 1rem;
+          padding: 10px;
+          font-size: 1rem;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+        }
+  
+        .modal-buttons {
+          display: flex;
+          justify-content: space-between;
+          gap: 1rem;
+  
+          .save-button {
+            background-color: $orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+  
+          .cancel-button {
+            background-color: $orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  
+  .full-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75); // Darken overlay
+    z-index: 999;
+  }
+  

@@ -22,27 +22,52 @@
   .goal-card {
     width: 100%;
     max-width: 400px;
-    background-color: $yellow; 
+    background-color: $yellow;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
     border-radius: 20% 6px 20% 6px;
     padding: 25px 25px 30px;
-    color: white; 
+    color: white;
     font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
+    position: relative;
 
-    .goal-link {
-      text-decoration: none;
-      color: inherit;
+    &.editing {
+      background-color: lighten($yellow, 10%);
+      padding: 40px;
     }
 
     .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 1rem;
 
       .goal-name {
         font-size: 1.5rem;
         font-weight: bold;
-        color: white; 
+        color: white;
+      }
+
+      .goal-actions {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+
+          i {
+            font-size: 1.6rem;
+            color: white; // White color for the icons
+            transition: color 0.3s ease;
+
+            &:hover {
+              color: darken(white, 10%);
+            }
+          }
+        }
       }
     }
 
@@ -50,14 +75,52 @@
       margin: 1rem 0;
 
       .CircularProgressbar-text {
-        fill: white; 
+        fill: white;
       }
     }
 
     .goal-footer {
       .goal-deadline {
         font-size: 0.9rem;
-        color: white; 
+        color: white;
+      }
+    }
+
+    .edit-form {
+      input,
+      select {
+        width: 100%;
+        margin-bottom: 0.5rem;
+        padding: 10px;
+        border: 1px solid $font-light;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: $font;
+      }
+
+      .save-button,
+      .cancel-button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        margin-top: 10px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .save-button {
+        background-color: $background-light;
+
+        &:hover {
+          background-color: darken($background-light, 10%);
+        }
+      }
+
+      .cancel-button {
+        background-color: $orange;
+
+        &:hover {
+          background-color: darken($orange, 10%);
+        }
       }
     }
   }
@@ -89,5 +152,78 @@
     .goal-card {
       max-width: 350px;
     }
+  }
+
+  .full-screen-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f8f9fa; // Same background color as exercise card
+    color: $orange; // Same text color as exercise card
+    padding: 25px;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    z-index: 1000;
+
+    .modal-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: $orange;
+      }
+
+      .new-goal-form {
+        input,
+        select {
+          display: block;
+          width: 100%;
+          margin-bottom: 1rem;
+          padding: 10px;
+          font-size: 1rem;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+        }
+
+        .modal-buttons {
+          display: flex;
+          justify-content: space-between;
+          gap: 1rem;
+
+          .save-button {
+            background-color: $orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+
+          .cancel-button {
+            background-color: $orange;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .full-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75); // Darken overlay
+    z-index: 999;
   }
 }
