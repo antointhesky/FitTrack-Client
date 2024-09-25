@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import "./EditGoalModal.scss";
 
-// For accessibility, bind modal to your app element (usually root)
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 export default function EditGoalModal({ isOpen, onRequestClose, goalToEdit, handleInputChange, handleSaveEdit }) {
   return (

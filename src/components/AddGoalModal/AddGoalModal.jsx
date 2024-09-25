@@ -11,8 +11,8 @@ export default function AddGoalModal({ isOpen, onRequestClose, newGoal, handleNe
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Add New Goal"
-      className="full-screen-modal" // Full screen modal class
-      overlayClassName="full-screen-overlay" // Full screen overlay class
+      className="add-goal-modal" // Use similar styling as delete modal
+      overlayClassName="add-goal-overlay" // Similar overlay class
     >
       <div className="modal-content">
         <h2>Add New Goal</h2>
