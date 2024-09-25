@@ -1,3 +1,4 @@
+// src/components/Header/Header.jsx
 import { NavLink } from "react-router-dom";
 import "./Header.scss";
 
@@ -11,13 +12,13 @@ export default function Header() {
         <span className="nav-text">Home</span>
       </NavLink>
       <NavLink
-        to="/workouts"  // Navigate to all workouts page
+        to="/workouts-overview"  // Navigate to Workouts Overview page
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <span className="nav-text">Workouts</span>
       </NavLink>
       <NavLink
-        to="/session"
+        to="/sessions-overview"  // Navigate to Sessions Overview page
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <span className="nav-text">Session</span>
@@ -37,3 +38,4 @@ export default function Header() {
     </header>
   );
 }
+

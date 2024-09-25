@@ -1,0 +1,30 @@
+@use "../../styles/partials/colors" as *;
+@use "../../styles/partials/breakpoints" as *;
+
+.workouts-overview-page {
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .workout-types-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .workout-type-card {
+    background-color: $orange;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}

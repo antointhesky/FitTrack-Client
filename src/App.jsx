@@ -1,26 +1,32 @@
 import "./App.scss";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header/Header";
+import BottomNavBar from "./components/BottomNavBar/BottomNavBar";
 import HomePage from "./pages/HomePage/HomePage";
+import WorkoutsOverviewPage from "./pages/WorkoutsOverviewPage/WorkoutsOverviewPage";
 import WorkoutTypePage from "./pages/WorkoutTypePage/WorkoutTypePage";
-import SessionPage from './pages/SessionPage/SessionPage';
-import GoalsPage from './pages/GoalsPage/GoalsPage'; // Add GoalsPage
-import AddGoalsPage from "./pages/AddGoalsPage/AddGoalsPage";
-import ProgressPage from './pages/ProgressPage/ProgressPage';
-import EditGoalsPage from './pages/EditGoalsPage/EditGoalsPage';  // Add ProgressPage
+import SessionPage from "./pages/SessionPage/SessionPage";
+import SessionsOverviewPage from "./pages/SessionsOverviewPage/SessionsOverviewPage";
+import ProgressPage from "./pages/ProgressPage/ProgressPage";
+import GoalsPage from "./pages/GoalsPage/GoalsPage";
 
-export default function App() {
+function App() {
   return (
-    <BrowserRouter>
+    <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/workouts-overview" element={<WorkoutsOverviewPage />} />
         <Route path="/workouts" element={<WorkoutTypePage />} />
         <Route path="/session/:id" element={<SessionPage />} />
-        <Route path="/goals" element={<GoalsPage />} /> 
-        <Route path="/goals/add" element={<AddGoalsPage />} /> 
-        <Route path="/goals/:name/edit" element={<EditGoalsPage />} />
-        <Route path="/progress" element={<ProgressPage />} /> 
+        <Route path="/sessions-overview" element={<SessionsOverviewPage />} />
+        <Route path="/progress" element={<ProgressPage />} />
+        <Route path="/goals" element={<GoalsPage />} />
       </Routes>
-    </BrowserRouter>
+      <BottomNavBar />
+    </Router>
   );
 }
+
+export default App;

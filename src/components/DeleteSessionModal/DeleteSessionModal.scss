@@ -1,0 +1,66 @@
+@use "../../styles/partials/colors" as *;
+
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid $yellow;
+  box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  .delete-modal-content {
+    text-align: center;
+
+    h2 {
+      color: $font-light;
+      font-size: 1.5rem;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+
+      .confirm-button,
+      .cancel-button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        border: none;
+        font-size: 1rem;
+      }
+
+      .confirm-button {
+        background-color: $orange;
+        color: white;
+
+        &:hover {
+          background-color: darken($orange, 10%);
+        }
+      }
+
+      .cancel-button {
+        background-color: $background-light;
+        color: white;
+
+        &:hover {
+          background-color: darken($background-light, 10%);
+        }
+      }
+    }
+  }
+}
+
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 999;
+}

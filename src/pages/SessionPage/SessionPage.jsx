@@ -4,7 +4,7 @@ import axios from "axios";
 import "./SessionPage.scss";
 
 const SessionPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get session ID from URL params
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
   const [allExercises, setAllExercises] = useState({});
@@ -12,20 +12,29 @@ const SessionPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      if (!id) return;
+    const fetchOrCreateSession = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/session/${id}`);
-        setExercises(response.data.exercises);
+        if (id) {
+          // Fetch existing session
+          const response = await axios.get(`http://localhost:5050/session/${id}`);
+          setExercises(response.data.exercises);
+        } else {
+          // Create new session if no ID
+          const response = await axios.post(`http://localhost:5050/session`);
+          const newSessionId = response.data.session_id;
+          // Store the current session in local storage for continuity
+          localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
+          navigate(`/session/${newSessionId}`); // Redirect to the new session
+        }
       } catch (error) {
-        setError("Error fetching session data");
-        console.error("Error fetching session:", error);
+        setError("Error fetching or creating session");
+        console.error("Error fetching or creating session:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchSession();
-  }, [id]);
+    fetchOrCreateSession();
+  }, [id, navigate]);
 
   useEffect(() => {
     const fetchAllExercises = async () => {
@@ -71,6 +80,7 @@ const SessionPage = () => {
   const handleSaveSession = async () => {
     try {
       await axios.put(`http://localhost:5050/session/${id}`, { exercises });
+      localStorage.removeItem("currentSession"); // Remove session from localStorage after saving
       navigate("/progress");
     } catch (error) {
       setError("Error saving session");
@@ -89,7 +99,7 @@ const SessionPage = () => {
   return (
     <main className="session-page">
       <div className="current-session">
-      <h1>Current Session</h1>
+        <h1>Current Session</h1>
         {exercises.length > 0 ? (
           <div className="exercise-list">
             {exercises.map((exercise) => (
@@ -140,4 +150,3 @@ const SessionPage = () => {
 };
 
 export default SessionPage;
-
