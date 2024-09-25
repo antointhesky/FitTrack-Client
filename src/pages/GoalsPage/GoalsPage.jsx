@@ -2,21 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import AddGoalModal from "../../components/AddGoalModal/AddGoalModal"; // Import the new AddGoalModal component
+import AddGoalModal from "../../components/AddGoalModal/AddGoalModal";
+import DeleteGoalModal from "../../components/DeleteGoalModal/DeleteGoalModal"; // Import the delete modal component
 import "./GoalsPage.scss";
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // For the AddGoalModal
   const [editingGoalId, setEditingGoalId] = useState(null); // Track goal being edited
+  const [goalToEdit, setGoalToEdit] = useState(null); // Track the current goal to edit
   const [newGoal, setNewGoal] = useState({
-    name: "",
-    target: "",
-    unit: "",
-    current_progress: "",
-    deadline_progress: "",
-  });
-  const [goalData, setGoalData] = useState({
     name: "",
     target: "",
     unit: "",
@@ -37,52 +32,20 @@ export default function GoalsPage() {
     fetchGoals();
   }, []);
 
-  // Function to handle adding a new goal
-  const handleAddNewGoal = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5050/goals", newGoal);
-
-      if (response.status === 201) {
-        setGoals([...goals, response.data]); // Add the new goal to the list
-        setNewGoal({
-          name: "",
-          target: "",
-          unit: "",
-          current_progress: "",
-          deadline_progress: "",
-        }); // Clear the form
-        setIsModalOpen(false); // Close the modal after saving
-      } else {
-        console.error("Failed to add the new goal");
-      }
-    } catch (error) {
-      console.error("Error adding new goal:", error);
-    }
-  };
-
-  // Handle form input changes for adding new goals
-  const handleNewGoalInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewGoal((prevNewGoal) => ({
-      ...prevNewGoal,
-      [name]: value,
-    }));
-  };
-
-  // Function to handle editing a goal
+  // Function to handle opening the edit form when clicking the pencil icon
   const handleEditClick = (goal) => {
-    setEditingGoalId(goal.id);
-    setGoalData(goal);
+    setEditingGoalId(goal.id); // Set the ID of the goal being edited
+    setGoalToEdit(goal); // Set the current goal data in state
   };
 
   // Function to save the edited goal
   const handleSaveEdit = async (goalId) => {
     try {
-      const response = await axios.put(`http://localhost:5050/goals/${goalId}`, goalData);
+      const response = await axios.put(`http://localhost:5050/goals/${goalId}`, goalToEdit);
 
       if (response.status === 200) {
-        setGoals(goals.map((goal) => (goal.id === goalId ? { ...goal, ...goalData } : goal)));
+        // Update the goals list after editing
+        setGoals(goals.map((goal) => (goal.id === goalId ? { ...goal, ...goalToEdit } : goal)));
         setEditingGoalId(null); // Exit edit mode after saving
       } else {
         console.error("Failed to save the goal");
@@ -92,33 +55,16 @@ export default function GoalsPage() {
     }
   };
 
-  // Function to cancel editing mode
+  // Function to cancel the editing mode
   const handleCancelEdit = () => {
-    setEditingGoalId(null);
+    setEditingGoalId(null); // Reset the editing state
   };
 
-  // Function to handle deleting a goal
-  const handleDeleteGoal = async (goalId) => {
-    if (window.confirm("Are you sure you want to cancel this goal?")) {
-      try {
-        const response = await axios.delete(`http://localhost:5050/goals/${goalId}`);
-
-        if (response.status === 200) {
-          setGoals(goals.filter((goal) => goal.id !== goalId)); // Remove the goal from the list
-        } else {
-          console.error("Failed to delete the goal");
-        }
-      } catch (error) {
-        console.error("Error deleting goal:", error);
-      }
-    }
-  };
-
-  // Handle form input changes for editing goals
-  const handleInputChange = (e) => {
+  // Handle input changes for the goal being edited
+  const handleEditInputChange = (e) => {
     const { name, value } = e.target;
-    setGoalData((prevGoalData) => ({
-      ...prevGoalData,
+    setGoalToEdit((prevGoal) => ({
+      ...prevGoal,
       [name]: value,
     }));
   };
@@ -127,6 +73,7 @@ export default function GoalsPage() {
     <main className="goals-page">
       <h1>Your Goals</h1>
 
+      {/* Add a button for adding new goals */}
       <button className="add-goal-button" onClick={() => setIsModalOpen(true)}>
         Add New Goal
       </button>
@@ -136,8 +83,28 @@ export default function GoalsPage() {
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
         newGoal={newGoal}
-        handleNewGoalInputChange={handleNewGoalInputChange}
-        handleAddNewGoal={handleAddNewGoal}
+        handleNewGoalInputChange={(e) => {
+          const { name, value } = e.target;
+          setNewGoal((prevNewGoal) => ({
+            ...prevNewGoal,
+            [name]: value,
+          }));
+        }}
+        handleAddNewGoal={async (e) => {
+          e.preventDefault();
+          try {
+            const response = await axios.post("http://localhost:5050/goals", newGoal);
+
+            if (response.status === 201) {
+              setGoals([...goals, response.data]); // Add the new goal to the list
+              setIsModalOpen(false); // Close the modal after saving
+            } else {
+              console.error("Failed to add the new goal");
+            }
+          } catch (error) {
+            console.error("Error adding new goal:", error);
+          }
+        }}
       />
 
       <div className="goals-container">
@@ -148,21 +115,21 @@ export default function GoalsPage() {
                 <input
                   type="text"
                   name="name"
-                  value={goalData.name}
-                  onChange={handleInputChange}
+                  value={goalToEdit.name}
+                  onChange={handleEditInputChange}
                   required
                 />
                 <input
                   type="number"
                   name="target"
-                  value={goalData.target}
-                  onChange={handleInputChange}
+                  value={goalToEdit.target}
+                  onChange={handleEditInputChange}
                   required
                 />
                 <select
                   name="unit"
-                  value={goalData.unit}
-                  onChange={handleInputChange}
+                  value={goalToEdit.unit}
+                  onChange={handleEditInputChange}
                   required
                 >
                   <option value="">Select Unit</option>
@@ -175,23 +142,25 @@ export default function GoalsPage() {
                 <input
                   type="text"
                   name="current_progress"
-                  value={goalData.current_progress}
-                  onChange={handleInputChange}
+                  value={goalToEdit.current_progress}
+                  onChange={handleEditInputChange}
                   required
                 />
                 <input
                   type="date"
                   name="deadline_progress"
-                  value={goalData.deadline_progress}
-                  onChange={handleInputChange}
+                  value={goalToEdit.deadline_progress}
+                  onChange={handleEditInputChange}
                   required
                 />
-                <button className="save-button" onClick={() => handleSaveEdit(goal.id)}>
-                  Save
-                </button>
-                <button className="cancel-button" onClick={handleCancelEdit}>
-                  Cancel
-                </button>
+                <div className="edit-actions">
+                  <button className="save-button" onClick={() => handleSaveEdit(goal.id)}>
+                    Save
+                  </button>
+                  <button className="cancel-button" onClick={handleCancelEdit}>
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
               <>
@@ -200,9 +169,6 @@ export default function GoalsPage() {
                   <div className="goal-actions">
                     <button onClick={() => handleEditClick(goal)}>
                       <i className="fas fa-pencil-alt"></i> {/* Edit Icon */}
-                    </button>
-                    <button onClick={() => handleDeleteGoal(goal.id)}>
-                      <i className="fas fa-trash"></i> {/* Delete Icon */}
                     </button>
                   </div>
                 </div>
