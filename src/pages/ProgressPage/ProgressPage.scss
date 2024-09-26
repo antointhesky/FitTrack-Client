@@ -1,62 +1,95 @@
+@use "../../styles/partials/colors" as *;
+@use "../../styles/partials/breakpoints" as *;
+
 .progress-page {
-    padding: 20px;
-    text-align: center;
-  
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      color: #333;
-    }
-  
-    .workout-card {
-      background-color: #f5f5f5;
-      padding: 20px;
-      border-radius: 15px;
-      margin: 10px auto;
-      max-width: 600px;
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
-    }
-  
-    .exercise-list {
-      list-style: none;
-      padding: 0;
-  
-      .exercise-card {
-        background-color: #fff;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-  
-        .exercise-name {
-          font-weight: bold;
-        }
-  
-        .remove-button {
-          background-color: #e74c3c;
-          color: white;
-          padding: 10px;
-          border-radius: 50%;
-          cursor: pointer;
-        }
-      }
-    }
-  
-    .edit-session-button {
-      background-color: #3498db;
-      color: white;
-      padding: 15px 30px;
-      border-radius: 25px;
+  margin: 2rem auto;
+  text-align: center;
+  max-width: 1200px;
+
+  h1 {
+    font-size: 2.5rem;
+    color: $font;
+    margin-bottom: 2rem;
+  }
+
+  .progress-graphs {
+    background-color: $background-light;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+
+    p {
       font-size: 1.2rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-  
-      i {
-        margin-left: 10px;
+      color: $font-light;
+    }
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: $font;
+    margin-bottom: 1.5rem;
+  }
+
+  .session-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+
+    li {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.1);
+      max-width: 300px;
+      width: 100%;
+      text-align: left;
+
+      h3 {
+        font-size: 1.5rem;
+        color: $orange;
+        margin-bottom: 1rem;
+      }
+
+      button {
+        background-color: $yellow;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: darken($yellow, 10%);
+        }
       }
     }
   }
+
+  .session-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: $background-light;
+    border-radius: 10px;
+
+    .exercise-details {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.1);
+      
+      p {
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        color: $font;
+      }
+    }
+  }
+}

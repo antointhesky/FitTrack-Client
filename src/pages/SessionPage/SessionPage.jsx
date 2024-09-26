@@ -15,20 +15,16 @@ const SessionPage = () => {
     const fetchOrCreateSession = async () => {
       try {
         if (id) {
-          // Fetch existing session
           const response = await axios.get(`http://localhost:5050/session/${id}`);
           setExercises(response.data.exercises);
         } else {
-          // Create new session if no ID
           const response = await axios.post(`http://localhost:5050/session`);
           const newSessionId = response.data.session_id;
-          // Store the current session in local storage for continuity
           localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
-          navigate(`/session/${newSessionId}`); // Redirect to the new session
+          navigate(`/session/${newSessionId}`);
         }
       } catch (error) {
         setError("Error fetching or creating session");
-        console.error("Error fetching or creating session:", error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +46,6 @@ const SessionPage = () => {
         setAllExercises(exercisesByWorkoutType);
       } catch (error) {
         setError("Error fetching all exercises");
-        console.error("Error fetching exercises:", error);
       }
     };
     fetchAllExercises();
@@ -63,7 +58,6 @@ const SessionPage = () => {
       setExercises([...exercises, exercise]);
     } catch (error) {
       setError("Error adding exercise");
-      console.error("Error adding exercise to session:", error);
     }
   };
 
@@ -73,18 +67,16 @@ const SessionPage = () => {
       setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     } catch (error) {
       setError("Error removing exercise");
-      console.error("Error removing exercise:", error);
     }
   };
 
   const handleSaveSession = async () => {
     try {
       await axios.put(`http://localhost:5050/session/${id}`, { exercises });
-      localStorage.removeItem("currentSession"); // Remove session from localStorage after saving
+      localStorage.removeItem("currentSession");
       navigate("/progress");
     } catch (error) {
       setError("Error saving session");
-      console.error("Error saving session:", error);
     }
   };
 
