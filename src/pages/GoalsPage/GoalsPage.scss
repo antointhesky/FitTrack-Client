@@ -60,7 +60,7 @@
 
           i {
             font-size: 1.6rem;
-            color: white; // White color for the icons
+            color: white; 
             transition: color 0.3s ease;
 
             &:hover {
@@ -160,8 +160,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f8f9fa; // Same background color as exercise card
-    color: $orange; // Same text color as exercise card
+    background-color: #f8f9fa; 
+    color: $orange; 
     padding: 25px;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
     overflow-y: auto;

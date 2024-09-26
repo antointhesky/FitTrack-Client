@@ -7,7 +7,6 @@ export default function WorkoutsOverviewPage() {
   const [workoutTypes, setWorkoutTypes] = useState([]);
   const [bodyParts, setBodyParts] = useState([]);
 
-  // Fetch Workout Types and Body Parts
   useEffect(() => {
     const fetchWorkoutTypes = async () => {
       try {
@@ -35,7 +34,6 @@ export default function WorkoutsOverviewPage() {
     <main className="workouts-overview-page">
       <h1>Choose a Workout Type or Body Part</h1>
 
-      {/* Workout Types */}
       <section className="workout-types-container">
         <h2>Available Workout Types</h2>
         {workoutTypes.map((workout) => (
@@ -49,7 +47,6 @@ export default function WorkoutsOverviewPage() {
         ))}
       </section>
 
-      {/* Body Parts */}
       <section className="body-parts-container">
         <h2>Available Body Parts</h2>
         {bodyParts.map((part, index) => (

@@ -5,7 +5,7 @@ import "./BodyPartExercisesPage.scss";
 
 const BodyPartExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
-  const [selectedExercises, setSelectedExercises] = useState([]); // State for selected exercises
+  const [selectedExercises, setSelectedExercises] = useState([]); 
   const [searchParams] = useSearchParams();
   const bodyPart = searchParams.get("body_part");
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ const BodyPartExercisesPage = () => {
     }
   }, [bodyPart]);
 
-  // Function to toggle exercise selection
   const handleToggleExercise = (exerciseId) => {
     if (selectedExercises.includes(exerciseId)) {
       setSelectedExercises(selectedExercises.filter((id) => id !== exerciseId));
@@ -35,7 +34,6 @@ const BodyPartExercisesPage = () => {
     }
   };
 
-  // Function to go to session page after selecting exercises
   const handleGoToSession = async () => {
     const sessionData = {
       exercises: selectedExercises.map((id) => ({

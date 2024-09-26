@@ -13,7 +13,6 @@ export default function WorkoutTypePage() {
   const [selectedExercises, setSelectedExercises] = useState([]);
 
   useEffect(() => {
-    // Fetch Exercises by workout type or body part
     const fetchExercises = async () => {
       try {
         const response = await axios.get(
@@ -32,10 +31,8 @@ export default function WorkoutTypePage() {
 
   const handleToggleExercise = (exerciseId) => {
     if (selectedExercises.includes(exerciseId)) {
-      // Remove exercise if it's already selected
       setSelectedExercises(selectedExercises.filter((id) => id !== exerciseId));
     } else {
-      // Add exercise to selected list
       setSelectedExercises([...selectedExercises, exerciseId]);
     }
   };
@@ -60,7 +57,6 @@ export default function WorkoutTypePage() {
   return (
     <main className="workout-type-page">
       <h1>{`${workoutType || bodyPart} Workouts`}</h1>
-      {/* Go Back Button */}
       <button className="go-back-button" onClick={() => navigate("/")}>
         <span>← Go back to homepage</span>
       </button>

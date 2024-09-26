@@ -6,17 +6,16 @@ import "swiper/scss/pagination";
 import "./HomePage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaSearch } from "react-icons/fa"; // Import search icon
+import { FaSearch } from "react-icons/fa"; 
 
 const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
   const [bodyParts, setBodyParts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // For search input
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // For dropdown visibility
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch Workouts
     const fetchWorkouts = async () => {
       try {
         const response = await axios.get("http://localhost:5050/workouts");
@@ -26,7 +25,6 @@ const HomePage = () => {
       }
     };
 
-    // Fetch Body Parts
     const fetchBodyParts = async () => {
       try {
         const response = await axios.get("http://localhost:5050/exercises/bodyparts");
@@ -40,7 +38,6 @@ const HomePage = () => {
     fetchBodyParts();
   }, []);
 
-  // Handle Search Submission
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm) {
@@ -50,7 +47,7 @@ const HomePage = () => {
 
   const handleDropdownItemClick = (item) => {
     setSearchTerm(item);
-    setIsDropdownVisible(false); // Close dropdown on selection
+    setIsDropdownVisible(false); 
   };
 
   return (
@@ -59,17 +56,16 @@ const HomePage = () => {
         <h1>Choose Your Workout</h1>
         <h2>By Workout Type</h2>
         
-        {/* Search Bar for Body Parts */}
         <form className="search-bar" onSubmit={handleSearch}>
           <input
             type="text"
             placeholder="Search by body part"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onFocus={() => setIsDropdownVisible(true)} // Show dropdown on focus
+            onFocus={() => setIsDropdownVisible(true)} 
           />
           <button type="submit">
-            <FaSearch /> {/* Search icon instead of text */}
+            <FaSearch /> 
           </button>
 
           {isDropdownVisible && (

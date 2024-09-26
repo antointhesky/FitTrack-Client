@@ -6,13 +6,12 @@ const ProgressPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [expandedSession, setExpandedSession] = useState(null); // To track which session is expanded
+  const [expandedSession, setExpandedSession] = useState(null); 
 
   useEffect(() => {
     const fetchSessions = async () => {
       try {
         const response = await axios.get(`http://localhost:5050/session`);
-        console.log("Sessions fetched:", response.data); // Debugging: Log sessions
         setSessions(response.data);
       } catch (error) {
         setError("Error fetching progress data");
@@ -27,7 +26,6 @@ const ProgressPage = () => {
     setExpandedSession((prevSession) => (prevSession === sessionId ? null : sessionId));
   };
 
-  // Helper function to format date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -49,7 +47,6 @@ const ProgressPage = () => {
     <main className="progress-page">
       <h1>Progress</h1>
       <div className="progress-graphs">
-        {/* Placeholder for graphs showing weekly/daily/monthly progress */}
         <p>Graphs of workouts (e.g., calories burned, sessions per week) will go here.</p>
       </div>
 
@@ -63,10 +60,8 @@ const ProgressPage = () => {
                 {expandedSession === session.id ? "Hide Details" : "View Details"}
               </button>
 
-              {/* Only display session details if expanded */}
               {expandedSession === session.id && (
                 <div className="session-details">
-                  {/* Check if exercises exist */}
                   {session.exercises && session.exercises.length > 0 ? (
                     session.exercises.map((exercise) => (
                       <div key={exercise.id} className="exercise-details">

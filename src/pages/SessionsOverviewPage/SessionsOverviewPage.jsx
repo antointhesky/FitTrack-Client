@@ -22,27 +22,24 @@ export default function SessionsOverviewPage() {
     fetchSessions();
   }, []);
 
-  // Handle opening delete confirmation modal
   const handleDeleteClick = (sessionId) => {
     setSessionToDelete(sessionId);
     setIsDeleteModalOpen(true);
   };
 
-  // Handle confirming delete
   const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(`http://localhost:5050/session/${sessionToDelete}`);
       if (response.status === 200) {
         setSessions(sessions.filter((session) => session.id !== sessionToDelete)); // Remove the deleted session
         setSessionToDelete(null);
-        setIsDeleteModalOpen(false); // Close the modal
+        setIsDeleteModalOpen(false);
       }
     } catch (error) {
       console.error("Error deleting session:", error);
     }
   };
 
-  // Handle canceling delete
   const handleCancelDelete = () => {
     setIsDeleteModalOpen(false);
   };
@@ -59,9 +56,8 @@ export default function SessionsOverviewPage() {
                 <h3>Session {session.id}</h3>
                 <p>Date: {new Date(session.date).toLocaleDateString()}</p>
               </Link>
-              {/* Delete Button with White Trash Icon */}
               <button onClick={() => handleDeleteClick(session.id)} className="delete-button">
-                <i className="fas fa-trash"></i> {/* White Trash Icon */}
+                <i className="fas fa-trash"></i> 
               </button>
             </div>
           ))
@@ -70,7 +66,6 @@ export default function SessionsOverviewPage() {
         )}
       </div>
 
-      {/* DeleteSessionModal */}
       <DeleteSessionModal
         isOpen={isDeleteModalOpen}
         onRequestClose={handleCancelDelete}

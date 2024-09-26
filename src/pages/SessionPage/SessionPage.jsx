@@ -4,7 +4,7 @@ import axios from "axios";
 import "./SessionPage.scss";
 
 const SessionPage = () => {
-  const { id } = useParams(); // Get session ID from URL params
+  const { id } = useParams(); 
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
   const [allExercises, setAllExercises] = useState({});

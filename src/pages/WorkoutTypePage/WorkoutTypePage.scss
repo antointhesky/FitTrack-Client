@@ -78,15 +78,15 @@
 
     .video-wrapper {
       position: relative;
-      width: 120%;  // Make the video larger than the card width
-      margin-top: -25px;  // Lift the video above the card
-      margin-left: -10%;  // Center the video across the card
-      border-radius: 20% 6px 0 0;  // Match the top corners of the card
+      width: 120%;  
+      margin-top: -25px;  
+      margin-left: -10%;  
+      border-radius: 20% 6px 0 0;  
       overflow: hidden;
 
       video {
         width: 100%;
-        border-radius: 20% 6px 0 0;  // Apply rounded corners only to the top
+        border-radius: 20% 6px 0 0;  
       }
     }
 

@@ -3,15 +3,15 @@ import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import AddGoalModal from "../../components/AddGoalModal/AddGoalModal";
-import DeleteGoalModal from "../../components/DeleteGoalModal/DeleteGoalModal"; // Import the delete modal
+import DeleteGoalModal from "../../components/DeleteGoalModal/DeleteGoalModal";
 import "./GoalsPage.scss";
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // For AddGoalModal
-  const [goalToEdit, setGoalToEdit] = useState(null); // Track goal being edited
-  const [goalToDelete, setGoalToDelete] = useState(null); // Track goal being deleted
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Track if delete modal is open
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [goalToEdit, setGoalToEdit] = useState(null); 
+  const [goalToDelete, setGoalToDelete] = useState(null); 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [newGoal, setNewGoal] = useState({
     name: "",
     target: "",
@@ -33,12 +33,10 @@ export default function GoalsPage() {
     fetchGoals();
   }, []);
 
-  // Handle opening inline edit mode on the card
   const handleEditClick = (goal) => {
-    setGoalToEdit(goal); // Set the goal to be edited
+    setGoalToEdit(goal); 
   };
 
-  // Handle saving the edited goal
   const handleSaveEdit = async () => {
     try {
       const response = await axios.put(`http://localhost:5050/goals/${goalToEdit.id}`, goalToEdit);
@@ -51,51 +49,43 @@ export default function GoalsPage() {
     }
   };
 
-  // Handle canceling edit mode
   const handleCancelEdit = () => {
-    setGoalToEdit(null); // Exit edit mode without saving
+    setGoalToEdit(null); 
   };
 
-  // Handle opening delete confirmation modal
   const handleDeleteClick = (goalId) => {
     setGoalToDelete(goalId); // Set the goal ID for deletion
     setIsDeleteModalOpen(true); // Open the delete modal
   };
 
-  // Handle confirming delete
   const handleConfirmDelete = async () => {
     try {
       const response = await axios.delete(`http://localhost:5050/goals/${goalToDelete}`);
       if (response.status === 200) {
-        setGoals(goals.filter((goal) => goal.id !== goalToDelete)); // Remove deleted goal
+        setGoals(goals.filter((goal) => goal.id !== goalToDelete)); 
         setGoalToDelete(null);
-        setIsDeleteModalOpen(false); // Close delete modal
+        setIsDeleteModalOpen(false); 
       }
     } catch (error) {
       console.error("Error deleting goal:", error);
     }
   };
 
-  // Handle canceling delete
   const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false); // Close delete modal
+    setIsDeleteModalOpen(false); 
   };
 
   return (
     <main className="goals-page">
       <h1>Your Goals</h1>
-
-      {/* Button to trigger AddGoalModal */}
       <button className="add-goal-button" onClick={() => setIsModalOpen(true)}>
         Add New Goal
       </button>
 
-      {/* Goals container */}
       <div className={`goals-container ${isDeleteModalOpen ? "hide" : ""}`}>
         {goals.map((goal) => (
           <div key={goal.id} className={`goal-card ${goalToEdit && goalToEdit.id === goal.id ? "editing" : ""}`}>
             {goalToEdit && goalToEdit.id === goal.id ? (
-              // Inline editing form when pencil is clicked
               <div className="edit-form">
                 <input
                   type="text"
@@ -148,19 +138,16 @@ export default function GoalsPage() {
                 </div>
               </div>
             ) : (
-              // Normal goal display if not editing
               <>
                 <div className="goal-header">
                   <h2 className="goal-name">{goal.name}</h2>
                   <div className="goal-actions">
-                    {/* Pencil Icon for editing */}
                     <button onClick={() => handleEditClick(goal)}>
-                      <i className="fas fa-pencil-alt"></i> {/* Edit Icon */}
+                      <i className="fas fa-pencil-alt"></i> 
                     </button>
 
-                    {/* Trash Icon for deletion */}
                     <button onClick={() => handleDeleteClick(goal.id)}>
-                      <i className="fas fa-trash"></i> {/* Delete Icon */}
+                      <i className="fas fa-trash"></i>
                     </button>
                   </div>
                 </div>
@@ -189,7 +176,6 @@ export default function GoalsPage() {
         ))}
       </div>
 
-      {/* AddGoalModal */}
       <AddGoalModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -203,8 +189,8 @@ export default function GoalsPage() {
           try {
             const response = await axios.post("http://localhost:5050/goals", newGoal);
             if (response.status === 201) {
-              setGoals([...goals, response.data]); // Add new goal to list
-              setIsModalOpen(false); // Close modal after adding
+              setGoals([...goals, response.data]); 
+              setIsModalOpen(false); 
             }
           } catch (error) {
             console.error("Error adding new goal:", error);
@@ -212,7 +198,6 @@ export default function GoalsPage() {
         }}
       />
 
-      {/* DeleteGoalModal */}
       <DeleteGoalModal
         isOpen={isDeleteModalOpen}
         onRequestClose={handleCancelDelete}

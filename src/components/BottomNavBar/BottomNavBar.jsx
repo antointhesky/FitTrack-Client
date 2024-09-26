@@ -1,9 +1,20 @@
-// src/components/BottomNavBar/BottomNavBar.jsx
 import { NavLink } from "react-router-dom";
 import { FaHome, FaDumbbell, FaChartLine, FaCog } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import "./BottomNavBar.scss";
 
 export default function BottomNavBar() {
+  const [hasOngoingSession, setHasOngoingSession] = useState(false);
+
+  useEffect(() => {
+    const currentSession = localStorage.getItem("currentSession");
+    if (currentSession) {
+      setHasOngoingSession(true);
+    } else {
+      setHasOngoingSession(false);
+    }
+  }, []);
+
   return (
     <nav className="bottom-nav">
       <NavLink
@@ -13,20 +24,33 @@ export default function BottomNavBar() {
         <FaHome className="icon" />
         <span>Home</span>
       </NavLink>
+
       <NavLink
-        to="/workouts-overview"  // Navigate to Workouts Overview page
+        to="/workouts-overview"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <FaDumbbell className="icon" />
         <span>Workouts</span>
       </NavLink>
+
+      {hasOngoingSession && (
+        <NavLink
+          to={`/session/${JSON.parse(localStorage.getItem("currentSession")).session_id}`}
+          className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
+        >
+          <FaChartLine className="icon" />
+          <span>Ongoing Session</span>
+        </NavLink>
+      )}
+
       <NavLink
-        to="/sessions-overview"  // Navigate to Sessions Overview page
+        to="/progress"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <FaChartLine className="icon" />
-        <span>Session</span>
+        <span>Progress</span>
       </NavLink>
+
       <NavLink
         to="/goals"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
