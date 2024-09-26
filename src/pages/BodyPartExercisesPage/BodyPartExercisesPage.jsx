@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./BodyPartExercisesPage.scss";
 
 const BodyPartExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
+  const [selectedExercises, setSelectedExercises] = useState([]); // State for selected exercises
   const [searchParams] = useSearchParams();
   const bodyPart = searchParams.get("body_part");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (bodyPart) {
@@ -24,22 +26,75 @@ const BodyPartExercisesPage = () => {
     }
   }, [bodyPart]);
 
+  // Function to toggle exercise selection
+  const handleToggleExercise = (exerciseId) => {
+    if (selectedExercises.includes(exerciseId)) {
+      setSelectedExercises(selectedExercises.filter((id) => id !== exerciseId));
+    } else {
+      setSelectedExercises([...selectedExercises, exerciseId]);
+    }
+  };
+
+  // Function to go to session page after selecting exercises
+  const handleGoToSession = async () => {
+    const sessionData = {
+      exercises: selectedExercises.map((id) => ({
+        id,
+        body_part: bodyPart,
+      })),
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5050/session", sessionData);
+      const sessionId = response.data.session_id;
+      navigate(`/session/${sessionId}`);
+    } catch (error) {
+      console.error("Error creating session:", error);
+    }
+  };
+
   return (
     <main className="body-part-exercises-page">
       <h1>Exercises for {bodyPart}</h1>
+      <button className="go-back-button" onClick={() => navigate("/")}>
+        <span>← Go back to homepage</span>
+      </button>
+
       <div className="exercises-container">
         {exercises.map((exercise) => (
-          <div key={exercise.id} className="exercise-card">
-            <video src={`http://localhost:5050${exercise.video_url}`} controls />
+          <div
+            key={exercise.id}
+            className={`exercise-card ${
+              selectedExercises.includes(exercise.id) ? "active" : ""
+            }`}
+            onClick={() => handleToggleExercise(exercise.id)}
+          >
+            <div className="video-wrapper">
+              <video src={`http://localhost:5050${exercise.video_url}`} controls />
+              <div className="info-icon" title="Watch the exercise tutorial video">ℹ️</div>
+            </div>
             <h3>{exercise.name}</h3>
             <p>Sets: {exercise.sets}</p>
             <p>Reps: {exercise.reps}</p>
             <p>Calories Burned: {exercise.calories_burned}</p>
+
+            <div className={`exercise-toggle ${selectedExercises.includes(exercise.id) ? "active" : ""}`}>
+              <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
+            </div>
           </div>
         ))}
       </div>
+
+      {selectedExercises.length > 0 && (
+        <div className="go-to-session-container">
+          <button className="go-to-session" onClick={handleGoToSession}>
+            <span> + Go to your session </span>
+          </button>
+        </div>
+      )}
     </main>
   );
 };
 
 export default BodyPartExercisesPage;
+

@@ -6,26 +6,29 @@ import "./WorkoutTypePage.scss";
 export default function WorkoutTypePage() {
   const [searchParams] = useSearchParams();
   const workoutType = searchParams.get("workout_type");
+  const bodyPart = searchParams.get("body_part");
   const navigate = useNavigate();
   
   const [exercises, setExercises] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]);
 
   useEffect(() => {
-    if (workoutType) {
-      const fetchExercises = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:5050/exercises?workout_type=${encodeURIComponent(workoutType)}`
-          );
-          setExercises(response.data);
-        } catch (error) {
-          console.error("Error fetching exercises:", error);
-        }
-      };
+    // Fetch Exercises by workout type or body part
+    const fetchExercises = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5050/exercises?${workoutType ? `workout_type=${encodeURIComponent(workoutType)}` : `body_part=${encodeURIComponent(bodyPart)}`}`
+        );
+        setExercises(response.data);
+      } catch (error) {
+        console.error("Error fetching exercises:", error);
+      }
+    };
+
+    if (workoutType || bodyPart) {
       fetchExercises();
     }
-  }, [workoutType]);
+  }, [workoutType, bodyPart]);
 
   const handleToggleExercise = (exerciseId) => {
     if (selectedExercises.includes(exerciseId)) {
@@ -41,7 +44,7 @@ export default function WorkoutTypePage() {
     const sessionData = {
       exercises: selectedExercises.map((id) => ({
         id,
-        workout_type: workoutType,
+        workout_type: workoutType || bodyPart,
       })),
     };
 
@@ -56,7 +59,7 @@ export default function WorkoutTypePage() {
 
   return (
     <main className="workout-type-page">
-      <h1>{`${workoutType} Workouts`}</h1>
+      <h1>{`${workoutType || bodyPart} Workouts`}</h1>
       {/* Go Back Button */}
       <button className="go-back-button" onClick={() => navigate("/")}>
         <span>← Go back to homepage</span>
@@ -99,4 +102,5 @@ export default function WorkoutTypePage() {
     </main>
   );
 }
+
 

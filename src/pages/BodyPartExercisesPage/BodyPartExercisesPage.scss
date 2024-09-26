@@ -1,0 +1,165 @@
+@use "../../styles/partials/breakpoints" as *;
+@use "../../styles/partials/colors" as *;
+@use "../../styles/partials/resets" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/mixins" as *;
+
+.body-part-exercises-page {
+  text-align: center;
+  margin: 2rem;
+  background-color: white;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: $font;
+  }
+
+  .go-back-button {
+    background-color: $background-light;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($background-light, 10%);
+    }
+
+    span {
+      font-size: 1.5rem;
+    }
+  }
+
+  .exercises-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .exercise-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: $yellow;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+    border-radius: 20% 6px 20% 6px;
+    overflow: hidden;
+    transition: 0.5s;
+    padding: 25px 25px 30px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+
+    &.active {
+      background-color: $orange;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      text-align: left;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 120%;
+      margin-top: -25px;
+      margin-left: -10%;
+      border-radius: 20% 6px 0 0;
+      overflow: hidden;
+
+      video {
+        width: 100%;
+        border-radius: 20% 6px 0 0;
+      }
+    }
+
+    .info-icon {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 1.5rem;
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .exercise-toggle {
+      background-color: $background-light;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem auto 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &.active {
+        background-color: $font-light;
+      }
+
+      span {
+        font-size: 1.5rem;
+        color: white;
+      }
+    }
+  }
+
+  .go-to-session-container {
+    margin-top: 2rem;
+    text-align: center;
+
+    .go-to-session {
+      background-color: $background-light;
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($background-light, 10%);
+      }
+
+      span {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  @include tablet {
+    .exercise-card {
+      max-width: 300px;
+    }
+  }
+
+  @include desktop {
+    .exercise-card {
+      max-width: 350px;
+    }
+  }
+}
