@@ -6,11 +6,13 @@ import "swiper/scss/pagination";
 import "./HomePage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaSearch } from "react-icons/fa"; // Import search icon
 
 const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
   const [bodyParts, setBodyParts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // For search input
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // For dropdown visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +48,11 @@ const HomePage = () => {
     }
   };
 
+  const handleDropdownItemClick = (item) => {
+    setSearchTerm(item);
+    setIsDropdownVisible(false); // Close dropdown on selection
+  };
+
   return (
     <main>
       <div className="container">
@@ -59,14 +66,27 @@ const HomePage = () => {
             placeholder="Search by body part"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            list="bodyParts"
+            onFocus={() => setIsDropdownVisible(true)} // Show dropdown on focus
           />
-          <datalist id="bodyParts">
-            {bodyParts.map((part) => (
-              <option key={part.body_part} value={part.body_part} />
-            ))}
-          </datalist>
-          <button type="submit">Search</button>
+          <button type="submit">
+            <FaSearch /> {/* Search icon instead of text */}
+          </button>
+
+          {isDropdownVisible && (
+            <div className="custom-dropdown">
+              {bodyParts
+                .filter((part) => part.body_part.toLowerCase().includes(searchTerm.toLowerCase()))
+                .map((part, index) => (
+                  <div
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => handleDropdownItemClick(part.body_part)}
+                  >
+                    {part.body_part}
+                  </div>
+                ))}
+            </div>
+          )}
         </form>
 
         <Swiper

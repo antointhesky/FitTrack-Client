@@ -17,10 +17,6 @@ h2 {
 }
 
 main {
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-  // height: 100vh;
   background-color: $background-light;
   overflow: hidden;
 }
@@ -36,14 +32,27 @@ main {
 
 .swiper-slide {
   position: relative;
-  width: 400px;
-  height: 520px;
-  background-color: $yellow;
+  width: 300px; /* Reduced size */
+  height: 400px; /* Adjusted height */
+  background-color: transparent; /* Remove orange background */
   box-shadow: 2px 22px 44px rgba(0, 0, 0, 0.2);
   border-radius: 20% 6px 20% 6px;
   overflow: hidden;
   transition: 1s;
   user-select: none;
+
+  // Image behind the text
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; // Ensure the image is behind the text
+    opacity: 0.6; // Slight transparency to make text more readable
+  }
 }
 
 .swiper-slide-active {
@@ -54,20 +63,101 @@ main {
 .title {
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  // height: 100%;
-  padding: 25px 25px 30px;
-  color: red;
-  font-size: 2.5rem;
+  justify-content: flex-end; /* Move text to the bottom */
+  padding: 10px 15px; /* Adjust padding */
+  color: white; /* Ensure text is white */
+  font-size: 1.2rem; /* Make the text smaller */
   font-weight: 600;
   opacity: 1;
+  text-decoration: none; /* Remove text decoration */
+  z-index: 2; /* Make sure text is above the image */
+  position: absolute;
+  bottom: 10px; /* Position text at the bottom of the card */
+  width: 100%; /* Ensure the text takes up the full card width */
+  text-align: center; /* Center the text horizontally */
 }
 
 .swiper-slide-active .title {
-  opacity: 0;
+  opacity: 1;
   transition: 0.8s;
   transition-delay: 1.5s;
 }
 
-// content = workout icon/image
-// score = icon-link to exercises
+// Search Bar Styling
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  position: relative;
+
+  input {
+    padding: 0.8rem 1.2rem;
+    font-size: 1.1rem;
+    border: 2px solid $orange;
+    border-radius: 25px;
+    outline: none;
+    width: 300px;
+    color: $font-light;
+    background-color: white;
+
+    &::placeholder {
+      color: $font-light;
+    }
+
+    &:focus {
+      border-color: lighten($orange, 10%);
+    }
+  }
+
+  button {
+    background-color: $yellow;
+    color: white;
+    font-size: 1.3rem;
+    padding: 0.8rem;
+    margin-left: 1rem;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($yellow, 10%);
+    }
+
+    svg {
+      font-size: 1.5rem;
+    }
+  }
+
+  // Custom Dropdown
+  .custom-dropdown {
+    position: absolute;
+    top: 120%; // Gap below the search bar
+    left: 50%; // Start positioning from the middle
+    transform: translateX(-50%); // Center it under the input
+    width: 50%;
+    max-height: 200px;
+    background-color: white;
+    border: 2px solid $orange;
+    border-radius: 10px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: $font-light;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: lighten($orange, 20%);
+        color: white;
+      }
+    }
+  }
+}
