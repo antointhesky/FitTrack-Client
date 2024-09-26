@@ -1,20 +1,53 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Line } from "react-chartjs-2"; 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'; 
 import "./ProgressPage.scss";
+
+// Registering required Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const ProgressPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [expandedSession, setExpandedSession] = useState(null); 
+  const [expandedSession, setExpandedSession] = useState(null);
+  const [caloriesData, setCaloriesData] = useState({ labels: [], data: [] }); // State for chart data
 
   useEffect(() => {
     const fetchSessions = async () => {
       try {
         const response = await axios.get(`http://localhost:5050/session`);
-        setSessions(response.data);
+        const fetchedSessions = response.data;
+        setSessions(fetchedSessions);
+
+        // Preparing data for the calories burned chart
+        const labels = fetchedSessions.map((session) => formatDate(session.date));
+        const data = fetchedSessions.map((session) =>
+          session.exercises.reduce((total, exercise) => total + exercise.calories_burned, 0)
+        );
+
+        setCaloriesData({ labels, data });
       } catch (error) {
-        setError("Error fetching progress data");
+        console.error("Error fetching progress data:", error);
+        setError("Error fetching progress data. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -35,8 +68,33 @@ const ProgressPage = () => {
     });
   };
 
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Calories Burned per Session',
+      },
+    },
+  };
+
+  const chartData = {
+    labels: caloriesData.labels,
+    datasets: [
+      {
+        label: 'Calories Burned',
+        data: caloriesData.data,
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      },
+    ],
+  };
+
   if (loading) {
-    return <p>Loading progress data...</p>;
+    return <p>Loading...</p>;
   }
 
   if (error) {
@@ -46,17 +104,18 @@ const ProgressPage = () => {
   return (
     <main className="progress-page">
       <h1>Progress</h1>
+
       <div className="progress-graphs">
-        <p>Graphs of workouts (e.g., calories burned, sessions per week) will go here.</p>
+        <Line options={chartOptions} data={chartData} />
       </div>
 
       <h2>Session History</h2>
       {sessions.length > 0 ? (
         <ul className="session-list">
           {sessions.map((session) => (
-            <li key={session.id}>
+            <li key={session.id} className="session-item">
               <h3>Session on {formatDate(session.date)}</h3>
-              <button onClick={() => toggleDetails(session.id)}>
+              <button className="toggle-details-btn" onClick={() => toggleDetails(session.id)}>
                 {expandedSession === session.id ? "Hide Details" : "View Details"}
               </button>
 
