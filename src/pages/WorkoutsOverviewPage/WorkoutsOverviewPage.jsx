@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDumbbell, faRunning, faBiking, faHeartbeat, faHandSparkles } from "@fortawesome/free-solid-svg-icons";
 import "./WorkoutsOverviewPage.scss";
 
 export default function WorkoutsOverviewPage() {
@@ -30,35 +32,73 @@ export default function WorkoutsOverviewPage() {
     fetchBodyParts();
   }, []);
 
+  const workoutIcons = {
+    "Cardio": faRunning,
+    "Strength": faDumbbell,
+    "Cycling": faBiking,
+    "HIIT": faHeartbeat,
+    "Yoga": faHandSparkles,
+  };
+
+  const bodyPartIcons = {
+    "Arms": faHandSparkles,
+    "Legs": faRunning,
+    "Back": faDumbbell,
+    "Core": faHeartbeat,
+  };
+
   return (
     <main className="workouts-overview-page">
-      <h1>Choose a Workout Type or Body Part</h1>
+      <h1>Discover Your Perfect Workout</h1>
+      <h2>Browse by workout type or target specific body parts for a personalized fitness journey.</h2>
 
-      <section className="workout-types-container">
-        <h2>Available Workout Types</h2>
-        {workoutTypes.map((workout) => (
-          <Link
-            key={workout.id}
-            to={`/workouts?workout_type=${encodeURIComponent(workout.name)}`}
-            className="workout-type-card"
-          >
-            <h3>{workout.name}</h3>
-          </Link>
-        ))}
-      </section>
+      <div className="section-container">
+        <div className="section-left">
+          <h2>Workout Types</h2>
+        </div>
+        <div className="section-right">
+          <div className="grid-container">
+            {workoutTypes.map((workout) => (
+              <Link
+                key={workout.id}
+                to={`/workouts?workout_type=${encodeURIComponent(workout.name)}`}
+                className="workout-type-card"
+              >
+                <FontAwesomeIcon
+                  icon={workoutIcons[workout.name] || faDumbbell}
+                  size="3x"
+                  className="workout-icon"
+                />
+                <h3>{workout.name}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      <section className="body-parts-container">
-        <h2>Available Body Parts</h2>
-        {bodyParts.map((part, index) => (
-          <Link
-            key={index}
-            to={`/exercises?body_part=${encodeURIComponent(part.body_part)}`}
-            className="body-part-card"
-          >
-            <h3>{part.body_part}</h3>
-          </Link>
-        ))}
-      </section>
+      <div className="section-container body-parts-section">
+        <div className="section-left">
+          <h2>Body Parts</h2>
+        </div>
+        <div className="section-right">
+          <div className="grid-container">
+            {bodyParts.map((part, index) => (
+              <Link
+                key={index}
+                to={`/exercises?body_part=${encodeURIComponent(part.body_part)}`}
+                className="body-part-card"
+              >
+                <FontAwesomeIcon
+                  icon={bodyPartIcons[part.body_part] || faHeartbeat}
+                  size="3x"
+                  className="body-part-icon"
+                />
+                <h3>{part.body_part}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

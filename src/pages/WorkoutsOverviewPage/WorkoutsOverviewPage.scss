@@ -2,29 +2,126 @@
 @use "../../styles/partials/breakpoints" as *;
 
 .workouts-overview-page {
+  padding: 2rem 1rem;
+
   h1 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .workout-types-container, .body-parts-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-
-  .workout-type-card, .body-part-card {
-    background-color: $orange;
-    padding: 20px;
-    border-radius: 10px;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: $orange;
     text-align: center;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    transition: transform 0.3s ease;
+  }
 
-    &:hover {
-      transform: scale(1.05);
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    color: $font-light;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+  }
+
+  .section-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3rem;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: space-between;
     }
+
+    @include desktop {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .section-left {
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: $font;
+        text-align: center;
+        padding-bottom: 1rem;
+        border-bottom: 4px solid $background-light;  // Bigger bottom border for better visual separation
+        width: 100%;
+
+        @include tablet {
+          text-align: left;
+          padding-bottom: 0;
+          border-bottom: none;
+          margin-bottom: 0;
+        }
+
+        @include desktop {
+          text-align: left;
+          padding-bottom: 0;
+          border-bottom: none;
+          margin-bottom: 0;
+        }
+      }
+
+      @include tablet; 
+      @include desktop {
+        width: 30%; // Titles take 30% of the width on larger screens
+      }
+    }
+
+    .section-right {
+      width: 100%;
+
+      @include tablet {
+        width: 70%;  // Cards take 70% of the width on larger screens
+        padding-left: 3rem;
+      }
+
+      @include desktop {
+        width: 70%;  // Cards take 70% of the width on larger screens
+        padding-left: 3rem;
+      }
+
+      .grid-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .workout-type-card,
+      .body-part-card {
+        background-color: $orange;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        transition: transform 0.3s ease;
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+
+        .workout-icon,
+        .body-part-icon {
+          margin-bottom: 10px;
+          color: white;
+        }
+
+        h3 {
+          margin: 0;
+          color: white;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+
+  // Add extra space between the two sections
+  .body-parts-section {
+    margin-top: 4rem;
   }
 }
