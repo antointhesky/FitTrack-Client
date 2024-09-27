@@ -22,7 +22,8 @@
   .goal-card {
     width: 100%;
     max-width: 400px;
-    background-color: $yellow;
+    background-color: white;
+    border: 2px solid $font-light;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
     border-radius: 20% 6px 20% 6px;
     padding: 25px 25px 30px;
@@ -46,7 +47,7 @@
       .goal-name {
         font-size: 1.5rem;
         font-weight: bold;
-        color: white;
+        color: $background-light;
       }
 
       .goal-actions {
@@ -60,12 +61,8 @@
 
           i {
             font-size: 1.6rem;
-            color: white; 
+            color: $background-light; 
             transition: color 0.3s ease;
-
-            &:hover {
-              color: darken(white, 10%);
-            }
           }
         }
       }
@@ -82,7 +79,7 @@
     .goal-footer {
       .goal-deadline {
         font-size: 0.9rem;
-        color: white;
+        color: $background-light;
       }
     }
 

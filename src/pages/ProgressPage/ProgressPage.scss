@@ -2,6 +2,7 @@
 @use "../../styles/partials/breakpoints" as *;
 
 .progress-page {
+  background-color: white;
   margin: 2rem auto;
   text-align: center;
   max-width: 1200px;
@@ -13,22 +14,52 @@
   }
 
   .progress-graphs {
-    background-color: $background-light;
+    background-color: white;
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-
-    p {
-      font-size: 1.2rem;
-      color: $font-light;
-    }
   }
 
   h2 {
     font-size: 2rem;
     color: $font;
     margin-bottom: 1.5rem;
+  }
+
+  .react-calendar {
+    width: 100%;
+    margin-bottom: 2rem;
+    border: none;
+
+    .session-day {
+      background-color: $yellow;
+      color: $font;
+      border-radius: 50%;
+    }
+
+    .react-calendar__tile--now {
+      background-color: $orange;
+      color: $font;
+    }
+
+    .react-calendar__tile {
+      background-color: white;
+      border-radius: 10px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background-color: $yellow;
+        color: $font;
+        transform: scale(1.05);
+      }
+    }
+
+    .react-calendar__tile--active {
+      background-color: $font-light;
+      color: white;
+      border-radius: 10px;
+    }
   }
 
   .session-list {
@@ -84,7 +115,7 @@
       background-color: white;
       border-radius: 5px;
       box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.1);
-      
+
       p {
         font-size: 1rem;
         margin: 0.5rem 0;

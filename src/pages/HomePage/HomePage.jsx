@@ -6,7 +6,7 @@ import "swiper/scss/pagination";
 import "./HomePage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaSearch } from "react-icons/fa"; 
+import { FaSearch } from "react-icons/fa";
 
 const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -50,41 +50,58 @@ const HomePage = () => {
     setIsDropdownVisible(false); 
   };
 
+  const handleStartNowClick = () => {
+    navigate("/workouts-overview"); // Navigate to the workouts page when clicked
+  };
+
   return (
     <main>
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-content">
+          <h1>Unlock Your Full Potential</h1>
+          <p>Start tracking your fitness journey today. Choose your workouts, set goals, and reach new heights.</p>
+          <button className="cta-button" onClick={handleStartNowClick}>Start Now</button>
+        </div>
+      </section>
+
       <div className="container">
-        <h1>Choose Your Workout</h1>
-        <h2>By Workout Type</h2>
+        {/* Combined Title for Search and Slider */}
+        <h2 className="highlight-title">Find Workouts and Explore Types</h2>
         
-        <form className="search-bar" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Search by body part"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onFocus={() => setIsDropdownVisible(true)} 
-          />
-          <button type="submit">
-            <FaSearch /> 
-          </button>
+        {/* Search Bar Section */}
+        <div className="search-section">
+          <form className="search-bar" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="Search by body part"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setIsDropdownVisible(true)} 
+            />
+            <button type="submit">
+              <FaSearch /> 
+            </button>
 
-          {isDropdownVisible && (
-            <div className="custom-dropdown">
-              {bodyParts
-                .filter((part) => part.body_part.toLowerCase().includes(searchTerm.toLowerCase()))
-                .map((part, index) => (
-                  <div
-                    key={index}
-                    className="dropdown-item"
-                    onClick={() => handleDropdownItemClick(part.body_part)}
-                  >
-                    {part.body_part}
-                  </div>
-                ))}
-            </div>
-          )}
-        </form>
+            {isDropdownVisible && (
+              <div className="custom-dropdown">
+                {bodyParts
+                  .filter((part) => part.body_part.toLowerCase().includes(searchTerm.toLowerCase()))
+                  .map((part, index) => (
+                    <div
+                      key={index}
+                      className="dropdown-item"
+                      onClick={() => handleDropdownItemClick(part.body_part)}
+                    >
+                      {part.body_part}
+                    </div>
+                  ))}
+              </div>
+            )}
+          </form>
+        </div>
 
+        {/* Workout Slider */}
         <Swiper
           modules={[Pagination]}
           grabCursor={true}
