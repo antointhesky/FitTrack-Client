@@ -214,3 +214,53 @@ main {
   width: 100%;
   text-align: center;
 }
+
+/* New Goals Section */
+.goals-section {
+  background-color: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 1.8rem;
+    color: $orange;
+    margin-bottom: 1rem;
+  }
+
+  .goals-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    .goal-card {
+      background-color: white;
+      color: $background-light;
+      border: 2px solid $orange;
+      padding: 1rem;
+      border-radius: 10px;
+      flex: 1;
+      max-width: 300px;
+      text-align: center;
+
+      h3 {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  .add-goal-button {
+    background-color: $yellow;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover {
+      background-color: darken($yellow, 10%);
+    }
+  }
+}
+

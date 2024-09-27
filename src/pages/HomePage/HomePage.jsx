@@ -7,14 +7,26 @@ import "./HomePage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
+import AddGoalModal from "../../components/AddGoalModal/AddGoalModal"; // Assuming the path is correct
 
 const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
   const [bodyParts, setBodyParts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
+  const [goals, setGoals] = useState([]); // New state for goals
+  const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal
+  const [newGoal, setNewGoal] = useState({
+    name: "",
+    target: "",
+    unit: "",
+    current_progress: "",
+    deadline_progress: "",
+  });
+
   const navigate = useNavigate();
 
+  // Fetch workouts, body parts, and goals
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
@@ -34,14 +46,39 @@ const HomePage = () => {
       }
     };
 
+    const fetchGoals = async () => {
+      try {
+        const response = await axios.get("http://localhost:5050/goals");
+        setGoals(response.data);
+      } catch (error) {
+        console.error("Error fetching goals:", error);
+      }
+    };
+
     fetchWorkouts();
     fetchBodyParts();
+    fetchGoals();
   }, []);
 
+  // Handle search
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm) {
       navigate(`/exercises?body_part=${encodeURIComponent(searchTerm)}`);
+    }
+  };
+
+  // Add new goal
+  const handleAddNewGoal = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5050/goals", newGoal);
+      if (response.status === 201) {
+        setGoals([...goals, response.data]); // Update goals list
+        setIsModalOpen(false); // Close the modal
+      }
+    } catch (error) {
+      console.error("Error adding new goal:", error);
     }
   };
 
@@ -51,7 +88,7 @@ const HomePage = () => {
   };
 
   const handleStartNowClick = () => {
-    navigate("/workouts-overview"); // Navigate to the workouts page when clicked
+    navigate("/workouts-overview");
   };
 
   return (
@@ -77,7 +114,7 @@ const HomePage = () => {
               placeholder="Search by body part"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onFocus={() => setIsDropdownVisible(true)} 
+              onFocus={() => setIsDropdownVisible(true)}
             />
             <button type="submit">
               <FaSearch /> 
@@ -135,8 +172,40 @@ const HomePage = () => {
 
         <div className="swiper-pagination"></div>
       </div>
+
+      {/* New Goals Section */}
+      <section className="goals-section">
+        <h2>Your Fitness Goals</h2>
+        {goals.length === 0 ? (
+          <p>No goals yet. <button onClick={() => setIsModalOpen(true)}>Set Your First Goal</button></p>
+        ) : (
+          <div className="goals-list">
+            {goals.map((goal) => (
+              <div key={goal.id} className="goal-card">
+                <h3>{goal.name}</h3>
+                <p>Progress: {goal.current_progress} / {goal.target} {goal.unit}</p>
+                <p>Deadline: {new Date(goal.deadline_progress).toLocaleDateString()}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        <button className="add-goal-button" onClick={() => setIsModalOpen(true)}>Add New Goal</button>
+      </section>
+
+      {/* Add Goal Modal */}
+      <AddGoalModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        newGoal={newGoal}
+        handleNewGoalInputChange={(e) => {
+          const { name, value } = e.target;
+          setNewGoal((prevNewGoal) => ({ ...prevNewGoal, [name]: value }));
+        }}
+        handleAddNewGoal={handleAddNewGoal}
+      />
     </main>
   );
 };
 
 export default HomePage;
+
