@@ -4,12 +4,10 @@ import axios from "axios";
 import "./SessionPage.scss";
 
 const SessionPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get session ID from URL if available
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
   const [allExercises, setAllExercises] = useState({});
-  const [goals, setGoals] = useState([]);
-  const [selectedGoals, setSelectedGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -17,18 +15,23 @@ const SessionPage = () => {
     const fetchOrCreateSession = async () => {
       try {
         if (id) {
-          const response = await axios.get(
-            `http://localhost:5050/session/${id}`
-          );
+          // Fetch session by ID if it exists in the URL
+          const response = await axios.get(`http://localhost:5050/session/${id}`);
           setExercises(response.data.exercises);
         } else {
-          const response = await axios.post(`http://localhost:5050/session`);
-          const newSessionId = response.data.session_id;
-          localStorage.setItem(
-            "currentSession",
-            JSON.stringify({ session_id: newSessionId })
-          );
-          navigate(`/session/${newSessionId}`);
+          // If no session ID, check for an ongoing (draft) session
+          const currentSessionResponse = await axios.get("http://localhost:5050/session/current");
+
+          if (currentSessionResponse.data) {
+            // If an ongoing session (draft) exists, redirect to that session
+            navigate(`/session/${currentSessionResponse.data.id}`);
+          } else {
+            // If no ongoing session, create a new one
+            const newSessionResponse = await axios.post("http://localhost:5050/session");
+            const newSessionId = newSessionResponse.data.session_id;
+            localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
+            navigate(`/session/${newSessionId}`);
+          }
         }
       } catch (error) {
         setError("Error fetching or creating session");
@@ -42,7 +45,7 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchAllExercises = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/exercises`);
+        const response = await axios.get("http://localhost:5050/exercises");
         const exercisesByWorkoutType = response.data.reduce((acc, exercise) => {
           if (!acc[exercise.workout_type]) {
             acc[exercise.workout_type] = [];
@@ -56,18 +59,6 @@ const SessionPage = () => {
       }
     };
     fetchAllExercises();
-  }, []);
-
-  useEffect(() => {
-    const fetchGoals = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5050/goals`);
-        setGoals(response.data);
-      } catch (error) {
-        setError("Error fetching goals");
-      }
-    };
-    fetchGoals();
   }, []);
 
   const handleAddExercise = async (exerciseId) => {
@@ -86,40 +77,21 @@ const SessionPage = () => {
 
   const handleDelete = async (exerciseId) => {
     try {
-      await axios.delete(
-        `http://localhost:5050/session/${id}/exercise/${exerciseId}`
-      );
+      await axios.delete(`http://localhost:5050/session/${id}/exercise/${exerciseId}`);
       setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     } catch (error) {
       setError("Error removing exercise");
     }
   };
 
-  const handleGoalSelect = (goalId) => {
-    if (selectedGoals.includes(goalId)) {
-      setSelectedGoals(selectedGoals.filter((id) => id !== goalId));
-    } else {
-      setSelectedGoals([...selectedGoals, goalId]);
-    }
-  };
-
-  // to the session and updating the global goals list
   const handleSaveSession = async () => {
     try {
-      // Save the session exercises
+      // Save session exercises and mark it as completed
       await axios.put(`http://localhost:5050/session/${id}`, {
         exercises,
-        goal_ids: selectedGoals,
       });
 
-      // Update the goals' progress based on the selected goals and exercises
-      if (selectedGoals.length > 0) {
-        await axios.patch(`http://localhost:5050/goals/update-goals-progress`, {
-          selectedGoals,
-          exercises,
-        });
-      }
-
+      // Clear current session from local storage and navigate to progress page
       localStorage.removeItem("currentSession");
       navigate("/progress");
     } catch (error) {
@@ -144,10 +116,7 @@ const SessionPage = () => {
             {exercises.map((exercise) => (
               <div key={exercise.id} className="exercise-card">
                 <h3>{exercise.name}</h3>
-                <div
-                  className="exercise-toggle"
-                  onClick={() => handleDelete(exercise.id)}
-                >
+                <div className="exercise-toggle" onClick={() => handleDelete(exercise.id)}>
                   <span>−</span>
                 </div>
               </div>
@@ -156,36 +125,6 @@ const SessionPage = () => {
         ) : (
           <p>No exercises added to this session yet.</p>
         )}
-      </div>
-
-      {/* Goal Selection */}
-      <div className="goal-selection">
-        <h2>Select Goals for this Session</h2>
-        <div className="goal-list scrollable">
-          {goals.map((goal) => (
-            <div
-              key={goal.id}
-              className={`goal-card ${
-                selectedGoals.includes(goal.id) ? "selected" : ""
-              }`}
-              onClick={() => handleGoalSelect(goal.id)}
-            >
-              <h3>{goal.name}</h3>
-              <p>
-                Progress: {goal.current_progress} / {goal.target}
-              </p>
-              <p>{goal.description || "No description available"}</p>
-              <div className="goal-progress-bar">
-                <div
-                  className="progress"
-                  style={{
-                    width: `${(goal.current_progress / goal.target) * 100}%`,
-                  }}
-                ></div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
       <div className="add-exercises">
@@ -204,10 +143,7 @@ const SessionPage = () => {
                   <p>Reps: {exercise.reps}</p>
                   <p>Duration: {exercise.duration}</p>
                   <p>Calories Burned: {exercise.calories_burned}</p>
-                  <div
-                    className="exercise-toggle"
-                    onClick={() => handleAddExercise(exercise.id)}
-                  >
+                  <div className="exercise-toggle" onClick={() => handleAddExercise(exercise.id)}>
                     <span>+</span>
                   </div>
                 </div>

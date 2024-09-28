@@ -20,7 +20,6 @@ export default function GoalsPage() {
     deadline_progress: "",
   });
 
-  
   useEffect(() => {
     fetchGoals();
   }, []);
@@ -62,7 +61,7 @@ export default function GoalsPage() {
   };
 
   const handleDeleteClick = (goalId) => {
-    setGoalToDelete(goalId); 
+    setGoalToDelete(goalId);
     setIsDeleteModalOpen(true);
   };
 
@@ -86,7 +85,6 @@ export default function GoalsPage() {
   };
 
   const extractNumericValue = (str) => {
-    // Remove non-numeric characters and convert to a number
     const numericValue = str.match(/\d+/);
     return numericValue ? parseFloat(numericValue[0]) : 0;
   };
@@ -100,11 +98,9 @@ export default function GoalsPage() {
 
       <div className={`goals-container ${isDeleteModalOpen ? "hide" : ""}`}>
         {goals.map((goal) => {
-          // Check if target and current_progress are valid numbers before calculating
-          const validTarget = Number(goal.target) || 1; // Default to 1 if target is invalid
-          const validProgress = extractNumericValue(goal.current_progress); 
+          const validTarget = Number(goal.target) || 1;
+          const validProgress = extractNumericValue(goal.current_progress);
 
-          // Calculate the percentage of progress
           const percentageCompleted = (validProgress / validTarget) * 100;
 
           return (
@@ -177,7 +173,10 @@ export default function GoalsPage() {
                     <button className="save-button" onClick={handleSaveEdit}>
                       Save
                     </button>
-                    <button className="cancel-button" onClick={handleCancelEdit}>
+                    <button
+                      className="cancel-button"
+                      onClick={handleCancelEdit}
+                    >
                       Cancel
                     </button>
                   </div>

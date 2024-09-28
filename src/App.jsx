@@ -22,6 +22,7 @@ function App() {
         <Route path="/exercises" element={<BodyPartExercisesPage />} />
         <Route path="/workouts" element={<WorkoutTypePage />} />
         <Route path="/session/:id" element={<SessionPage />} />
+        <Route path="/session" element={<SessionPage />} />
         <Route path="/sessions-overview" element={<SessionsOverviewPage />} />
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/goals" element={<GoalsPage />} />

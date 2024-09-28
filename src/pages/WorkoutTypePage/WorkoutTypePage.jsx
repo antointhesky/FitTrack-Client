@@ -40,8 +40,7 @@ export default function WorkoutTypePage() {
   const handleGoToSession = async () => {
     const sessionData = {
       exercises: selectedExercises.map((id) => ({
-        id,
-        workout_type: workoutType || bodyPart,
+        id, // Passing the exercise ID
       })),
     };
 
@@ -50,7 +49,7 @@ export default function WorkoutTypePage() {
       const sessionId = response.data.session_id;
       navigate(`/session/${sessionId}`);
     } catch (error) {
-      console.error("Error creating session:", error);
+      console.error("Error creating or updating session:", error);
     }
   };
 
