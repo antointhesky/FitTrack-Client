@@ -20,15 +20,16 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const ProgressPage = () => {
   const [sessions, setSessions] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [expandedSession, setExpandedSession] = useState(null);
+  const [filteredSessions, setFilteredSessions] = useState([]);
   const [caloriesData, setCaloriesData] = useState({ labels: [], data: [] });
   const [exerciseDurationData, setExerciseDurationData] = useState({ labels: [], data: [] });
   const [setsData, setSetsData] = useState({ labels: [], data: [] });
   const [repsData, setRepsData] = useState({ labels: [], data: [] });
   const [workoutTypeData, setWorkoutTypeData] = useState({ labels: [], data: [] });
-  const [selectedDate, setSelectedDate] = useState(null); // Start with null to show the title only after selection
-  const [expandedSession, setExpandedSession] = useState(null);
-  const [filteredSessions, setFilteredSessions] = useState([]);
 
+  // Fetch sessions and generate graph data
   useEffect(() => {
     const fetchSessions = async () => {
       try {
@@ -138,15 +139,15 @@ const ProgressPage = () => {
         type: 'linear',
         position: 'right',
         ticks: {
-          color: '#232940', // Use $font color for ticks and labels
+          color: '#232940', // $font 
         },
         title: {
           display: true,
           text: 'Duration (Minutes) and Reps',
-          color: '#232940', // Use $font color
+          color: '#232940', // $font 
         },
         grid: {
-          drawOnChartArea: false, // Prevent y2 axis from drawing over y1
+          drawOnChartArea: false, 
         },
       },
     },
@@ -154,13 +155,13 @@ const ProgressPage = () => {
       legend: {
         position: 'top',
         labels: {
-          color: '#232940', // Use $font color for labels
+          color: '#232940', // $font
         },
       },
       title: {
         display: true,
         text: 'Calories Burned, Duration, Sets, Reps, and Workout Type Over Time',
-        color: '#232940', // Use $font color for title
+        color: '#232940', // $font 
       },
     },
   };
@@ -170,15 +171,18 @@ const ProgressPage = () => {
       <h1>Your Progress</h1>
 
       <div className="progress-graphs">
-        {/* Combined Calories, Duration, Sets, Reps, and Workout Type Graph */}
         <Line options={chartOptions} data={combinedData} />
       </div>
 
-      <h2>{selectedDate ? `Sessions on ${selectedDate.toLocaleDateString('en-GB', {
+      <h2>
+  {selectedDate
+    ? `Sessions on ${selectedDate.toLocaleDateString('en-GB', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-      })}` : 'Please select a date from the calendar'}</h2>
+      })}`
+    : 'Please select a date from the calendar'}
+</h2>
 
       <Calendar
         onChange={setSelectedDate}
@@ -230,4 +234,4 @@ const ProgressPage = () => {
   );
 };
 
-export default ProgressPage;
+export default ProgressPage; 

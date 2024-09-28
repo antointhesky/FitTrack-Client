@@ -95,4 +95,3 @@ const BodyPartExercisesPage = () => {
 };
 
 export default BodyPartExercisesPage;
-

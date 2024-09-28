@@ -5,14 +5,8 @@
   text-align: center;
   margin: 2rem;
 
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: $font;
-  }
-
   .current-session {
-    background-color: white;  
+    background-color: white;
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
@@ -58,6 +52,73 @@
 
           &:hover {
             background-color: darken($font-light, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  .goal-selection {
+    background-color: $background-light;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: $orange;
+    }
+
+    .goal-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+
+      .goal-card {
+        width: 100%;
+        max-width: 300px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+        text-align: left;
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s ease;
+
+        h3 {
+          font-size: 1.5rem;
+          color: $orange;
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          font-size: 1rem;
+          color: $font;
+          margin-bottom: 0.5rem;
+        }
+
+        .goal-progress-bar {
+          background-color: #f0f0f0;
+          height: 8px;
+          border-radius: 4px;
+          overflow: hidden;
+
+          .progress {
+            background-color: $yellow;
+            height: 100%;
+          }
+        }
+
+        &.selected {
+          background-color: $yellow;
+
+          h3,
+          p {
+            color: white;
           }
         }
       }

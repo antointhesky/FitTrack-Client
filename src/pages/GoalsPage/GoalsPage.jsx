@@ -20,18 +20,19 @@ export default function GoalsPage() {
     deadline_progress: "",
   });
 
+  
   useEffect(() => {
-    const fetchGoals = async () => {
-      try {
-        const response = await axios.get("http://localhost:5050/goals");
-        setGoals(response.data);
-      } catch (error) {
-        console.error("Error fetching goals:", error);
-      }
-    };
-
     fetchGoals();
   }, []);
+
+  const fetchGoals = async () => {
+    try {
+      const response = await axios.get("http://localhost:5050/goals");
+      setGoals(response.data);
+    } catch (error) {
+      console.error("Error fetching goals:", error);
+    }
+  };
 
   const handleEditClick = (goal) => {
     setGoalToEdit(goal);
@@ -49,7 +50,7 @@ export default function GoalsPage() {
             goal.id === goalToEdit.id ? { ...goal, ...goalToEdit } : goal
           )
         );
-        setGoalToEdit(null); // Exit edit mode after saving
+        setGoalToEdit(null);
       }
     } catch (error) {
       console.error("Error updating goal:", error);
@@ -61,8 +62,8 @@ export default function GoalsPage() {
   };
 
   const handleDeleteClick = (goalId) => {
-    setGoalToDelete(goalId); // Set the goal ID for deletion
-    setIsDeleteModalOpen(true); // Open the delete modal
+    setGoalToDelete(goalId); 
+    setIsDeleteModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -84,7 +85,6 @@ export default function GoalsPage() {
     setIsDeleteModalOpen(false);
   };
 
-  // Helper function to extract the numeric part of current_progress
   const extractNumericValue = (str) => {
     // Remove non-numeric characters and convert to a number
     const numericValue = str.match(/\d+/);
@@ -102,10 +102,7 @@ export default function GoalsPage() {
         {goals.map((goal) => {
           // Check if target and current_progress are valid numbers before calculating
           const validTarget = Number(goal.target) || 1; // Default to 1 if target is invalid
-          const validProgress = extractNumericValue(goal.current_progress); // Extract numeric value
-
-          // Log the values for debugging
-          console.log(`Goal: ${goal.name}, Target: ${goal.target}, Progress: ${goal.current_progress}`);
+          const validProgress = extractNumericValue(goal.current_progress); 
 
           // Calculate the percentage of progress
           const percentageCompleted = (validProgress / validTarget) * 100;
