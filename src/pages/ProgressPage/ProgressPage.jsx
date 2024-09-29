@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Line } from 'react-chartjs-2';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import 'react-circular-progressbar/dist/styles.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Line } from "react-chartjs-2";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import "react-circular-progressbar/dist/styles.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,10 +15,18 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import './ProgressPage.scss';
+} from "chart.js";
+import "./ProgressPage.scss";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const ProgressPage = () => {
   const [sessions, setSessions] = useState([]);
@@ -24,42 +34,53 @@ const ProgressPage = () => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [filteredSessions, setFilteredSessions] = useState([]);
   const [caloriesData, setCaloriesData] = useState({ labels: [], data: [] });
-  const [exerciseDurationData, setExerciseDurationData] = useState({ labels: [], data: [] });
+  const [exerciseDurationData, setExerciseDurationData] = useState({
+    labels: [],
+    data: [],
+  });
   const [setsData, setSetsData] = useState({ labels: [], data: [] });
   const [repsData, setRepsData] = useState({ labels: [], data: [] });
-  const [workoutTypeData, setWorkoutTypeData] = useState({ labels: [], data: [] });
 
-  // Fetch sessions and generate graph data
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await axios.get('http://localhost:5050/session');
+        const response = await axios.get("http://localhost:5050/session");
         setSessions(response.data);
 
-        const labels = response.data.map((session) => new Date(session.date).toLocaleDateString());
+        const labels = response.data.map((session) =>
+          new Date(session.date).toLocaleDateString()
+        );
         const calories = response.data.map((session) =>
-          session.exercises.reduce((total, exercise) => total + exercise.calories_burned, 0)
+          session.exercises.reduce(
+            (total, exercise) => total + exercise.calories_burned,
+            0
+          )
         );
         const durations = response.data.map((session) =>
-          session.exercises.reduce((total, exercise) => total + parseFloat(exercise.duration || 0), 0)
+          session.exercises.reduce(
+            (total, exercise) => total + parseFloat(exercise.duration || 0),
+            0
+          )
         );
         const sets = response.data.map((session) =>
-          session.exercises.reduce((total, exercise) => total + (exercise.sets || 0), 0)
+          session.exercises.reduce(
+            (total, exercise) => total + (exercise.sets || 0),
+            0
+          )
         );
         const reps = response.data.map((session) =>
-          session.exercises.reduce((total, exercise) => total + (exercise.reps || 0), 0)
-        );
-        const workoutTypes = response.data.map((session) =>
-          session.exercises.length > 0 ? session.exercises[0].workout_type : 'Unknown'
+          session.exercises.reduce(
+            (total, exercise) => total + (exercise.reps || 0),
+            0
+          )
         );
 
         setCaloriesData({ labels, data: calories });
         setExerciseDurationData({ labels, data: durations });
         setSetsData({ labels, data: sets });
         setRepsData({ labels, data: reps });
-        setWorkoutTypeData({ labels, data: workoutTypes });
       } catch (error) {
-        console.error('Error fetching sessions:', error);
+        console.error("Error fetching sessions:", error);
       }
     };
     fetchSessions();
@@ -68,7 +89,9 @@ const ProgressPage = () => {
   useEffect(() => {
     if (selectedDate) {
       const filtered = sessions.filter(
-        (session) => new Date(session.date).toLocaleDateString() === selectedDate.toLocaleDateString()
+        (session) =>
+          new Date(session.date).toLocaleDateString() ===
+          selectedDate.toLocaleDateString()
       );
       setFilteredSessions(filtered);
     }
@@ -78,147 +101,205 @@ const ProgressPage = () => {
     setExpandedSession(expandedSession === sessionId ? null : sessionId);
   };
 
-  // Combined graph for calories, duration, sets, reps, and workout type
   const combinedData = {
     labels: caloriesData.labels,
     datasets: [
       {
-        label: 'Calories Burned',
+        label: "Calories Burned",
         data: caloriesData.data,
-        borderColor: 'rgb(255, 99, 132)', // Color for calories line
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        yAxisID: 'y1',
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        yAxisID: "y1",
       },
       {
-        label: 'Duration (Minutes)',
+        label: "Duration (Minutes)",
         data: exerciseDurationData.data,
-        borderColor: 'rgb(54, 162, 235)', // Color for duration line
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        yAxisID: 'y2',
+        borderColor: "rgb(54, 162, 235)",
+        backgroundColor: "rgba(54, 162, 235, 0.5)",
+        yAxisID: "y2",
       },
       {
-        label: 'Sets',
+        label: "Sets",
         data: setsData.data,
-        borderColor: 'rgb(75, 192, 192)', // Color for sets line
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        yAxisID: 'y1',
+        borderColor: "rgb(75, 192, 192)",
+        backgroundColor: "rgba(75, 192, 192, 0.5)",
+        yAxisID: "y1",
       },
       {
-        label: 'Reps',
+        label: "Reps",
         data: repsData.data,
-        borderColor: 'rgb(153, 102, 255)', // Color for reps line
-        backgroundColor: 'rgba(153, 102, 255, 0.5)',
-        yAxisID: 'y2',
-      },
-      {
-        label: 'Workout Type',
-        data: workoutTypeData.data,
-        borderColor: 'rgb(255, 205, 86)', // Color for workout type line
-        backgroundColor: 'rgba(255, 205, 86, 0.5)',
-        yAxisID: 'y1',
+        borderColor: "rgb(153, 102, 255)",
+        backgroundColor: "rgba(153, 102, 255, 0.5)",
+        yAxisID: "y2",
       },
     ],
   };
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10,
+      },
+    },
     scales: {
       y1: {
-        type: 'linear',
-        position: 'left',
+        type: "linear",
+        position: "left",
         ticks: {
-          color: '#232940', // Use $font color for ticks and labels
+          color: "#232940",
+          font: {
+            size: window.innerWidth < 768 ? 8 : 14,
+          },
         },
         title: {
           display: true,
-          text: 'Calories Burned, Sets, and Workout Type',
-          color: '#232940', // Use $font color
+          text: "Calories Burned, Sets",
+          color: "#232940",
+          font: {
+            size: window.innerWidth < 768 ? 10 : 16,
+          },
         },
       },
       y2: {
-        type: 'linear',
-        position: 'right',
+        type: "linear",
+        position: "right",
         ticks: {
-          color: '#232940', // $font 
+          color: "#232940",
+          font: {
+            size: window.innerWidth < 768 ? 8 : 14,
+          },
         },
         title: {
           display: true,
-          text: 'Duration (Minutes) and Reps',
-          color: '#232940', // $font 
+          text: "Duration (Minutes) and Reps",
+          color: "#232940",
+          font: {
+            size: window.innerWidth < 768 ? 10 : 16,
+          },
         },
         grid: {
-          drawOnChartArea: false, 
+          drawOnChartArea: false,
         },
       },
     },
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
         labels: {
-          color: '#232940', // $font
+          color: "#232940",
+          font: {
+            size: window.innerWidth < 768 ? 8 : 14,
+          },
         },
       },
       title: {
         display: true,
-        text: 'Calories Burned, Duration, Sets, Reps, and Workout Type Over Time',
-        color: '#232940', // $font 
+        text: "Calories Burned, Duration, Sets, and Reps Over Time",
+        color: "#232940",
+        font: {
+          size: window.innerWidth < 768 ? 12 : 18,
+        },
       },
     },
   };
 
   return (
     <main className="progress-page">
-      <h1>Your Progress</h1>
+      <section className="progress-page__hero">
+        <div className="progress-page__hero-content">
+          <h1 className="progress-page__hero-content__title">
+            Track Your Fitness Journey
+          </h1>
+          <p className="progress-page__hero-content__description">
+          You're building strength with every workout! Stay focused and see your progress grow over time.
+          </p>
+          <p className="progress-page__hero-content__motivation">
+            Consistency is key! Track your efforts, celebrate each small
+            victory, and push beyond your limits. You're closer to your goals
+            with every session!
+          </p>
+        </div>
+      </section>
 
-      <div className="progress-graphs">
+      <h2 className="progress-page__subtitle">Your Progress</h2>
+
+      <div className="progress-page__graphs">
         <Line options={chartOptions} data={combinedData} />
       </div>
 
-      <h2>
-  {selectedDate
-    ? `Sessions on ${selectedDate.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      })}`
-    : 'Please select a date from the calendar'}
-</h2>
+      <h3 className="progress-page__subtitle">Your Workout Sessions</h3>
 
       <Calendar
         onChange={setSelectedDate}
         value={selectedDate}
         tileClassName={({ date }) => {
           const isSessionDay = sessions.some(
-            (session) => new Date(session.date).toLocaleDateString() === date.toLocaleDateString()
+            (session) =>
+              new Date(session.date).toLocaleDateString() ===
+              date.toLocaleDateString()
           );
-          return isSessionDay ? 'session-day' : null;
+          return isSessionDay ? "session-day" : null;
         }}
       />
 
       {selectedDate && (
-        <ul className="session-list">
+        <ul className="progress-page__session-list">
           {filteredSessions.length > 0 ? (
             filteredSessions.map((session) => (
-              <li key={session.id}>
-                <h3>Session on {new Date(session.date).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                })}</h3>
-                <button onClick={() => toggleDetails(session.id)}>
-                  {expandedSession === session.id ? 'Hide Details' : 'View Details'}
+              <li
+                key={session.id}
+                className="progress-page__session-list__session-item"
+              >
+                <h4 className="progress-page__session-list__session-item__session-date">
+                  Session on{" "}
+                  {new Date(session.date).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </h4>
+                <button
+                  onClick={() => toggleDetails(session.id)}
+                  className="progress-page__session-list__session-item__session-toggle"
+                >
+                  {expandedSession === session.id ? (
+                    <FontAwesomeIcon icon={faChevronUp} />
+                  ) : (
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  )}
                 </button>
 
                 {expandedSession === session.id && (
-                  <div className="session-details">
+                  <div className="progress-page__session-details">
                     {session.exercises.map((exercise) => (
-                      <div key={exercise.id} className="exercise-details">
-                        <p><strong>Exercise:</strong> {exercise.name}</p>
-                        <p><strong>Calories Burned:</strong> {exercise.calories_burned}</p>
-                        <p><strong>Workout Type:</strong> {exercise.workout_type}</p>
-                        <p><strong>Duration:</strong> {exercise.duration} min</p>
-                        <p><strong>Sets:</strong> {exercise.sets}</p>
-                        <p><strong>Reps:</strong> {exercise.reps}</p>
+                      <div
+                        key={exercise.id}
+                        className="progress-page__session-details__exercise-details"
+                      >
+                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                          <strong>Exercise:</strong> {exercise.name}
+                        </p>
+                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                          <strong>Calories Burned:</strong>{" "}
+                          {exercise.calories_burned}
+                        </p>
+                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                          <strong>Workout Type:</strong> {exercise.workout_type}
+                        </p>
+                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                          <strong>Duration:</strong> {exercise.duration} min
+                        </p>
+                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                          <strong>Sets:</strong> {exercise.sets}
+                        </p>
+                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                          <strong>Reps:</strong> {exercise.reps}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -226,7 +307,9 @@ const ProgressPage = () => {
               </li>
             ))
           ) : (
-            <p>No sessions on this day.</p>
+            <p className="progress-page__no-sessions">
+              No sessions on this day.
+            </p>
           )}
         </ul>
       )}
@@ -234,4 +317,4 @@ const ProgressPage = () => {
   );
 };
 
-export default ProgressPage; 
+export default ProgressPage;
