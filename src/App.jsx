@@ -11,6 +11,7 @@ import SessionPage from "./pages/SessionPage/SessionPage";
 import SessionsOverviewPage from "./pages/SessionsOverviewPage/SessionsOverviewPage";
 import ProgressPage from "./pages/ProgressPage/ProgressPage";
 import GoalsPage from "./pages/GoalsPage/GoalsPage";
+import AdvicePage from "./pages/AdvicePage/AdvicePage"; 
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/sessions-overview" element={<SessionsOverviewPage />} />
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/goals" element={<GoalsPage />} />
+        <Route path="/advice" element={<AdvicePage />} />
       </Routes>
       <BottomNavBar />
     </Router>
