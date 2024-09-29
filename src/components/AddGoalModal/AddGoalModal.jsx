@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import "./AddGoalModal.scss";
 
 // For accessibility, bind modal to your app element (usually root)
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
-export default function AddGoalModal({ isOpen, onRequestClose, newGoal, handleNewGoalInputChange, handleAddNewGoal }) {
+export default function AddGoalModal({
+  isOpen,
+  onRequestClose,
+  newGoal,
+  handleNewGoalInputChange,
+  handleAddNewGoal,
+}) {
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const units = ["cal", "reps", "sets", "hours", "name", "body part", "workout type"];
+  
+  const handleDropdownItemClick = (item) => {
+    handleNewGoalInputChange({ target: { name: "unit", value: item } });
+    setIsDropdownVisible(false);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Add New Goal"
-      className="add-goal-modal" // Use similar styling as delete modal
-      overlayClassName="add-goal-overlay" // Similar overlay class
+      className="add-goal-modal"
+      overlayClassName="add-goal-overlay"
     >
       <div className="modal-content">
         <h2>Add New Goal</h2>
@@ -33,19 +47,30 @@ export default function AddGoalModal({ isOpen, onRequestClose, newGoal, handleNe
             onChange={handleNewGoalInputChange}
             required
           />
-          <select
-            name="unit"
-            value={newGoal.unit}
-            onChange={handleNewGoalInputChange}
-            required
-          >
-            <option value="">Select Unit</option>
-            <option value="kg">kg</option>
-            <option value="cal">cal</option>
-            <option value="km">km</option>
-            <option value="steps">steps</option>
-            <option value="workouts">workouts</option>
-          </select>
+
+          {/* Custom Dropdown for Unit Selection */}
+          <div className="custom-dropdown-container">
+            <div
+              className={`custom-dropdown ${newGoal.unit ? "" : "placeholder"}`}
+              onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+            >
+              {newGoal.unit || "Select Unit"}
+            </div>
+            {isDropdownVisible && (
+              <div className="custom-dropdown-menu">
+                {units.map((unit, index) => (
+                  <div
+                    key={index}
+                    className="custom-dropdown-item"
+                    onClick={() => handleDropdownItemClick(unit)}
+                  >
+                    {unit}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <input
             type="text"
             name="current_progress"
@@ -61,9 +86,16 @@ export default function AddGoalModal({ isOpen, onRequestClose, newGoal, handleNe
             onChange={handleNewGoalInputChange}
             required
           />
+
           <div className="modal-buttons">
-            <button type="submit" className="save-button">Add Goal</button>
-            <button type="button" className="cancel-button" onClick={onRequestClose}>
+            <button type="submit" className="save-button">
+              Add Goal
+            </button>
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={onRequestClose}
+            >
               Cancel
             </button>
           </div>

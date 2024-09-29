@@ -14,19 +14,29 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchOrCreateSession = async () => {
       try {
-        if (id) {
-          // Fetch session by ID if it exists in the URL
-          const response = await axios.get(`http://localhost:5050/session/${id}`);
+        // Check if session ID is available in localStorage or URL param
+        let sessionId = id;
+
+        const storedSession = JSON.parse(localStorage.getItem("currentSession"));
+        if (storedSession) {
+          sessionId = storedSession.session_id;
+        }
+
+        if (sessionId) {
+          // Fetch session by ID if it exists in the URL or localStorage
+          const response = await axios.get(`http://localhost:5050/session/${sessionId}`);
           setExercises(response.data.exercises);
         } else {
-          // If no session ID, check for an ongoing (draft) session
+          // Check for an ongoing (draft) session on the server
           const currentSessionResponse = await axios.get("http://localhost:5050/session/current");
 
           if (currentSessionResponse.data) {
             // If an ongoing session (draft) exists, redirect to that session
-            navigate(`/session/${currentSessionResponse.data.id}`);
+            const currentSessionId = currentSessionResponse.data.id;
+            localStorage.setItem("currentSession", JSON.stringify({ session_id: currentSessionId }));
+            navigate(`/session/${currentSessionId}`);
           } else {
-            // If no ongoing session, create a new one
+            // Create a new session only if no draft session exists
             const newSessionResponse = await axios.post("http://localhost:5050/session");
             const newSessionId = newSessionResponse.data.session_id;
             localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
@@ -86,19 +96,25 @@ const SessionPage = () => {
 
   const handleSaveSession = async () => {
     try {
-      // Save session exercises and mark it as completed
-      await axios.put(`http://localhost:5050/session/${id}`, {
-        exercises,
+      console.log("Sending exercises:", exercises); // Log exercises to check data structure
+  
+      const response = await axios.patch(`http://localhost:5050/session/${id}`, { exercises });
+  
+      console.log("Sending goals update:", { exercises }); // Log selectedGoals and exercises before sending
+  
+      // Update goals progress using PATCH
+      await axios.patch(`http://localhost:5050/goals/update-goals-progress`, {
+        exercises, // Ensure the exercises structure matches the backend's expectation
       });
-
-      // Clear current session from local storage and navigate to progress page
+  
       localStorage.removeItem("currentSession");
       navigate("/progress");
     } catch (error) {
-      setError("Error saving session");
+      console.error("Error saving session and updating goals:", error);
+      setError("Error saving session and updating goals");
     }
   };
-
+  
   if (loading) {
     return <p>Loading session data...</p>;
   }
@@ -163,3 +179,5 @@ const SessionPage = () => {
 };
 
 export default SessionPage;
+
+

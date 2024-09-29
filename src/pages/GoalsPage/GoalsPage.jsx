@@ -39,14 +39,23 @@ export default function GoalsPage() {
 
   const handleSaveEdit = async () => {
     try {
+      const updatedGoal = {
+        ...goalToEdit,
+        current_progress: Number(goalToEdit.current_progress),
+        deadline_progress: new Date(goalToEdit.deadline_progress)
+          .toISOString()
+          .split("T")[0], // Format deadline to 'yyyy-MM-dd'
+      };
+
       const response = await axios.put(
         `http://localhost:5050/goals/${goalToEdit.id}`,
-        goalToEdit
+        updatedGoal
       );
+
       if (response.status === 200) {
         setGoals(
           goals.map((goal) =>
-            goal.id === goalToEdit.id ? { ...goal, ...goalToEdit } : goal
+            goal.id === goalToEdit.id ? { ...goal, ...updatedGoal } : goal
           )
         );
         setGoalToEdit(null);
@@ -81,12 +90,20 @@ export default function GoalsPage() {
   };
 
   const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false);
+    setIsDeleteModalOpen(false); // This was the missing function
   };
 
-  const extractNumericValue = (str) => {
-    const numericValue = str.match(/\d+/);
-    return numericValue ? parseFloat(numericValue[0]) : 0;
+  const extractNumericValue = (value) => {
+    if (typeof value === "number") {
+      return value; // If it's already a number, return it directly.
+    }
+
+    if (typeof value === "string") {
+      const numericValue = value.match(/\d+/);
+      return numericValue ? parseFloat(numericValue[0]) : 0;
+    }
+
+    return 0; // Fallback for other types (e.g., null, undefined).
   };
 
   return (
@@ -139,11 +156,13 @@ export default function GoalsPage() {
                     required
                   >
                     <option value="">Select Unit</option>
-                    <option value="kg">kg</option>
                     <option value="cal">cal</option>
-                    <option value="km">km</option>
-                    <option value="steps">steps</option>
-                    <option value="workouts">workouts</option>
+                    <option value="reps">reps</option>
+                    <option value="sets">sets</option>
+                    <option value="hours">hours</option>
+                    <option value="name">name</option>
+                    <option value="body part">body part</option>
+                    <option value="workout type">workout type</option>
                   </select>
                   <input
                     type="text"
@@ -205,10 +224,10 @@ export default function GoalsPage() {
                         textColor: "#0E3740",
                         pathColor:
                           percentageCompleted >= 100
-                            ? "#28a745"
-                            : percentageCompleted >= 50
-                            ? "#ffc107"
-                            : "#fd6827", // Change color based on completion
+                            ? "#2f5c63"
+                            : percentageCompleted >= 0
+                            ? "#fd6827"
+                            : "#eee", 
                         trailColor: "#eee",
                         textSize: "16px",
                       })}
@@ -257,7 +276,7 @@ export default function GoalsPage() {
 
       <DeleteGoalModal
         isOpen={isDeleteModalOpen}
-        onRequestClose={handleCancelDelete}
+        onRequestClose={handleCancelDelete} // Reference the new function here
         handleConfirmDelete={handleConfirmDelete}
       />
     </main>
