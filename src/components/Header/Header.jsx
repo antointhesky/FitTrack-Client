@@ -34,8 +34,8 @@ export default function Header() {
         <span className="nav-text">Home</span>
       </NavLink>
 
-      <NavLink to="/workouts-overview" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
-        <span className="nav-text">Workouts</span>
+      <NavLink to="/advice" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
+        <span className="nav-text">Advice</span>
       </NavLink>
 
       <NavLink to="/progress" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>

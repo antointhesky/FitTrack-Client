@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FaHome, FaDumbbell, FaChartLine, FaCog } from "react-icons/fa";
+import { FaHome, FaLightbulb, FaChartLine, FaCog } from "react-icons/fa"; // Changed FaDumbbell to FaLightbulb for advice
 import { useState, useEffect } from "react";
 import "./BottomNavBar.scss";
 
@@ -26,11 +26,11 @@ export default function BottomNavBar() {
       </NavLink>
 
       <NavLink
-        to="/workouts-overview"
+        to="/advice"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
-        <FaDumbbell className="icon" />
-        <span>Workouts</span>
+        <FaLightbulb className="icon" /> {/* Changed icon to FaLightbulb */}
+        <span>Advice</span>
       </NavLink>
 
       {hasOngoingSession && (
@@ -61,3 +61,4 @@ export default function BottomNavBar() {
     </nav>
   );
 }
+
