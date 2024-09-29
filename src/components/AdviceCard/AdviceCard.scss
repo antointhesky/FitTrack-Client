@@ -1,62 +1,102 @@
-
 @use "../../styles/partials/colors" as *;
 @use "../../styles/partials/breakpoints" as *;
 
-.advice-card-container {
-    position: relative;
-    width: 450px; // Slightly larger width for the card
-    height: 270px; // Adjusted height
-    margin: 40px auto; // Centered horizontally
+.advice-card {
+  position: relative;
+  width: 300px;  
+  height: 280px; 
+
+  @include tablet {
+    width: 450px;
+    height: 270px;
   }
-  
-  .advice-card {
+
+  @include desktop {
+    width: 600px;  
+    height: 400px; 
+  }
+
+  &__background {
     position: absolute;
+    background-color: $background-light;
+    width: 90%;
+    height: 100%;
+    z-index: 1;
+    left: 55px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    @include tablet {
+      left: -65px;
+    }
+
+    @include desktop {
+      left: -160px;  
+    }
+  }
+
+  &__foreground {
+    position: absolute;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-  
-    &--grey {
-      background-color: $background-light;  // Use your light background color
-      width: 90%;
-      height: 100%;
-      z-index: 1; 
-      right: 130px;
-      top: 0px;  
-    }
-  
-    &--white {
-      background-color: white;
-      width: 80%;  
-      height: 80%;
-      top: 20px;  
-      left: 130px;  
-      z-index: 2;  
+    border: 1px solid $orange;
+
+    @include tablet {
+      top: 25px;
+      left: 155px;
     }
 
-    &__content {
-      h3 {
-        font-size: 1.6rem;
-        color: $font; // Use your font color
-        margin-bottom: 10px;
-      }
-  
-      p {
-        font-size: 1rem;
-        color: $font-light; // Use the lighter font color
-        margin-bottom: 15px;
-      }
-  
-      .advice-card__link {
-        font-weight: bold;
-        color: $orange; // Use the orange for the link
-        text-decoration: none;
-        transition: color 0.2s ease;
-  
-        &:hover {
-          color: darken($orange, 10%); // Darken the orange slightly on hover
-        }
-      }
+    @include desktop {
+      top: 40px;   
+      left: 280px; 
     }
   }
-  
+
+  &__title {
+    font-size: 1rem;
+    color: $yellow;
+    margin-bottom: 10px;
+
+    @include tablet {
+      font-size: 1.25rem;
+    }
+
+    @include desktop {
+      font-size: 1.5rem;  
+    }
+  }
+
+  &__description {
+    font-size: 0.75rem;
+    color: $font-light;
+    margin-bottom: 1rem;
+
+    @include tablet {
+      font-size: 0.9rem;
+    }
+
+    @include desktop {
+      font-size: 1.1rem;  
+    }
+  }
+
+  &__link {
+    font-weight: bold;
+    color: $orange;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: darken($orange, 10%);
+    }
+  }
+}
+

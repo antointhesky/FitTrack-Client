@@ -16,16 +16,18 @@ const adviceData = [
   },
   {
     title: "Weight Loss: 6 Strategies for Success",
-    description: "The key to sustainable weight loss is long-term lifestyle changes in diet and physical activity.",
-    linkUrl: "https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/weight-loss/art-20047752"
+    description:
+      "The key to sustainable weight loss is long-term lifestyle changes in diet and physical activity.",
+    linkUrl:
+      "https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/weight-loss/art-20047752",
   },
 ];
 
 const AdvicePage = () => {
   return (
-    <div className="advice-page">
-      <h1>Fitness & Health Advice</h1>
-      <div className="advice-list">
+    <div className="advice">
+      <h1 className="advice__title">Fitness & Health Advice</h1>
+      <div className="advice__list">
         {adviceData.map((advice, index) => (
           <AdviceCard
             key={index}

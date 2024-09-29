@@ -3,13 +3,13 @@ import './AdviceCard.scss';
 
 const AdviceCard = ({ title, description, linkUrl }) => {
   return (
-    <div className="advice-card-container">
-      <div className="advice-card advice-card--grey"></div> {/* Background grey card */}
-      <div className="advice-card advice-card--white"> {/* Overlapping white card */}
+    <div className="advice-card">
+      <div className="advice-card__background"></div> 
+      <div className="advice-card__foreground"> 
         <div className="advice-card__content">
-          <h3>{title}</h3>
-          <p>{description}</p>
-          <a href={linkUrl} target="_blank" rel="noopener noreferrer" className="advice-card__link">
+          <h3 className="advice-card__title">{title}</h3>
+          <p className="advice-card__description">{description}</p>
+          <a href={linkUrl} className="advice-card__link">
             Read More
           </a>
         </div>
@@ -19,4 +19,5 @@ const AdviceCard = ({ title, description, linkUrl }) => {
 };
 
 export default AdviceCard;
+
 
