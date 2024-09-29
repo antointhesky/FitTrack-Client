@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "./AddGoalModal.scss";
 
 // For accessibility, bind modal to your app element (usually root)
@@ -13,6 +15,7 @@ export default function AddGoalModal({
   handleAddNewGoal,
 }) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
   const units = ["cal", "reps", "sets", "hours", "name", "body part", "workout type"];
   
   const handleDropdownItemClick = (item) => {
@@ -71,6 +74,19 @@ export default function AddGoalModal({
             )}
           </div>
 
+          {/* Custom DatePicker instead of native input[type="date"] */}
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => {
+              setStartDate(date);
+              handleNewGoalInputChange({
+                target: { name: "deadline_progress", value: date },
+              });
+            }}
+            dateFormat="dd/MM/yyyy"
+            className="custom-date-picker"
+          />
+
           <input
             type="text"
             name="current_progress"
@@ -79,14 +95,7 @@ export default function AddGoalModal({
             onChange={handleNewGoalInputChange}
             required
           />
-          <input
-            type="date"
-            name="deadline_progress"
-            value={newGoal.deadline_progress}
-            onChange={handleNewGoalInputChange}
-            required
-          />
-
+          
           <div className="modal-buttons">
             <button type="submit" className="save-button">
               Add Goal

@@ -19,7 +19,6 @@
     text-align: center;
 
     h2 {
-      color: $orange;
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
@@ -33,17 +32,22 @@
         font-size: 1rem;
         border: 1px solid #ddd;
         border-radius: 5px;
-        color: $font-light; // Apply text color
+        color: $font-light;
+
+        &::placeholder {
+          color: $font-light;
+        }
+
         &:focus {
           outline: none;
-          border-color: $orange; // Updated focus color
+          border-color: $orange;
         }
       }
 
-      // Custom Dropdown styling
       .custom-dropdown-container {
         position: relative;
         margin-bottom: 1rem;
+        width: 100%;
 
         .custom-dropdown {
           background-color: white;
@@ -52,6 +56,7 @@
           border: 1px solid #ddd;
           border-radius: 5px;
           cursor: pointer;
+          width: 100%;
           &:focus {
             outline: none;
             border-color: $orange;
@@ -59,7 +64,7 @@
         }
 
         .placeholder {
-          color: $font-light; // Placeholder text color
+          color: $font-light;
         }
 
         .custom-dropdown-menu {
@@ -86,6 +91,27 @@
             }
           }
         }
+      }
+
+      .custom-date-picker {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: $font-light;
+        &:focus {
+          border-color: $orange;
+          outline: none;
+        }
+      }
+
+      .react-datepicker-wrapper {
+        width: 100%;
+      }
+
+      .react-datepicker__input-container {
+        width: 100%;
       }
 
       .modal-buttons {
@@ -124,19 +150,72 @@
   }
 }
 
+// Restored the goal overlay effect
 .add-goal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75); // Restoring the dark overlay effect
   z-index: 999;
 }
 
+.react-datepicker {
+  font-family: inherit;
+  background-color: white;
+  border: 1px solid $orange;
+  border-radius: 5px;
+  width: 100%;
 
+  .react-datepicker__header {
+    background-color: $orange;
+    border-bottom: none;
+  }
 
+  .react-datepicker__day--selected {
+    background-color: $yellow;
+    color: white;
+  }
 
+  .react-datepicker__day:hover {
+    background-color: lighten($orange, 20%);
+    color: white;
+  }
 
+  .react-datepicker__day-name,
+  .react-datepicker__day,
+  .react-datepicker__time-name {
+    color: $font;
+  }
 
+  .react-datepicker__day--keyboard-selected {
+    background-color: lighten($yellow, 10%);
+    color: white;
+  }
 
+  // Increased the width of the month container
+  .react-datepicker__month {
+    background-color: white;
+    width: 350px; // Adjust this value to make the month container wider
+  }
+
+  .react-datepicker__current-month {
+    color: white;
+  }
+
+  .react-datepicker__day--outside-month {
+    color: lighten($font-light, 40%);
+  }
+
+  .react-datepicker__day--selected,
+  .react-datepicker__day--in-selecting-range {
+    background-color: $yellow;
+    color: white;
+  }
+
+  .react-datepicker__day:hover {
+    background-color: $orange;
+    color: white;
+  }
+}
