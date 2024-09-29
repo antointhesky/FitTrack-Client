@@ -1,28 +1,38 @@
-@use "../../styles/partials/colors" as *;
 @use "../../styles/partials/breakpoints" as *;
+@use "../../styles/partials/colors" as *;
 
-.top-nav {
+.header {
+  background-color: $font-light;
+
+  &__nav {
     display: none;
-  }
-  
-  @media (min-width: 768px) {
-    .top-nav {
+    
+    @include tablet {
       display: flex;
       justify-content: space-around;
       align-items: center;
       height: 80px;
-      background-color: $font-light;
-    }
-  
-    .nav-item {
-      color: #fff;
-      text-decoration: none;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  
-    .nav-item.active {
-      border-bottom: 2px solid white; 
     }
   }
-  
+
+  &__nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+
+    @include tablet {
+      padding: 0.5rem 1rem;
+    }
+
+    &:hover {
+      background-color: $yellow;
+    }
+
+    &--active {
+      background-color: $orange; 
+    }
+  }
+}

@@ -14,7 +14,7 @@ const HomePage = () => {
   const [bodyParts, setBodyParts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
-  const [goals, setGoals] = useState([]); // New state for goals
+  const [goals, setGoals] = useState([]); // Initialize as an empty array
   const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal
   const [newGoal, setNewGoal] = useState({
     name: "",
@@ -49,7 +49,11 @@ const HomePage = () => {
     const fetchGoals = async () => {
       try {
         const response = await axios.get("http://localhost:5050/goals");
-        setGoals(response.data);
+        if (Array.isArray(response.data)) {
+          setGoals(response.data);
+        } else {
+          console.error("Goals data is not in expected format.");
+        }
       } catch (error) {
         console.error("Error fetching goals:", error);
       }
@@ -176,9 +180,7 @@ const HomePage = () => {
       {/* New Goals Section */}
       <section className="goals-section">
         <h2>Your Fitness Goals</h2>
-        {goals.length === 0 ? (
-          <p>No goals yet. <button onClick={() => setIsModalOpen(true)}>Set Your First Goal</button></p>
-        ) : (
+        {Array.isArray(goals) && goals.length > 0 ? (
           <div className="goals-list">
             {goals.map((goal) => (
               <div key={goal.id} className="goal-card">
@@ -188,6 +190,8 @@ const HomePage = () => {
               </div>
             ))}
           </div>
+        ) : (
+          <p>No goals yet. <button onClick={() => setIsModalOpen(true)}>Set Your First Goal</button></p>
         )}
         <button className="add-goal-button" onClick={() => setIsModalOpen(true)}>Add New Goal</button>
       </section>
@@ -208,4 +212,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

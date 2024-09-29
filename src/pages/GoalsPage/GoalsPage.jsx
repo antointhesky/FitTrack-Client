@@ -259,19 +259,27 @@ export default function GoalsPage() {
         }}
         handleAddNewGoal={async (e) => {
           e.preventDefault();
+        
+          // Ensure the deadline_progress is formatted as YYYY-MM-DD
+          const formattedDeadline = new Date(newGoal.deadline_progress).toISOString().split('T')[0];
+        
           try {
             const response = await axios.post(
               "http://localhost:5050/goals",
-              newGoal
+              {
+                ...newGoal,
+                deadline_progress: formattedDeadline, // Use the formatted date
+              }
             );
+        
             if (response.status === 201) {
               setGoals([...goals, response.data]);
-              setIsModalOpen(false);
+              setIsModalOpen(false); // Close the modal
             }
           } catch (error) {
             console.error("Error adding new goal:", error);
           }
-        }}
+        }}        
       />
 
       <DeleteGoalModal
