@@ -4,18 +4,24 @@ import "./EditGoalModal.scss";
 
 Modal.setAppElement("#root");
 
-export default function EditGoalModal({ isOpen, onRequestClose, goalToEdit, handleInputChange, handleSaveEdit }) {
+export default function EditGoalModal({ 
+  isOpen, 
+  onRequestClose, 
+  goalToEdit, 
+  handleInputChange, 
+  handleSaveEdit 
+}) {
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Edit Goal"
       className="edit-goal-modal"
-      overlayClassName="edit-goal-overlay"
+      overlayClassName="edit-goal-modal__overlay"
     >
-      <div className="modal-content">
-        <h2>Edit Goal</h2>
-        <form onSubmit={(e) => e.preventDefault()}>
+      <div className="edit-goal-modal__content">
+        <h2 className="edit-goal-modal__title">Edit Goal</h2>
+        <form className="edit-goal-modal__form" onSubmit={(e) => e.preventDefault()}>
           <input
             type="text"
             name="name"
@@ -23,6 +29,7 @@ export default function EditGoalModal({ isOpen, onRequestClose, goalToEdit, hand
             value={goalToEdit.name}
             onChange={handleInputChange}
             required
+            className="edit-goal-modal__input"
           />
           <input
             type="number"
@@ -31,12 +38,14 @@ export default function EditGoalModal({ isOpen, onRequestClose, goalToEdit, hand
             value={goalToEdit.target}
             onChange={handleInputChange}
             required
+            className="edit-goal-modal__input"
           />
           <select
             name="unit"
             value={goalToEdit.unit}
             onChange={handleInputChange}
             required
+            className="edit-goal-modal__select"
           >
             <option value="">Select Unit</option>
             <option value="kg">kg</option>
@@ -52,6 +61,7 @@ export default function EditGoalModal({ isOpen, onRequestClose, goalToEdit, hand
             value={goalToEdit.current_progress}
             onChange={handleInputChange}
             required
+            className="edit-goal-modal__input"
           />
           <input
             type="date"
@@ -59,6 +69,7 @@ export default function EditGoalModal({ isOpen, onRequestClose, goalToEdit, hand
             value={goalToEdit.deadline_progress}
             onChange={handleInputChange}
             required
+            className="edit-goal-modal__input"
           />
           <div className="modal-buttons">
             <button className="save-button" onClick={handleSaveEdit}>

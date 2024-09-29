@@ -6,13 +6,74 @@
   margin: 2rem;
   background-color: white;
 
-  h1 {
+  /* Hero Section */
+  &__hero {
+    background-color: $yellow;
+    padding: 3rem 0;
+    width: 100%;
+
+    &-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+
+      @include tablet {
+        padding: 0 2rem;
+      }
+
+      &__title {
+        font-size: 2rem;
+        color: $orange;
+        margin-bottom: 1rem;
+
+        @include tablet {
+          font-size: 3rem;
+        }
+
+        @include desktop {
+          font-size: 3.5rem;
+        }
+      }
+
+      &__description {
+        font-size: 1.25rem;
+        color: white;
+        margin-bottom: 0.5rem;
+
+        @include tablet {
+          font-size: 1.5rem;
+        }
+
+        @include desktop {
+          font-size: 1.75rem;
+        }
+      }
+    }
+  }
+
+  &__title {
     font-size: 2rem;
     margin-bottom: 2rem;
     color: $font;
   }
 
-  .goals-container {
+  &__add-goal-button {
+    display: inline-block;
+    background-color: $background-light;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 1.4rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($background-light, 10%);
+    }
+  }
+
+  /* Goals Container and Cards */
+  &__goals-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
@@ -27,10 +88,8 @@
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
     border-radius: 20% 6px 20% 6px;
     padding: 25px 25px 30px;
-    color: white;
     font-size: 1.2rem;
     font-weight: 600;
-    cursor: pointer;
     position: relative;
 
     &.editing {
@@ -70,10 +129,6 @@
 
     .goal-progress {
       margin: 1rem 0;
-
-      .CircularProgressbar-text {
-        fill: white;
-      }
     }
 
     .goal-footer {
@@ -122,105 +177,26 @@
     }
   }
 
-  .add-goal-button {
-    display: inline-block;
+  /* Toast Notification */
+  .toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     background-color: $background-light;
     color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: darken($background-light, 10%);
-    }
-  }
-
-  @include tablet {
-    .goal-card {
-      max-width: 300px;
-    }
-  }
-
-  @include desktop {
-    .goal-card {
-      max-width: 350px;
-    }
-  }
-
-  .full-screen-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #f8f9fa; 
-    color: $orange; 
-    padding: 25px;
-    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    transition: opacity 0.3s ease;
 
-    .modal-content {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: center;
-
-      h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: $orange;
-      }
-
-      .new-goal-form {
-        input,
-        select {
-          display: block;
-          width: 100%;
-          margin-bottom: 1rem;
-          padding: 10px;
-          font-size: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-        }
-
-        .modal-buttons {
-          display: flex;
-          justify-content: space-between;
-          gap: 1rem;
-
-          .save-button {
-            background-color: $orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-          }
-
-          .cancel-button {
-            background-color: $orange;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-          }
-        }
-      }
+    &--show {
+      opacity: 1;
     }
-  }
 
-  .full-screen-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75); // Darken overlay
-    z-index: 999;
+    &--hide {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 }

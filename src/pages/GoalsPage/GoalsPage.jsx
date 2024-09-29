@@ -12,6 +12,8 @@ export default function GoalsPage() {
   const [goalToEdit, setGoalToEdit] = useState(null);
   const [goalToDelete, setGoalToDelete] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const [newGoal, setNewGoal] = useState({
     name: "",
     target: "",
@@ -44,7 +46,7 @@ export default function GoalsPage() {
         current_progress: Number(goalToEdit.current_progress),
         deadline_progress: new Date(goalToEdit.deadline_progress)
           .toISOString()
-          .split("T")[0], // Format deadline to 'yyyy-MM-dd'
+          .split("T")[0],
       };
 
       const response = await axios.put(
@@ -59,6 +61,8 @@ export default function GoalsPage() {
           )
         );
         setGoalToEdit(null);
+        setToastMessage("Goal updated successfully!");
+        setShowToast(true);
       }
     } catch (error) {
       console.error("Error updating goal:", error);
@@ -83,6 +87,8 @@ export default function GoalsPage() {
         setGoals(goals.filter((goal) => goal.id !== goalToDelete));
         setGoalToDelete(null);
         setIsDeleteModalOpen(false);
+        setToastMessage("Goal deleted successfully!");
+        setShowToast(true);
       }
     } catch (error) {
       console.error("Error deleting goal:", error);
@@ -90,12 +96,12 @@ export default function GoalsPage() {
   };
 
   const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false); // This was the missing function
+    setIsDeleteModalOpen(false);
   };
 
   const extractNumericValue = (value) => {
     if (typeof value === "number") {
-      return value; // If it's already a number, return it directly.
+      return value;
     }
 
     if (typeof value === "string") {
@@ -103,17 +109,37 @@ export default function GoalsPage() {
       return numericValue ? parseFloat(numericValue[0]) : 0;
     }
 
-    return 0; // Fallback for other types (e.g., null, undefined).
+    return 0;
   };
 
   return (
     <main className="goals-page">
-      <h1>Your Goals</h1>
-      <button className="add-goal-button" onClick={() => setIsModalOpen(true)}>
+      {/* Hero Section */}
+      <section className="goals-page__hero">
+        <div className="goals-page__hero-content">
+          <h1 className="goals-page__hero-content__title">
+            Track Your Fitness Goals with Ease
+          </h1>
+          <p className="goals-page__hero-content__description">
+            Stay motivated, set new targets, and watch your progress grow!
+          </p>
+        </div>
+      </section>
+
+      <h2 className="goals-page__title">Your Current Goals</h2>
+
+      <button
+        className="goals-page__add-goal-button"
+        onClick={() => setIsModalOpen(true)}
+      >
         Add New Goal
       </button>
 
-      <div className={`goals-container ${isDeleteModalOpen ? "hide" : ""}`}>
+      <div
+        className={`goals-page__goals-container ${
+          isDeleteModalOpen ? "hide" : ""
+        }`}
+      >
         {goals.map((goal) => {
           const validTarget = Number(goal.target) || 1;
           const validProgress = extractNumericValue(goal.current_progress);
@@ -160,9 +186,6 @@ export default function GoalsPage() {
                     <option value="reps">reps</option>
                     <option value="sets">sets</option>
                     <option value="hours">hours</option>
-                    <option value="name">name</option>
-                    <option value="body part">body part</option>
-                    <option value="workout type">workout type</option>
                   </select>
                   <input
                     type="text"
@@ -188,12 +211,15 @@ export default function GoalsPage() {
                     }
                     required
                   />
-                  <div className="edit-actions">
-                    <button className="save-button" onClick={handleSaveEdit}>
+                  <div className="goals-page__edit-actions">
+                    <button
+                      className="goals-page__edit-actions__save-button"
+                      onClick={handleSaveEdit}
+                    >
                       Save
                     </button>
                     <button
-                      className="cancel-button"
+                      className="goals-page__edit-actions__cancel-button"
                       onClick={handleCancelEdit}
                     >
                       Cancel
@@ -227,7 +253,7 @@ export default function GoalsPage() {
                             ? "#2f5c63"
                             : percentageCompleted >= 0
                             ? "#fd6827"
-                            : "#eee", 
+                            : "#eee",
                         trailColor: "#eee",
                         textSize: "16px",
                       })}
@@ -249,6 +275,10 @@ export default function GoalsPage() {
         })}
       </div>
 
+      {showToast && (
+        <Toast message={toastMessage} onClose={() => setShowToast(false)} />
+      )}
+
       <AddGoalModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -259,34 +289,35 @@ export default function GoalsPage() {
         }}
         handleAddNewGoal={async (e) => {
           e.preventDefault();
-        
-          // Ensure the deadline_progress is formatted as YYYY-MM-DD
-          const formattedDeadline = new Date(newGoal.deadline_progress).toISOString().split('T')[0];
-        
+
+          const formattedDeadline = new Date(newGoal.deadline_progress)
+            .toISOString()
+            .split("T")[0];
+
           try {
-            const response = await axios.post(
-              "http://localhost:5050/goals",
-              {
-                ...newGoal,
-                deadline_progress: formattedDeadline, // Use the formatted date
-              }
-            );
-        
+            const response = await axios.post("http://localhost:5050/goals", {
+              ...newGoal,
+              deadline_progress: formattedDeadline,
+            });
+
             if (response.status === 201) {
               setGoals([...goals, response.data]);
-              setIsModalOpen(false); // Close the modal
+              setIsModalOpen(false);
+              setToastMessage("Goal added successfully!");
+              setShowToast(true);
             }
           } catch (error) {
             console.error("Error adding new goal:", error);
           }
-        }}        
+        }}
       />
 
       <DeleteGoalModal
         isOpen={isDeleteModalOpen}
-        onRequestClose={handleCancelDelete} // Reference the new function here
+        onRequestClose={handleCancelDelete}
         handleConfirmDelete={handleConfirmDelete}
       />
     </main>
   );
 }
+

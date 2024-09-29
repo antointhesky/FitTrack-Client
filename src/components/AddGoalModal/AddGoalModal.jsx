@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./AddGoalModal.scss";
 
-// For accessibility, bind modal to your app element (usually root)
 Modal.setAppElement("#root");
 
 export default function AddGoalModal({
@@ -51,7 +50,6 @@ export default function AddGoalModal({
             required
           />
 
-          {/* Custom Dropdown for Unit Selection */}
           <div className="custom-dropdown-container">
             <div
               className={`custom-dropdown ${newGoal.unit ? "" : "placeholder"}`}
@@ -74,7 +72,6 @@ export default function AddGoalModal({
             )}
           </div>
 
-          {/* Custom DatePicker instead of native input[type="date"] */}
           <DatePicker
             selected={startDate}
             onChange={(date) => {

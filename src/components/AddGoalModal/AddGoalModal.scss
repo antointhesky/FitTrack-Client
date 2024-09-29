@@ -150,14 +150,13 @@
   }
 }
 
-// Restored the goal overlay effect
 .add-goal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); // Restoring the dark overlay effect
+  background-color: rgba(0, 0, 0, 0.75); 
   z-index: 999;
 }
 
@@ -194,10 +193,9 @@
     color: white;
   }
 
-  // Increased the width of the month container
   .react-datepicker__month {
     background-color: white;
-    width: 350px; // Adjust this value to make the month container wider
+    width: 350px;
   }
 
   .react-datepicker__current-month {
