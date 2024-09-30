@@ -7,15 +7,15 @@ import "./HomePage.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
-import AddGoalModal from "../../components/AddGoalModal/AddGoalModal"; // Assuming the path is correct
+import AddGoalModal from "../../components/AddGoalModal/AddGoalModal"; 
 
 const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
   const [bodyParts, setBodyParts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
-  const [goals, setGoals] = useState([]); // Initialize as an empty array
-  const [isModalOpen, setIsModalOpen] = useState(false); // New state for modal
+  const [goals, setGoals] = useState([]); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const [newGoal, setNewGoal] = useState({
     name: "",
     target: "",
@@ -26,7 +26,6 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
-  // Fetch workouts, body parts, and goals
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
@@ -64,7 +63,6 @@ const HomePage = () => {
     fetchGoals();
   }, []);
 
-  // Handle search
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm) {
@@ -72,14 +70,13 @@ const HomePage = () => {
     }
   };
 
-  // Add new goal
   const handleAddNewGoal = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:5050/goals", newGoal);
       if (response.status === 201) {
-        setGoals([...goals, response.data]); // Update goals list
-        setIsModalOpen(false); // Close the modal
+        setGoals([...goals, response.data]); 
+        setIsModalOpen(false); 
       }
     } catch (error) {
       console.error("Error adding new goal:", error);
@@ -96,42 +93,42 @@ const HomePage = () => {
   };
 
   return (
-    <main>
+    <main className="home-page">
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Unlock Your Full Potential</h1>
-          <p>Start tracking your fitness journey today. Choose your workouts, set goals, and reach new heights.</p>
-          <button className="cta-button" onClick={handleStartNowClick}>Start Now</button>
+      <section className="home-page__hero">
+        <div className="home-page__hero-content">
+        <h1 className="home-page__hero-title">Unlock Your Full Potential</h1>
+        <p className="home-page__hero-description">Start tracking your fitness journey today. Choose your workouts, set goals, and reach new heights.</p>
+          <button className="home-page__cta-button" onClick={handleStartNowClick}>Start Now</button>
         </div>
       </section>
 
-      <div className="container">
-        {/* Combined Title for Search and Slider */}
-        <h2 className="highlight-title">Find Workouts and Explore Types</h2>
+      <div className="home-page__container">
+        <h2 className="home-page__highlight-title">Find Workouts and Explore Types</h2>
         
         {/* Search Bar Section */}
-        <div className="search-section">
-          <form className="search-bar" onSubmit={handleSearch}>
+        <div className="home-page__search-section">
+          <form className="home-page__search-bar" onSubmit={handleSearch}>
             <input
               type="text"
               placeholder="Search by body part"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => setIsDropdownVisible(true)}
+              className="home-page__search-input"
             />
-            <button type="submit">
+            <button type="submit" className="home-page__search-button">
               <FaSearch /> 
             </button>
 
             {isDropdownVisible && (
-              <div className="custom-dropdown">
+              <div className="home-page__custom-dropdown">
                 {bodyParts
                   .filter((part) => part.body_part.toLowerCase().includes(searchTerm.toLowerCase()))
                   .map((part, index) => (
                     <div
                       key={index}
-                      className="dropdown-item"
+                      className="home-page__dropdown-item"
                       onClick={() => handleDropdownItemClick(part.body_part)}
                     >
                       {part.body_part}
@@ -162,12 +159,13 @@ const HomePage = () => {
           {workouts.map((workout) => (
             <SwiperSlide key={workout.id}>
               <Link to={`/workouts?workout_type=${encodeURIComponent(workout.name)}`}>
-                <div className="card">
+                <div className="home-page__workout-card">
                   <img
                     src={`http://localhost:5050${workout.imageUrl}`}
                     alt={workout.name}
+                    className="home-page__workout-img"
                   />
-                  <h3 className="title">{workout.name}</h3>
+                  <h3 className="home-page__workout-title">{workout.name}</h3>
                 </div>
               </Link>
             </SwiperSlide>
@@ -178,22 +176,22 @@ const HomePage = () => {
       </div>
 
       {/* New Goals Section */}
-      <section className="goals-section">
-        <h2>Your Fitness Goals</h2>
+      <section className="home-page__goals-section">
+      <h2 className="home-page__goals-title">Your Fitness Goals</h2>
         {Array.isArray(goals) && goals.length > 0 ? (
-          <div className="goals-list">
+          <div className="home-page__goals-list">
             {goals.map((goal) => (
-              <div key={goal.id} className="goal-card">
-                <h3>{goal.name}</h3>
-                <p>Progress: {goal.current_progress} / {goal.target} {goal.unit}</p>
-                <p>Deadline: {new Date(goal.deadline_progress).toLocaleDateString()}</p>
+              <div key={goal.id} className="home-page__goal-card">
+                <h3 className="home-page__goal-name">{goal.name}</h3>
+                <p className="home-page__goal-progress">Progress: {goal.current_progress} / {goal.target} {goal.unit}</p>
+                <p className="home-page__goal-deadline">Deadline: {new Date(goal.deadline_progress).toLocaleDateString()}</p>
               </div>
             ))}
           </div>
         ) : (
-          <p>No goals yet. <button onClick={() => setIsModalOpen(true)}>Set Your First Goal</button></p>
+          <p>No goals yet. <button className="home-page__set-goal-button" onClick={() => setIsModalOpen(true)}>Set Your First Goal</button></p>
         )}
-        <button className="add-goal-button" onClick={() => setIsModalOpen(true)}>Add New Goal</button>
+        <button className="home-page__add-goal-button" onClick={() => setIsModalOpen(true)}>Add New Goal</button>
       </section>
 
       {/* Add Goal Modal */}
@@ -212,3 +210,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+

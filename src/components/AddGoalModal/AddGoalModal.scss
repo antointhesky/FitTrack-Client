@@ -45,63 +45,63 @@
     border-radius: 5px;
     color: $font-light;
     margin-top: 1rem;
-      &::placeholder {
-        color: $font-light;
-      }
-      &:focus {
-        outline: none;
-        border-color: $orange;
-      }
+    &::placeholder {
+      color: $font-light;
     }
+    &:focus {
+      outline: none;
+      border-color: $orange;
+    }
+  }
 
   &__dropdown-container {
-      position: relative;
-      margin-bottom: 1rem;
-      width: 100%;
+    position: relative;
+    margin-bottom: 1rem;
+    width: 100%;
   }
 
   &__dropdown {
-      background-color: white;
+    background-color: white;
+    color: $font-light;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    &::placeholder {
       color: $font-light;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-        &::placeholder {
-          color: $font-light;
-        }
-        &:focus {
-          outline: none;
-          border-color: $orange;
-        }
+    }
+    &:focus {
+      outline: none;
+      border-color: $orange;
+    }
   }
 
   &__dropdown-menu {
-      position: absolute;
-      top: 120%;
-      left: 0;
-      width: 100%;
-      background-color: white;
-      border: 2px solid $orange;
-      border-radius: 5px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
+    position: absolute;
+    top: 120%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 2px solid $orange;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
   }
 
   &__dropdown-item {
-      padding: 10px;
-      font-size: 1rem;
-      color: $font-light;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    padding: 0 1rem;
+    font-size: 1rem;
+    color: $font-light;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
-      &:hover {
-        background-color: lighten($orange, 20%);
-        color: white;
-        }
+    &:hover {
+      background-color: lighten($orange, 20%);
+      color: white;
+    }
   }
-      
+
   &__date-picker {
     width: 100%;
     padding: 10px;
@@ -109,50 +109,50 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     color: $font-light;
-      &:focus {
-        border-color: $orange;
-        outline: none;
-      }
+    &:focus {
+      border-color: $orange;
+      outline: none;
     }
+  }
 
-      .react-datepicker-wrapper {
-        width: 100%;
-      }
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
 
-      .react-datepicker__input-container {
-        width: 100%;
-      }
+  .react-datepicker__input-container {
+    width: 100%;
+  }
 
   &__actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-    }
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
 
   &__save-button,
   &__cancel-button {
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      border: none;
-      font-size: 1rem;
-      }
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+  }
 
   &__save-button {
-      background-color: $orange;
-      color: white;
-        &:hover {
-          background-color: darken($orange, 10%);
-        }
-      }
+    background-color: $orange;
+    color: white;
+    &:hover {
+      background-color: darken($orange, 10%);
+    }
+  }
 
-  &__cancel-button  {
-      background-color: $background-light;
-      color: white;
-        &:hover {
-          background-color: darken($background-light, 10%);
-        }
-      }
+  &__cancel-button {
+    background-color: $background-light;
+    color: white;
+    &:hover {
+      background-color: darken($background-light, 10%);
+    }
+  }
 }
 
 .react-datepicker {
