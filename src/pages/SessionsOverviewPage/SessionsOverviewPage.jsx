@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import DeleteSessionModal from "../../components/DeleteSessionModal/DeleteSessionModal";
 import "./SessionsOverviewPage.scss";
+
+const API_URL = import.meta.env.VITE_API_URL; 
 
 export default function SessionsOverviewPage() {
   const [sessions, setSessions] = useState([]);
@@ -12,7 +14,7 @@ export default function SessionsOverviewPage() {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/session");
+        const response = await axios.get(`${API_URL}/session`); 
         setSessions(response.data);
       } catch (error) {
         console.error("Error fetching sessions:", error);
@@ -29,9 +31,9 @@ export default function SessionsOverviewPage() {
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5050/session/${sessionToDelete}`);
+      const response = await axios.delete(`${API_URL}/session/${sessionToDelete}`); 
       if (response.status === 200) {
-        setSessions(sessions.filter((session) => session.id !== sessionToDelete)); // Remove the deleted session
+        setSessions(sessions.filter((session) => session.id !== sessionToDelete)); 
         setSessionToDelete(null);
         setIsDeleteModalOpen(false);
       }

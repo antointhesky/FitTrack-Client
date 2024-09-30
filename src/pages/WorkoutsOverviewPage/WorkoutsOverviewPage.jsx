@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDumbbell, faRunning, faBiking, faHeartbeat, faHandSparkles } from "@fortawesome/free-solid-svg-icons";
 import "./WorkoutsOverviewPage.scss";
+
+const API_URL = import.meta.env.VITE_API_URL; 
 
 export default function WorkoutsOverviewPage() {
   const [workoutTypes, setWorkoutTypes] = useState([]);
@@ -12,7 +14,7 @@ export default function WorkoutsOverviewPage() {
   useEffect(() => {
     const fetchWorkoutTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/workouts");
+        const response = await axios.get(`${API_URL}/workouts`); 
         setWorkoutTypes(response.data);
       } catch (error) {
         console.error("Error fetching workout types:", error);
@@ -21,7 +23,7 @@ export default function WorkoutsOverviewPage() {
 
     const fetchBodyParts = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/exercises/bodyparts");
+        const response = await axios.get(`${API_URL}/exercises/bodyparts`); 
         setBodyParts(response.data);
       } catch (error) {
         console.error("Error fetching body parts:", error);

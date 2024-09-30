@@ -1,4 +1,3 @@
-import React from "react";
 import AdviceCard from "../../components/AdviceCard/AdviceCard";
 import "./AdvicePage.scss";
 
