@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SessionPage.scss";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SessionPage = () => {
   const { id } = useParams();
@@ -18,7 +18,9 @@ const SessionPage = () => {
       try {
         let sessionId = id;
 
-        const storedSession = JSON.parse(localStorage.getItem("currentSession"));
+        const storedSession = JSON.parse(
+          localStorage.getItem("currentSession")
+        );
         if (storedSession) {
           sessionId = storedSession.session_id;
         }
@@ -27,16 +29,24 @@ const SessionPage = () => {
           const response = await axios.get(`${API_URL}/session/${sessionId}`); // Use API_URL
           setExercises(response.data.exercises);
         } else {
-          const currentSessionResponse = await axios.get(`${API_URL}/session/current`); 
+          const currentSessionResponse = await axios.get(
+            `${API_URL}/session/current`
+          );
 
           if (currentSessionResponse.data) {
             const currentSessionId = currentSessionResponse.data.id;
-            localStorage.setItem("currentSession", JSON.stringify({ session_id: currentSessionId }));
+            localStorage.setItem(
+              "currentSession",
+              JSON.stringify({ session_id: currentSessionId })
+            );
             navigate(`/session/${currentSessionId}`);
           } else {
-            const newSessionResponse = await axios.post(`${API_URL}/session`); 
+            const newSessionResponse = await axios.post(`${API_URL}/session`);
             const newSessionId = newSessionResponse.data.session_id;
-            localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
+            localStorage.setItem(
+              "currentSession",
+              JSON.stringify({ session_id: newSessionId })
+            );
             navigate(`/session/${newSessionId}`);
           }
         }
@@ -52,7 +62,7 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchAllExercises = async () => {
       try {
-        const response = await axios.get(`${API_URL}/exercises`); 
+        const response = await axios.get(`${API_URL}/exercises`);
         const exercisesByWorkoutType = response.data.reduce((acc, exercise) => {
           if (!acc[exercise.workout_type]) {
             acc[exercise.workout_type] = [];
@@ -84,7 +94,7 @@ const SessionPage = () => {
 
   const handleDelete = async (exerciseId) => {
     try {
-      await axios.delete(`${API_URL}/session/${id}/exercise/${exerciseId}`); 
+      await axios.delete(`${API_URL}/session/${id}/exercise/${exerciseId}`);
       setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     } catch (error) {
       setError("Error removing exercise");
@@ -93,15 +103,16 @@ const SessionPage = () => {
 
   const handleSaveSession = async () => {
     try {
-  
-      const response = await axios.patch(`${API_URL}/session/${id}`, { exercises }); 
-  
-      console.log("Sending goals update:", { exercises }); 
-  
-      await axios.patch(`${API_URL}/goals/update-goals-progress`, {
-        exercises, 
+      const response = await axios.patch(`${API_URL}/session/${id}`, {
+        exercises,
       });
-  
+
+      console.log("Sending goals update:", { exercises });
+
+      await axios.patch(`${API_URL}/goals/update-goals-progress`, {
+        exercises,
+      });
+
       localStorage.removeItem("currentSession");
       navigate("/progress");
     } catch (error) {
@@ -109,7 +120,7 @@ const SessionPage = () => {
       setError("Error saving session and updating goals");
     }
   };
-  
+
   if (loading) {
     return <p>Loading session data...</p>;
   }
@@ -120,14 +131,20 @@ const SessionPage = () => {
 
   return (
     <main className="session-page">
-      <div className="current-session">
+      <div className="session-page__current-session">
         <h1>Current Session</h1>
         {exercises.length > 0 ? (
-          <div className="exercise-list">
+          <div className="session-page__exercise-list">
             {exercises.map((exercise) => (
-              <div key={exercise.id} className="exercise-card">
-                <h3>{exercise.name}</h3>
-                <div className="exercise-toggle" onClick={() => handleDelete(exercise.id)}>
+              <div
+                key={exercise.id}
+                className="session-page__exercise-card current-session"
+              >
+                <h3 className="session-page__exercise-name">{exercise.name}</h3>
+                <div
+                  className="session-page__exercise-toggle"
+                  onClick={() => handleDelete(exercise.id)}
+                >
                   <span>−</span>
                 </div>
               </div>
@@ -138,23 +155,36 @@ const SessionPage = () => {
         )}
       </div>
 
-      <div className="add-exercises">
-        <h2>Add Exercises</h2>
+      <div className="session-page__add-exercises">
+        <h2 className="session-page__add-exercises-title">Add Exercises</h2>
         {Object.keys(allExercises).map((workoutType) => (
-          <div key={workoutType} className="workout-section">
-            <h3 className="workout-type-title">{workoutType}</h3>
-            <div className="available-exercises">
+          <div key={workoutType} className="session-page__workout-section">
+            <h3 className="session-page__workout-type-title">{workoutType}</h3>
+            <div className="session-page__available-exercises">
               {allExercises[workoutType].map((exercise) => (
-                <div key={exercise.id} className="exercise-card">
-                  <h3>{exercise.name}</h3>
-                  <p>
-                    <strong>Body Part:</strong> {exercise.body_part}
+                <div key={exercise.id} className="session-page__exercise-card">
+                  <h3 className="session-page__exercise-card-title">
+                    {exercise.name}
+                  </h3>
+                  <p className="session-page__exercise-card-details">
+                    Body Part: {exercise.body_part}
                   </p>
-                  <p>Sets: {exercise.sets}</p>
-                  <p>Reps: {exercise.reps}</p>
-                  <p>Duration: {exercise.duration}</p>
-                  <p>Calories Burned: {exercise.calories_burned}</p>
-                  <div className="exercise-toggle" onClick={() => handleAddExercise(exercise.id)}>
+                  <p className="session-page__exercise-card-details">
+                    Sets: {exercise.sets}
+                  </p>
+                  <p className="session-page__exercise-card-details">
+                    Reps: {exercise.reps}
+                  </p>
+                  <p className="session-page__exercise-card-details">
+                    Duration: {exercise.duration}
+                  </p>
+                  <p className="session-page__exercise-card-details">
+                    Calories Burned: {exercise.calories_burned}
+                  </p>
+                  <div
+                    className="session-page__exercise-toggle"
+                    onClick={() => handleAddExercise(exercise.id)}
+                  >
                     <span>+</span>
                   </div>
                 </div>
@@ -164,8 +194,11 @@ const SessionPage = () => {
         ))}
       </div>
 
-      <div className="save-session-container">
-        <button className="save-session" onClick={handleSaveSession}>
+      <div className="session-page__save-session-container">
+        <button
+          className="session-page__save-session"
+          onClick={handleSaveSession}
+        >
           <span> + Save Session </span>
         </button>
       </div>
@@ -174,5 +207,3 @@ const SessionPage = () => {
 };
 
 export default SessionPage;
-
-
