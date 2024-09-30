@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SessionPage.scss";
 
+const API_URL = import.meta.env.VITE_API_URL; 
+
 const SessionPage = () => {
-  const { id } = useParams(); // Get session ID from URL if available
+  const { id } = useParams();
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
   const [allExercises, setAllExercises] = useState({});
@@ -14,7 +16,6 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchOrCreateSession = async () => {
       try {
-        // Check if session ID is available in localStorage or URL param
         let sessionId = id;
 
         const storedSession = JSON.parse(localStorage.getItem("currentSession"));
@@ -23,21 +24,17 @@ const SessionPage = () => {
         }
 
         if (sessionId) {
-          // Fetch session by ID if it exists in the URL or localStorage
-          const response = await axios.get(`http://localhost:5050/session/${sessionId}`);
+          const response = await axios.get(`${API_URL}/session/${sessionId}`); // Use API_URL
           setExercises(response.data.exercises);
         } else {
-          // Check for an ongoing (draft) session on the server
-          const currentSessionResponse = await axios.get("http://localhost:5050/session/current");
+          const currentSessionResponse = await axios.get(`${API_URL}/session/current`); 
 
           if (currentSessionResponse.data) {
-            // If an ongoing session (draft) exists, redirect to that session
             const currentSessionId = currentSessionResponse.data.id;
             localStorage.setItem("currentSession", JSON.stringify({ session_id: currentSessionId }));
             navigate(`/session/${currentSessionId}`);
           } else {
-            // Create a new session only if no draft session exists
-            const newSessionResponse = await axios.post("http://localhost:5050/session");
+            const newSessionResponse = await axios.post(`${API_URL}/session`); 
             const newSessionId = newSessionResponse.data.session_id;
             localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
             navigate(`/session/${newSessionId}`);
@@ -55,7 +52,7 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchAllExercises = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/exercises");
+        const response = await axios.get(`${API_URL}/exercises`); 
         const exercisesByWorkoutType = response.data.reduce((acc, exercise) => {
           if (!acc[exercise.workout_type]) {
             acc[exercise.workout_type] = [];
@@ -73,7 +70,7 @@ const SessionPage = () => {
 
   const handleAddExercise = async (exerciseId) => {
     try {
-      await axios.post(`http://localhost:5050/session/${id}/exercise`, {
+      await axios.post(`${API_URL}/session/${id}/exercise`, {
         exerciseId,
       });
       const exercise = Object.values(allExercises)
@@ -87,7 +84,7 @@ const SessionPage = () => {
 
   const handleDelete = async (exerciseId) => {
     try {
-      await axios.delete(`http://localhost:5050/session/${id}/exercise/${exerciseId}`);
+      await axios.delete(`${API_URL}/session/${id}/exercise/${exerciseId}`); 
       setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
     } catch (error) {
       setError("Error removing exercise");
@@ -96,15 +93,13 @@ const SessionPage = () => {
 
   const handleSaveSession = async () => {
     try {
-      console.log("Sending exercises:", exercises); // Log exercises to check data structure
   
-      const response = await axios.patch(`http://localhost:5050/session/${id}`, { exercises });
+      const response = await axios.patch(`${API_URL}/session/${id}`, { exercises }); 
   
-      console.log("Sending goals update:", { exercises }); // Log selectedGoals and exercises before sending
+      console.log("Sending goals update:", { exercises }); 
   
-      // Update goals progress using PATCH
-      await axios.patch(`http://localhost:5050/goals/update-goals-progress`, {
-        exercises, // Ensure the exercises structure matches the backend's expectation
+      await axios.patch(`${API_URL}/goals/update-goals-progress`, {
+        exercises, 
       });
   
       localStorage.removeItem("currentSession");

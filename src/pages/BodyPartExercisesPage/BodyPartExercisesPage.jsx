@@ -3,6 +3,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./BodyPartExercisesPage.scss";
 
+const API_URL = import.meta.env.VITE_API_URL; 
+
 const BodyPartExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]); 
@@ -15,7 +17,7 @@ const BodyPartExercisesPage = () => {
       const fetchExercises = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:5050/exercises?body_part=${encodeURIComponent(bodyPart)}`
+            `${API_URL}/exercises?body_part=${encodeURIComponent(bodyPart)}` // Use API_URL
           );
           setExercises(response.data);
         } catch (error) {
@@ -37,12 +39,12 @@ const BodyPartExercisesPage = () => {
   const handleGoToSession = async () => {
     const sessionData = {
       exercises: selectedExercises.map((id) => ({
-        id, // Passing the exercise ID
+        id, 
       })),
     };
 
     try {
-      const response = await axios.post("http://localhost:5050/session", sessionData);
+      const response = await axios.post(`${API_URL}/session`, sessionData); // Use API_URL
       const sessionId = response.data.session_id;
       navigate(`/session/${sessionId}`);
     } catch (error) {
@@ -65,7 +67,7 @@ const BodyPartExercisesPage = () => {
             onClick={() => handleToggleExercise(exercise.id)}
           >
             <div className="video-wrapper">
-              <video src={`http://localhost:5050${exercise.video_url}`} controls />
+              <video src={`${API_URL}${exercise.video_url}`} controls /> {/* Use API_URL */}
               <div className="info-icon" title="Watch the exercise tutorial video">ℹ️</div>
             </div>
             <h3>{exercise.name}</h3>
@@ -92,4 +94,5 @@ const BodyPartExercisesPage = () => {
 };
 
 export default BodyPartExercisesPage;
+
 

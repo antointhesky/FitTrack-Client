@@ -18,6 +18,8 @@ import {
 } from "chart.js";
 import "./ProgressPage.scss";
 
+const API_URL = import.meta.env.VITE_API_URL; 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -44,7 +46,7 @@ const ProgressPage = () => {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/session");
+        const response = await axios.get(`${API_URL}/session`); 
         setSessions(response.data);
 
         const labels = response.data.map((session) =>
@@ -318,3 +320,4 @@ const ProgressPage = () => {
 };
 
 export default ProgressPage;
+

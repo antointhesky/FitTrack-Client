@@ -3,17 +3,18 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import "./Header.scss";
 
+const API_URL = import.meta.env.VITE_API_URL; 
+
 export default function Header() {
   const [currentSession, setCurrentSession] = useState(null);
 
   useEffect(() => {
     const fetchCurrentSession = async () => {
       try {
-        const response = await axios.get("http://localhost:5050/session/current");
-        setCurrentSession(response.data); // Set the ongoing session if found
+        const response = await axios.get(`${API_URL}/session/current`); 
+        setCurrentSession(response.data); 
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          // No ongoing session found, so set currentSession to null
           setCurrentSession(null);
         } else {
           console.error("Error fetching current session:", error);
@@ -23,7 +24,6 @@ export default function Header() {
 
     fetchCurrentSession();
 
-    // Polling every 3 seconds
     const intervalId = setInterval(fetchCurrentSession, 3000);
     return () => clearInterval(intervalId);
   }, []);
@@ -72,7 +72,6 @@ export default function Header() {
           Goals
         </NavLink>
 
-        {/* Show 'Start Session' or 'Current Session' based on session availability */}
         <NavLink
           to={currentSession ? `/session/${currentSession.id}` : "/session/start"}
           className={({ isActive }) =>
@@ -87,3 +86,4 @@ export default function Header() {
     </header>
   );
 }
+

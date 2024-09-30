@@ -29,7 +29,7 @@ export default function BottomNavBar() {
         to="/advice"
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
-        <FaLightbulb className="icon" /> {/* Changed icon to FaLightbulb */}
+        <FaLightbulb className="icon" /> 
         <span>Advice</span>
       </NavLink>
 

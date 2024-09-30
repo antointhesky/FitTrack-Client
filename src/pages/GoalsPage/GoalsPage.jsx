@@ -6,6 +6,8 @@ import AddGoalModal from "../../components/AddGoalModal/AddGoalModal";
 import DeleteGoalModal from "../../components/DeleteGoalModal/DeleteGoalModal";
 import "./GoalsPage.scss";
 
+const API_URL = import.meta.env.VITE_API_URL; 
+
 function Toast({ message, onClose }) {
   return (
     <div className="toast">
@@ -39,7 +41,7 @@ export default function GoalsPage() {
 
   const fetchGoals = async () => {
     try {
-      const response = await axios.get("http://localhost:5050/goals");
+      const response = await axios.get(`${API_URL}/goals`); 
       setGoals(response.data);
     } catch (error) {
       console.error("Error fetching goals:", error);
@@ -61,7 +63,7 @@ export default function GoalsPage() {
       };
 
       const response = await axios.put(
-        `http://localhost:5050/goals/${goalToEdit.id}`,
+        `${API_URL}/goals/${goalToEdit.id}`, 
         updatedGoal
       );
 
@@ -91,9 +93,7 @@ export default function GoalsPage() {
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5050/goals/${goalToDelete}`
-      );
+      const response = await axios.delete(`${API_URL}/goals/${goalToDelete}`); // Use API_URL
       if (response.status === 200) {
         setGoals(goals.filter((goal) => goal.id !== goalToDelete));
         setGoalToDelete(null);
@@ -160,7 +160,8 @@ export default function GoalsPage() {
           return (
             <div
               key={goal.id}
-              className={`goal-card ${goalToEdit && goalToEdit.id === goal.id ? "editing" : ""}`}>
+              className={`goal-card ${goalToEdit && goalToEdit.id === goal.id ? "editing" : ""}`}
+            >
               {goalToEdit && goalToEdit.id === goal.id ? (
                 <div className="edit-form">
                   <input
@@ -313,7 +314,7 @@ export default function GoalsPage() {
           const formattedDeadline = deadlineDate.toISOString().split("T")[0];
         
           try {
-            const response = await axios.post("http://localhost:5050/goals", {
+            const response = await axios.post(`${API_URL}/goals`, { 
               ...newGoal,
               deadline_progress: formattedDeadline, 
             });
@@ -338,3 +339,4 @@ export default function GoalsPage() {
     </main>
   );
 }
+
