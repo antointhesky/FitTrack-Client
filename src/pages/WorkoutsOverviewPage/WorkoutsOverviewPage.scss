@@ -4,14 +4,14 @@
 .workouts-overview-page {
   padding: 2rem 1rem;
 
-  h1 {
+  &__title {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     color: $orange;
     text-align: center;
   }
 
-  h2 {
+  &__subtitle {
     font-size: 1.2rem;
     margin-bottom: 3rem;
     color: $font-light;
@@ -20,7 +20,7 @@
     margin: 0 auto 3rem;
   }
 
-  .section-container {
+  &__section-container {
     display: flex;
     flex-direction: column;
     margin-bottom: 3rem;
@@ -34,93 +34,95 @@
       flex-direction: row;
       justify-content: space-between;
     }
+  }
 
-    .section-left {
-      h2 {
-        font-size: 1.8rem;
-        margin-bottom: 1.5rem;
-        color: $font;
-        text-align: center;
-        padding-bottom: 1rem;
-        border-bottom: 4px solid $background-light;  // Bigger bottom border for better visual separation
-        width: 100%;
+  &__section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: $font;
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 4px solid $background-light;
+    width: 100%;
 
-        @include tablet {
-          text-align: left;
-          padding-bottom: 0;
-          border-bottom: none;
-          margin-bottom: 0;
-        }
-
-        @include desktop {
-          text-align: left;
-          padding-bottom: 0;
-          border-bottom: none;
-          margin-bottom: 0;
-        }
-      }
-
-      @include tablet; 
-      @include desktop {
-        width: 30%; // Titles take 30% of the width on larger screens
-      }
+    @include tablet {
+      text-align: left;
+      padding-bottom: 0;
+      border-bottom: none;
+      margin-bottom: 0;
     }
 
-    .section-right {
-      width: 100%;
+    @include desktop {
+      text-align: left;
+      padding-bottom: 0;
+      border-bottom: none;
+      margin-bottom: 0;
+    }
 
-      @include tablet {
-        width: 70%;  // Cards take 70% of the width on larger screens
-        padding-left: 3rem;
-      }
-
-      @include desktop {
-        width: 70%;  // Cards take 70% of the width on larger screens
-        padding-left: 3rem;
-      }
-
-      .grid-container {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
-
-      .workout-type-card,
-      .body-part-card {
-        background-color: $orange;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        color: white;
-        font-weight: bold;
-        text-decoration: none;
-        transition: transform 0.3s ease;
-        width: 150px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        &:hover {
-          transform: scale(1.05);
-        }
-
-        .workout-icon,
-        .body-part-icon {
-          margin-bottom: 10px;
-          color: white;
-        }
-
-        h3 {
-          margin: 0;
-          color: white;
-          font-size: 1.1rem;
-        }
-      }
+    @include tablet;
+    @include desktop {
+      width: 30%;
     }
   }
 
-  // Add extra space between the two sections
+  &__section-right {
+    width: 100%;
+
+    @include tablet {
+      width: 70%;
+      padding-left: 3rem;
+    }
+
+    @include desktop {
+      width: 70%;
+      padding-left: 3rem;
+    }
+  }
+
+  &__grid-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  &__workout-type-card,
+  &__body-part-card {
+    background-color: $orange;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    width: 150px;
+    aspect-ratio: 1 / 1; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  &__workout-icon,
+  &__body-part-icon {
+    margin-bottom: 10px;
+    color: white;
+    font-size: 3rem; 
+  }
+
+  &__workout-name,
+  &__body-part-name {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+    text-align: center; 
+  }
+
   .body-parts-section {
     margin-top: 4rem;
   }

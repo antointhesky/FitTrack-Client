@@ -3,11 +3,11 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./BodyPartExercisesPage.scss";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const BodyPartExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
-  const [selectedExercises, setSelectedExercises] = useState([]); 
+  const [selectedExercises, setSelectedExercises] = useState([]);
   const [searchParams] = useSearchParams();
   const bodyPart = searchParams.get("body_part");
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const BodyPartExercisesPage = () => {
       const fetchExercises = async () => {
         try {
           const response = await axios.get(
-            `${API_URL}/exercises?body_part=${encodeURIComponent(bodyPart)}` // Use API_URL
+            `${API_URL}/exercises?body_part=${encodeURIComponent(bodyPart)}`
           );
           setExercises(response.data);
         } catch (error) {
@@ -38,13 +38,11 @@ const BodyPartExercisesPage = () => {
 
   const handleGoToSession = async () => {
     const sessionData = {
-      exercises: selectedExercises.map((id) => ({
-        id, 
-      })),
+      exercises: selectedExercises.map((id) => ({ id })),
     };
 
     try {
-      const response = await axios.post(`${API_URL}/session`, sessionData); // Use API_URL
+      const response = await axios.post(`${API_URL}/session`, sessionData);
       const sessionId = response.data.session_id;
       navigate(`/session/${sessionId}`);
     } catch (error) {
@@ -54,28 +52,38 @@ const BodyPartExercisesPage = () => {
 
   return (
     <main className="body-part-exercises-page">
-      <h1>Exercises for {bodyPart}</h1>
-      <button className="go-back-button" onClick={() => navigate("/")}>
+      <h1 className="body-part-exercises-page__title">Exercises for {bodyPart}</h1>
+      <button className="body-part-exercises-page__go-back-button" onClick={() => navigate("/")}>
         <span>← Go back to homepage</span>
       </button>
 
-      <div className="exercises-container">
+      <div className="body-part-exercises-page__exercises-container">
         {exercises.map((exercise) => (
           <div
             key={exercise.id}
-            className={`exercise-card ${selectedExercises.includes(exercise.id) ? "active" : ""}`}
+            className={`body-part-exercises-page__exercise-card ${
+              selectedExercises.includes(exercise.id) ? "active" : ""
+            }`}
             onClick={() => handleToggleExercise(exercise.id)}
           >
-            <div className="video-wrapper">
-              <video src={`${API_URL}${exercise.video_url}`} controls /> {/* Use API_URL */}
-              <div className="info-icon" title="Watch the exercise tutorial video">ℹ️</div>
+            <div className="body-part-exercises-page__video-wrapper">
+              <video
+                src={`${API_URL}${exercise.video_url}`}
+                controls
+              />
+              <div className="body-part-exercises-page__info-icon" title="Watch the exercise tutorial video">
+                ℹ️
+              </div>
             </div>
-            <h3>{exercise.name}</h3>
-            <p>Sets: {exercise.sets}</p>
-            <p>Reps: {exercise.reps}</p>
-            <p>Calories Burned: {exercise.calories_burned}</p>
+            <h3 className="body-part-exercises-page__exercise-title">{exercise.name}</h3>
+            <p className="body-part-exercises-page__exercise-detail">Sets: {exercise.sets}</p>
+            <p className="body-part-exercises-page__exercise-detail">Reps: {exercise.reps}</p>
+            <p className="body-part-exercises-page__exercise-detail">Calories Burned: {exercise.calories_burned}</p>
+            <p className="body-part-exercises-page__exercise-detail">Duration: {exercise.duration}</p>
 
-            <div className={`exercise-toggle ${selectedExercises.includes(exercise.id) ? "active" : ""}`}>
+            <div className={`body-part-exercises-page__exercise-toggle ${
+              selectedExercises.includes(exercise.id) ? "active" : ""
+            }`}>
               <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
             </div>
           </div>
@@ -83,8 +91,8 @@ const BodyPartExercisesPage = () => {
       </div>
 
       {selectedExercises.length > 0 && (
-        <div className="go-to-session-container">
-          <button className="go-to-session" onClick={handleGoToSession}>
+        <div className="body-part-exercises-page__go-to-session-container">
+          <button className="body-part-exercises-page__go-to-session">
             <span> + Go to your session </span>
           </button>
         </div>
@@ -94,5 +102,4 @@ const BodyPartExercisesPage = () => {
 };
 
 export default BodyPartExercisesPage;
-
 

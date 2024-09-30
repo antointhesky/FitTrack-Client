@@ -47,7 +47,7 @@ export default function WorkoutTypePage() {
     };
 
     try {
-      const response = await axios.post(`${API_URL}/session`, sessionData); // Use API_URL
+      const response = await axios.post(`${API_URL}/session`, sessionData); 
       const sessionId = response.data.session_id;
       navigate(`/session/${sessionId}`);
     } catch (error) {
@@ -57,48 +57,48 @@ export default function WorkoutTypePage() {
 
   return (
     <main className="workout-type-page">
-      <h1>{`${workoutType || bodyPart} Workouts`}</h1>
-      <button className="go-back-button" onClick={() => navigate("/")}>
-        <span>← Go back to homepage</span>
-      </button>
+  <h1 className="workout-type-page__title">{`${workoutType || bodyPart} Workouts`}</h1>
+  <button className="workout-type-page__go-back-button" onClick={() => navigate("/")}>
+    <span>← Go back to homepage</span>
+  </button>
 
-      <div className="exercises-container">
-        {exercises.map((exercise) => (
-          <div
-            key={exercise.id}
-            className={`exercise-card ${
-              selectedExercises.includes(exercise.id) ? "active" : ""
-            }`}
-            onClick={() => handleToggleExercise(exercise.id)}
-          >
-            <div className="video-wrapper">
-              <video src={`${API_URL}${exercise.video_url}`} controls /> {/* Use API_URL */}
-              <div className="info-icon" title="Watch the exercise tutorial video">ℹ️</div>
-            </div>
-            <h3>{exercise.name}</h3>
-            <p>Body Part: {exercise.body_part}</p>
-            <p>Sets: {exercise.sets}</p>
-            <p>Reps: {exercise.reps}</p>
-            <p>Duration: {exercise.duration}</p>
-            <p>Calories Burned: {exercise.calories_burned}</p>
-
-            <div className={`exercise-toggle ${selectedExercises.includes(exercise.id) ? "active" : ""}`}>
-              <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
-            </div>
+  <div className="workout-type-page__exercises-container">
+    {exercises.map((exercise) => (
+      <div
+        key={exercise.id}
+        className={`workout-type-page__exercise-card ${
+          selectedExercises.includes(exercise.id) ? "active" : ""
+        }`}
+        onClick={() => handleToggleExercise(exercise.id)}
+      >
+        <div className="workout-type-page__video-wrapper">
+          <video src={`${API_URL}${exercise.video_url}`} controls />
+          <div className="workout-type-page__info-icon" title="Watch the exercise tutorial video">
+            ℹ️
           </div>
-        ))}
-      </div>
-
-      {selectedExercises.length > 0 && (
-        <div className="go-to-session-container">
-          <button className="go-to-session" onClick={handleGoToSession}>
-            <span> + Go to your session </span>
-          </button>
         </div>
-      )}
-    </main>
+        <h3 className="workout-type-page__exercise-title">{exercise.name}</h3>
+        <p className="workout-type-page__exercise-detail">Body Part: {exercise.body_part}</p>
+        <p className="workout-type-page__exercise-detail">Sets: {exercise.sets}</p>
+        <p className="workout-type-page__exercise-detail">Reps: {exercise.reps}</p>
+        <p className="workout-type-page__exercise-detail">Duration: {exercise.duration}</p>
+        <p className="workout-type-page__exercise-detail">Calories Burned: {exercise.calories_burned}</p>
+
+        <div className={`workout-type-page__exercise-toggle ${selectedExercises.includes(exercise.id) ? "active" : ""}`}>
+          <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {selectedExercises.length > 0 && (
+    <div className="workout-type-page__go-to-session-container">
+      <button className="workout-type-page__go-to-session-button" onClick={handleGoToSession}>
+        <span> + Go to your session </span>
+      </button>
+    </div>
+  )}
+</main>
+
   );
 }
-
-
-

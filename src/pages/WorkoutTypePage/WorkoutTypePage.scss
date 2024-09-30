@@ -9,13 +9,13 @@
   margin: 2rem;
   background-color: white;
 
-  h1 {
+  &__title {
     font-size: 2rem;
     margin-bottom: 1rem;
     color: $font;
   }
 
-  .go-back-button {
+  &__go-back-button {
     background-color: $background-light;
     color: white;
     font-size: 1.2rem;
@@ -39,14 +39,14 @@
     }
   }
 
-  .exercises-container {
+  &__exercises-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
   }
 
-  .exercise-card {
+  &__exercise-card {
     width: 100%;
     max-width: 400px;
     background-color: $yellow;
@@ -65,69 +65,77 @@
       background-color: $orange;
     }
 
-    h3 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+    @include tablet {
+      max-width: 300px;
     }
 
-    p {
-      font-size: 1rem;
-      margin: 0.5rem 0;
-      text-align: left;
-    }
-
-    .video-wrapper {
-      position: relative;
-      width: 120%;  
-      margin-top: -25px;  
-      margin-left: -10%;  
-      border-radius: 20% 6px 0 0;  
-      overflow: hidden;
-
-      video {
-        width: 100%;
-        border-radius: 20% 6px 0 0;  
-      }
-    }
-
-    .info-icon {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      font-size: 1.5rem;
-      color: white;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .exercise-toggle {
-      background-color: $background-light;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 1rem auto 0;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &.active {
-        background-color: $font-light;
-      }
-
-      span {
-        font-size: 1.5rem;
-        color: white;
-      }
+    @include desktop {
+      max-width: 350px;
     }
   }
 
-  .go-to-session-container {
+  &__exercise-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__exercise-detail {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    text-align: left;
+  }
+
+  &__video-wrapper {
+    position: relative;
+    width: 120%;
+    margin-top: -25px;
+    margin-left: -10%;
+    border-radius: 20% 6px 0 0;
+    overflow: hidden;
+
+    video {
+      width: 100%;
+      border-radius: 20% 6px 0 0;
+    }
+  }
+
+  &__info-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.5rem;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  &__exercise-toggle {
+    background-color: $background-light;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.active {
+      background-color: $font-light;
+    }
+
+    span {
+      font-size: 1.5rem;
+      color: white;
+    }
+  }
+
+  &__go-to-session-container {
     margin-top: 2rem;
     text-align: center;
 
-    .go-to-session {
+    &__go-to-session-button {
       background-color: $background-light;
       color: white;
       font-size: 1.2rem;
@@ -148,18 +156,6 @@
       span {
         font-size: 1.5rem;
       }
-    }
-  }
-
-  @include tablet {
-    .exercise-card {
-      max-width: 300px;
-    }
-  }
-
-  @include desktop {
-    .exercise-card {
-      max-width: 350px;
     }
   }
 }
