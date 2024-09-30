@@ -19,6 +19,13 @@
     text-align: center;
     padding: 0 2rem;
     margin-bottom: 4rem;
+    @include tablet {
+      height: 60vh;
+      margin-bottom: 6rem;
+    }
+    @include desktop {
+      height: 50vh;
+    }
   }
 
   &__hero-title {
@@ -26,11 +33,24 @@
     margin-top: 3rem;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    @include tablet {
+      margin-top: 5rem;
+      margin-bottom: 2rem;
+    }
+    @include desktop {
+      margin-top: 7rem;
+    }
   }
 
   &__hero-description {
     font-size: 1.2rem;
     margin-bottom: 1.5rem;
+    @include tablet {
+      margin-bottom: 5.5rem;
+    }
+    @include desktop {
+      margin-bottom: 7.5rem;
+    }
   }
 
   &__cta-button {
@@ -190,6 +210,9 @@
 
   .swiper {
     margin-bottom: 2rem;
+    @include tablet {
+      margin-bottom: 3rem;
+    }
   }
 
   &__workout-title {
@@ -222,6 +245,9 @@
     color: $orange;
     margin-bottom: 2rem;
     text-align: center; 
+    @include tablet {
+      margin-bottom: 4rem;
+    }
   }
   
   &__goals-list {
@@ -261,6 +287,9 @@
   
     &:hover {
       background-color: darken($yellow, 10%);
+    }
+    @include tablet {
+      margin-top: 3rem;
     }
   }
 }  
