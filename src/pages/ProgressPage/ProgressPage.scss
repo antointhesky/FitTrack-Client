@@ -6,14 +6,6 @@
   text-align: center;
   max-width: 100%;
 
-  @include tablet {
-    max-width: 900px;
-  }
-
-  @include desktop {
-    max-width: 1400px;
-  }
-
   &__hero {
     background-color: $yellow;
     padding: 3rem 0;
