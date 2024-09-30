@@ -269,7 +269,7 @@ export default function GoalsPage() {
                             ? "#fd6827"
                             : "#eee",
                         trailColor: "#eee",
-                        textSize: "16px",
+                        textSize: "0.8rem",
                       })}
                     />
                   </div>
