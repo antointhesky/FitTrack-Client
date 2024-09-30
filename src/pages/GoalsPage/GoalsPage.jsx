@@ -6,6 +6,17 @@ import AddGoalModal from "../../components/AddGoalModal/AddGoalModal";
 import DeleteGoalModal from "../../components/DeleteGoalModal/DeleteGoalModal";
 import "./GoalsPage.scss";
 
+function Toast({ message, onClose }) {
+  return (
+    <div className="toast">
+      <button className="toast__close-button" onClick={onClose}>
+        &times;
+      </button>
+      <p className="toast__message">{message}</p>
+    </div>
+  );
+}
+
 export default function GoalsPage() {
   const [goals, setGoals] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -149,10 +160,7 @@ export default function GoalsPage() {
           return (
             <div
               key={goal.id}
-              className={`goal-card ${
-                goalToEdit && goalToEdit.id === goal.id ? "editing" : ""
-              }`}
-            >
+              className={`goal-card ${goalToEdit && goalToEdit.id === goal.id ? "editing" : ""}`}>
               {goalToEdit && goalToEdit.id === goal.id ? (
                 <div className="edit-form">
                   <input
@@ -163,6 +171,7 @@ export default function GoalsPage() {
                       setGoalToEdit({ ...goalToEdit, name: e.target.value })
                     }
                     required
+                    className="add-goal-modal__input"
                   />
                   <input
                     type="number"
@@ -172,6 +181,7 @@ export default function GoalsPage() {
                       setGoalToEdit({ ...goalToEdit, target: e.target.value })
                     }
                     required
+                    className="add-goal-modal__input"
                   />
                   <select
                     name="unit"
@@ -180,6 +190,7 @@ export default function GoalsPage() {
                       setGoalToEdit({ ...goalToEdit, unit: e.target.value })
                     }
                     required
+                    className="add-goal-modal__input"
                   >
                     <option value="">Select Unit</option>
                     <option value="cal">cal</option>
@@ -198,6 +209,7 @@ export default function GoalsPage() {
                       })
                     }
                     required
+                    className="add-goal-modal__input"
                   />
                   <input
                     type="date"
@@ -210,6 +222,7 @@ export default function GoalsPage() {
                       })
                     }
                     required
+                    className="add-goal-modal__input"
                   />
                   <div className="goals-page__edit-actions">
                     <button
@@ -289,17 +302,22 @@ export default function GoalsPage() {
         }}
         handleAddNewGoal={async (e) => {
           e.preventDefault();
-
-          const formattedDeadline = new Date(newGoal.deadline_progress)
-            .toISOString()
-            .split("T")[0];
-
+        
+          const deadlineDate = new Date(newGoal.deadline_progress);
+          
+          if (isNaN(deadlineDate.getTime())) {
+            console.error("Invalid Date for deadline_progress:", newGoal.deadline_progress);
+            return; 
+          }
+        
+          const formattedDeadline = deadlineDate.toISOString().split("T")[0];
+        
           try {
             const response = await axios.post("http://localhost:5050/goals", {
               ...newGoal,
-              deadline_progress: formattedDeadline,
+              deadline_progress: formattedDeadline, 
             });
-
+        
             if (response.status === 201) {
               setGoals([...goals, response.data]);
               setIsModalOpen(false);
@@ -309,7 +327,7 @@ export default function GoalsPage() {
           } catch (error) {
             console.error("Error adding new goal:", error);
           }
-        }}
+        }}        
       />
 
       <DeleteGoalModal
@@ -320,4 +338,3 @@ export default function GoalsPage() {
     </main>
   );
 }
-

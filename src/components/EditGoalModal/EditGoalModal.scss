@@ -1,24 +1,25 @@
 @use "../../styles/partials/colors" as *;
 
 .edit-goal-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-  
-    .modal-content {
-      text-align: center;
-  
-      h2 {
-        color: $orange;
-        font-size: 1.5rem;
-      }
-  
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  &__content {
+    text-align: center;
+
+    &__title {
+      color: $orange;
+      font-size: 1.5rem;
+    }
+
+    &__form {
       input,
       select {
         display: block;
@@ -29,49 +30,50 @@
         border: 1px solid #ddd;
         border-radius: 5px;
       }
-  
-      .modal-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-  
-        .save-button,
-        .cancel-button {
-          padding: 10px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 1rem;
-          border: none;
-        }
-  
-        .save-button {
-          background-color: $orange; 
-          color: white;
-  
-          &:hover {
-            background-color: darken($orange, 10%);
-          }
-        }
-  
-        .cancel-button {
-          background-color: $background-light; 
-          color: white;
-  
-          &:hover {
-            background-color: darken($background-light, 10%);
-          }
-        }
-      }
     }
   }
-  
-  .edit-goal-overlay {
+
+  &__overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75); 
+    background-color: rgba(0, 0, 0, 0.75);
     z-index: 999;
   }
-  
+}
+
+.goals-page__edit-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  &__save-button,
+  &__cancel-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    border: none;
+  }
+
+  &__save-button {
+    background-color: $orange;
+    color: white;
+
+    &:hover {
+      background-color: darken($orange, 10%);
+    }
+  }
+
+  &__cancel-button {
+    background-color: $background-light;
+    color: white;
+
+    &:hover {
+      background-color: darken($background-light, 10%);
+    }
+  }
+}
+

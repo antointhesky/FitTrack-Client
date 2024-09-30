@@ -71,11 +71,11 @@ export default function EditGoalModal({
             required
             className="edit-goal-modal__input"
           />
-          <div className="modal-buttons">
-            <button className="save-button" onClick={handleSaveEdit}>
+          <div className="goals-page__edit-actions">
+            <button className="goals-page__edit-actions__save-button" onClick={handleSaveEdit}>
               Save
             </button>
-            <button className="cancel-button" onClick={onRequestClose}>
+            <button className="goals-page__edit-actions__cancel-button" onClick={onRequestClose}>
               Cancel
             </button>
           </div>

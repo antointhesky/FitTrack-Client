@@ -28,11 +28,11 @@ export default function AddGoalModal({
       onRequestClose={onRequestClose}
       contentLabel="Add New Goal"
       className="add-goal-modal"
-      overlayClassName="add-goal-overlay"
+      overlayClassName="add-goal-modal__overlay"
     >
-      <div className="modal-content">
-        <h2>Add New Goal</h2>
-        <form onSubmit={handleAddNewGoal} className="new-goal-form">
+      <div className="add-goal-modal__content">
+      <h2 className="add-goal-modal__title">Add New Goal</h2>
+        <form onSubmit={handleAddNewGoal} className="add-goal-modal__form">
           <input
             type="text"
             name="name"
@@ -40,6 +40,7 @@ export default function AddGoalModal({
             value={newGoal.name}
             onChange={handleNewGoalInputChange}
             required
+            className="add-goal-modal__input"
           />
           <input
             type="number"
@@ -48,21 +49,22 @@ export default function AddGoalModal({
             value={newGoal.target}
             onChange={handleNewGoalInputChange}
             required
+            className="add-goal-modal__input"
           />
 
-          <div className="custom-dropdown-container">
+          <div className="add-goal-modal__dropdown-container">
             <div
-              className={`custom-dropdown ${newGoal.unit ? "" : "placeholder"}`}
+              className={`add-goal-modal__dropdown ${newGoal.unit ? "" : "placeholder"}`}
               onClick={() => setIsDropdownVisible(!isDropdownVisible)}
             >
               {newGoal.unit || "Select Unit"}
             </div>
             {isDropdownVisible && (
-              <div className="custom-dropdown-menu">
+              <div className="add-goal-modal__dropdown-menu">
                 {units.map((unit, index) => (
                   <div
                     key={index}
-                    className="custom-dropdown-item"
+                    className="add-goal-modal__dropdown-item"
                     onClick={() => handleDropdownItemClick(unit)}
                   >
                     {unit}
@@ -81,7 +83,7 @@ export default function AddGoalModal({
               });
             }}
             dateFormat="dd/MM/yyyy"
-            className="custom-date-picker"
+            className="add-goal-modal__date-picker"
           />
 
           <input
@@ -91,15 +93,16 @@ export default function AddGoalModal({
             value={newGoal.current_progress}
             onChange={handleNewGoalInputChange}
             required
+            className="add-goal-modal__input"
           />
           
-          <div className="modal-buttons">
-            <button type="submit" className="save-button">
+          <div className="add-goal-modal__actions">
+            <button type="submit" className="add-goal-modal__save-button">
               Add Goal
             </button>
             <button
               type="button"
-              className="cancel-button"
+              className="add-goal-modal__cancel-button"
               onClick={onRequestClose}
             >
               Cancel

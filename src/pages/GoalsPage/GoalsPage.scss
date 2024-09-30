@@ -3,14 +3,13 @@
 
 .goals-page {
   text-align: center;
-  margin: 2rem;
   background-color: white;
 
-  /* Hero Section */
   &__hero {
     background-color: $yellow;
-    padding: 3rem 0;
+    padding: 5rem 0;
     width: 100%;
+    margin-bottom: 3rem;
 
     &-content {
       max-width: 1200px;
@@ -59,12 +58,15 @@
 
   &__add-goal-button {
     display: inline-block;
-    background-color: $background-light;
+    margin-top: 1.5rem;
+    margin-bottom: 3rem;
+    background-color: #fd6827;
     color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
@@ -72,12 +74,12 @@
     }
   }
 
-  /* Goals Container and Cards */
   &__goals-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
     justify-content: center;
+    margin-bottom: 6rem;
   }
 
   .goal-card {
@@ -91,6 +93,8 @@
     font-size: 1.2rem;
     font-weight: 600;
     position: relative;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 
     &.editing {
       background-color: lighten($yellow, 10%);
@@ -150,53 +154,83 @@
         color: $font;
       }
 
-      .save-button,
-      .cancel-button {
-        padding: 10px 20px;
-        border-radius: 8px;
-        margin-top: 10px;
-        cursor: pointer;
-        color: white;
-      }
-
-      .save-button {
-        background-color: $background-light;
-
-        &:hover {
-          background-color: darken($background-light, 10%);
+      .goals-page__edit-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      
+        &__save-button,
+        &__cancel-button {
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1rem;
+          border: none;
         }
-      }
-
-      .cancel-button {
-        background-color: $orange;
-
-        &:hover {
-          background-color: darken($orange, 10%);
+      
+        &__save-button {
+          background-color: $orange;
+          color: white;
+      
+          &:hover {
+            background-color: darken($orange, 10%);
+          }
         }
-      }
+      
+        &__cancel-button {
+          background-color: $background-light;
+          color: white;
+      
+          &:hover {
+            background-color: darken($background-light, 10%);
+          }
+        }
+      }      
     }
   }
-
-  /* Toast Notification */
-  .toast-notification {
+  .toast {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: $background-light;
+    background-color: #333;
     color: white;
     padding: 1rem 2rem;
     border-radius: 5px;
     box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: opacity 0.3s ease;
-
-    &--show {
-      opacity: 1;
-    }
-
-    &--hide {
+    max-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 1; 
+  
+    &--hidden {
       opacity: 0;
       pointer-events: none;
     }
-  }
+  
+    &__message {
+      margin: 0;
+      flex-grow: 1; 
+    }
+  
+    &__close-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0;
+      line-height: 1;
+    }
+  
+    &__close-button:hover {
+      color: $orange;
+    }
+  }  
 }

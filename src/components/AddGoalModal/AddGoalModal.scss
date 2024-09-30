@@ -3,9 +3,9 @@
 
 .add-goal-modal {
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -40%);
   background-color: white;
   border: 2px solid $yellow;
   padding: 20px;
@@ -15,96 +15,105 @@
   max-width: 500px;
   width: 100%;
 
-  .modal-content {
-    text-align: center;
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 999;
+  }
 
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+  &__content {
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: $font;
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: $font-light;
+    margin-top: 1rem;
+      &::placeholder {
+        color: $font-light;
+      }
+      &:focus {
+        outline: none;
+        border-color: $orange;
+      }
     }
 
-    .new-goal-form {
-      input {
-        display: block;
-        width: 100%;
-        margin-bottom: 1rem;
-        padding: 10px;
-        font-size: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        color: $font-light;
+  &__dropdown-container {
+      position: relative;
+      margin-bottom: 1rem;
+      width: 100%;
+  }
 
+  &__dropdown {
+      background-color: white;
+      color: $font-light;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
         &::placeholder {
           color: $font-light;
         }
-
         &:focus {
           outline: none;
           border-color: $orange;
         }
+  }
+
+  &__dropdown-menu {
+      position: absolute;
+      top: 120%;
+      left: 0;
+      width: 100%;
+      background-color: white;
+      border: 2px solid $orange;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+  }
+
+  &__dropdown-item {
+      padding: 10px;
+      font-size: 1rem;
+      color: $font-light;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: lighten($orange, 20%);
+        color: white;
+        }
+  }
+      
+  &__date-picker {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: $font-light;
+      &:focus {
+        border-color: $orange;
+        outline: none;
       }
-
-      .custom-dropdown-container {
-        position: relative;
-        margin-bottom: 1rem;
-        width: 100%;
-
-        .custom-dropdown {
-          background-color: white;
-          color: $font-light;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          cursor: pointer;
-          width: 100%;
-          &:focus {
-            outline: none;
-            border-color: $orange;
-          }
-        }
-
-        .placeholder {
-          color: $font-light;
-        }
-
-        .custom-dropdown-menu {
-          position: absolute;
-          top: 120%;
-          left: 0;
-          width: 100%;
-          background-color: white;
-          border: 2px solid $orange;
-          border-radius: 5px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          z-index: 1000;
-
-          .custom-dropdown-item {
-            padding: 10px;
-            font-size: 1rem;
-            color: $font-light;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-
-            &:hover {
-              background-color: lighten($orange, 20%);
-              color: white;
-            }
-          }
-        }
-      }
-
-      .custom-date-picker {
-        width: 100%;
-        padding: 10px;
-        font-size: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        color: $font-light;
-        &:focus {
-          border-color: $orange;
-          outline: none;
-        }
-      }
+    }
 
       .react-datepicker-wrapper {
         width: 100%;
@@ -114,50 +123,36 @@
         width: 100%;
       }
 
-      .modal-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
+  &__actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
 
-        .save-button,
-        .cancel-button {
-          padding: 10px 20px;
-          border-radius: 5px;
-          cursor: pointer;
-          border: none;
-          font-size: 1rem;
-        }
+  &__save-button,
+  &__cancel-button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      }
 
-        .save-button {
-          background-color: $orange;
-          color: white;
-
-          &:hover {
-            background-color: darken($orange, 10%);
-          }
-        }
-
-        .cancel-button {
-          background-color: $background-light;
-          color: white;
-
-          &:hover {
-            background-color: darken($background-light, 10%);
-          }
+  &__save-button {
+      background-color: $orange;
+      color: white;
+        &:hover {
+          background-color: darken($orange, 10%);
         }
       }
-    }
-  }
-}
 
-.add-goal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); 
-  z-index: 999;
+  &__cancel-button  {
+      background-color: $background-light;
+      color: white;
+        &:hover {
+          background-color: darken($background-light, 10%);
+        }
+      }
 }
 
 .react-datepicker {
@@ -167,52 +162,52 @@
   border-radius: 5px;
   width: 100%;
 
-  .react-datepicker__header {
+  &__header {
     background-color: $orange;
     border-bottom: none;
   }
 
-  .react-datepicker__day--selected {
+  &__day--selected {
     background-color: $yellow;
     color: white;
   }
 
-  .react-datepicker__day:hover {
+  &__day:hover {
     background-color: lighten($orange, 20%);
     color: white;
   }
 
-  .react-datepicker__day-name,
-  .react-datepicker__day,
-  .react-datepicker__time-name {
+  &__day-name,
+  &__day,
+  &__time-name {
     color: $font;
   }
 
-  .react-datepicker__day--keyboard-selected {
+  &__day--keyboard-selected {
     background-color: lighten($yellow, 10%);
     color: white;
   }
 
-  .react-datepicker__month {
+  &__month {
     background-color: white;
     width: 350px;
   }
 
-  .react-datepicker__current-month {
+  &__current-month {
     color: white;
   }
 
-  .react-datepicker__day--outside-month {
+  &__day--outside-month {
     color: lighten($font-light, 40%);
   }
 
-  .react-datepicker__day--selected,
-  .react-datepicker__day--in-selecting-range {
+  &__day--selected,
+  &__day--in-selecting-range {
     background-color: $yellow;
     color: white;
   }
 
-  .react-datepicker__day:hover {
+  &__day:hover {
     background-color: $orange;
     color: white;
   }
