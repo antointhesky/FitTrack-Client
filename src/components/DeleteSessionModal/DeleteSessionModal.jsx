@@ -2,7 +2,6 @@ import React from "react";
 import Modal from "react-modal";
 import "./DeleteSessionModal.scss";
 
-// For accessibility, bind modal to your app element (usually root)
 Modal.setAppElement('#root');
 
 export default function DeleteSessionModal({ isOpen, onRequestClose, handleConfirmDelete }) {
