@@ -11,7 +11,7 @@
   /* Hero Section */
   &__hero {
     background-color: $background-light;
-    height: 77vh;
+    height: 47vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,7 +20,7 @@
     padding: 0 2rem;
     margin-bottom: 4rem;
     @include tablet {
-      height: 60vh;
+      height: 55vh;
       margin-bottom: 6rem;
     }
     @include desktop {
@@ -29,7 +29,7 @@
   }
 
   &__hero-title {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-top: 3rem;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
@@ -39,17 +39,19 @@
     }
     @include desktop {
       margin-top: 7rem;
+      font-size: 3rem;
     }
   }
 
   &__hero-description {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 1.5rem;
     @include tablet {
       margin-bottom: 5.5rem;
     }
     @include desktop {
       margin-bottom: 7.5rem;
+      font-size: 1.5rem;
     }
   }
 
@@ -66,10 +68,14 @@
     &:hover {
       background-color: darken($orange, 10%);
     }
+    @include desktop {
+      font-size: 1.5rem;
+    padding: 1rem 2rem;
+    }
   }
 
   &__highlight-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin: 2rem 0;
     color: $orange;
     text-align: center;
@@ -241,7 +247,7 @@
   }
   
   &__goals-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: $orange;
     margin-bottom: 2rem;
     text-align: center; 
@@ -290,6 +296,10 @@
     }
     @include tablet {
       margin-top: 3rem;
+    }
+    @include desktop {
+      font-size: 1.5rem;
+    padding: 1rem 2rem;
     }
   }
 }  
