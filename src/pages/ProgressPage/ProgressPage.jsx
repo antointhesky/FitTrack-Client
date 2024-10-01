@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import "react-circular-progressbar/dist/styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp, faFire, faDumbbell, faSync, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,7 +18,7 @@ import {
 } from "chart.js";
 import "./ProgressPage.scss";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 ChartJS.register(
   CategoryScale,
@@ -43,10 +43,16 @@ const ProgressPage = () => {
   const [setsData, setSetsData] = useState({ labels: [], data: [] });
   const [repsData, setRepsData] = useState({ labels: [], data: [] });
 
+  // Toast message state
+  const location = useLocation();
+  const { totalCaloriesBurned, totalReps, totalSets } = location.state || {};
+  const [showMessage, setShowMessage] = useState(false);
+  const [goalStats, setGoalStats] = useState([]);
+
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await axios.get(`${API_URL}/session`); 
+        const response = await axios.get(`${API_URL}/session`);
         setSessions(response.data);
 
         const labels = response.data.map((session) =>
@@ -88,6 +94,7 @@ const ProgressPage = () => {
     fetchSessions();
   }, []);
 
+  // Filtering sessions by selected date
   useEffect(() => {
     if (selectedDate) {
       const filtered = sessions.filter(
@@ -98,6 +105,65 @@ const ProgressPage = () => {
       setFilteredSessions(filtered);
     }
   }, [selectedDate, sessions]);
+
+  // Show the toast message when session is saved
+  useEffect(() => {
+    if (totalCaloriesBurned || totalReps || totalSets) {
+      setShowMessage(true);
+      calculateGoalProgress();
+    }
+  }, [totalCaloriesBurned, totalReps, totalSets]);
+
+  const calculateGoalProgress = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/goals`);
+      const goals = response.data;
+      const goalStats = [];
+
+      const calorieGoal = goals.find((goal) => goal.unit === "cal");
+      if (calorieGoal) {
+        const progressPercentage =
+          (calorieGoal.current_progress / calorieGoal.target) * 100;
+        const remainingCalories = calorieGoal.target - calorieGoal.current_progress;
+        goalStats.push({
+          type: "calories",
+          burned: totalCaloriesBurned,
+          remaining: remainingCalories,
+          percentage: progressPercentage,
+        });
+      }
+
+      const repsGoal = goals.find((goal) => goal.unit === "reps");
+      if (repsGoal) {
+        const progressPercentage =
+          (repsGoal.current_progress / repsGoal.target) * 100;
+        const remainingReps = repsGoal.target - repsGoal.current_progress;
+        goalStats.push({
+          type: "reps",
+          completed: totalReps,
+          remaining: remainingReps,
+          percentage: progressPercentage,
+        });
+      }
+
+      const setsGoal = goals.find((goal) => goal.unit === "sets");
+      if (setsGoal) {
+        const progressPercentage =
+          (setsGoal.current_progress / setsGoal.target) * 100;
+        const remainingSets = setsGoal.target - setsGoal.current_progress;
+        goalStats.push({
+          type: "sets",
+          completed: totalSets,
+          remaining: remainingSets,
+          percentage: progressPercentage,
+        });
+      }
+
+      setGoalStats(goalStats);
+    } catch (error) {
+      console.error("Error calculating goal progress:", error);
+    }
+  };
 
   const toggleDetails = (sessionId) => {
     setExpandedSession(expandedSession === sessionId ? null : sessionId);
@@ -212,13 +278,52 @@ const ProgressPage = () => {
 
   return (
     <main className="progress-page">
+      {/* Toast Message */}
+      {showMessage && goalStats.length > 0 && (
+        <>
+          <div className="toast-overlay" onClick={() => setShowMessage(false)}></div> {/* Overlay */}
+          <div className="progress-page__toast">
+            <button
+              onClick={() => setShowMessage(false)}
+              className="progress-page__toast-close"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            {goalStats.map((goal, index) => (
+              <div key={index} className="progress-page__toast-message">
+                <FontAwesomeIcon
+                  icon={
+                    goal.type === "calories"
+                      ? faFire
+                      : goal.type === "reps"
+                      ? faSync
+                      : faDumbbell
+                  }
+                  className="progress-page__toast-icon"
+                />
+                <p>
+                  You've {goal.type === "calories" ? "burned" : "completed"}{" "}
+                  {goal.type === "calories" ? goal.burned : goal.completed}{" "}
+                  {goal.type}.
+                </p>
+                <p>
+                  You're {goal.percentage}% of the way to your {goal.type} goal. Only{" "}
+                  {goal.remaining} {goal.type} left!
+                </p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Existing Hero Section */}
       <section className="progress-page__hero">
         <div className="progress-page__hero-content">
           <h1 className="progress-page__hero-content__title">
             Track Your Fitness Journey
           </h1>
           <p className="progress-page__hero-content__description">
-          You're building strength with every workout! Stay focused and see your progress grow over time.
+            You're building strength with every workout! Stay focused and see your progress grow over time.
           </p>
           <p className="progress-page__hero-content__motivation">
             Consistency is key! Track your efforts, celebrate each small
@@ -309,9 +414,7 @@ const ProgressPage = () => {
               </li>
             ))
           ) : (
-            <p className="progress-page__no-sessions">
-              No sessions on this day.
-            </p>
+            <p className="progress-page__no-sessions">No sessions on this day.</p>
           )}
         </ul>
       )}
@@ -320,4 +423,11 @@ const ProgressPage = () => {
 };
 
 export default ProgressPage;
+
+
+
+
+
+
+
 
