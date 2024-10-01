@@ -48,11 +48,13 @@ export default function EditGoalModal({
             className="edit-goal-modal__select"
           >
             <option value="">Select Unit</option>
-            <option value="kg">kg</option>
             <option value="cal">cal</option>
-            <option value="km">km</option>
-            <option value="steps">steps</option>
-            <option value="workouts">workouts</option>
+            <option value="reps">reps</option>
+            <option value="sets">sets</option>
+            <option value="name">name</option>
+            <option value="duration">hours</option>
+            <option value="body part">muscle group</option>
+            <option value="workout type">workout type</option>
           </select>
           <input
             type="text"

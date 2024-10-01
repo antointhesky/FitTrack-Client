@@ -4,12 +4,12 @@ import { Pagination } from "swiper/modules";
 import "swiper/scss";
 import "swiper/scss/pagination";
 import "./HomePage.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import AddGoalModal from "../../components/AddGoalModal/AddGoalModal";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -65,7 +65,6 @@ const HomePage = () => {
     fetchGoals();
   }, []);
 
-  // Handle search
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm) {
@@ -78,8 +77,8 @@ const HomePage = () => {
     try {
       const response = await axios.post(`${API_URL}/goals`, newGoal);
       if (response.status === 201) {
-        setGoals([...goals, response.data]); 
-        setIsModalOpen(false); 
+        setGoals([...goals, response.data]);
+        setIsModalOpen(false);
       }
     } catch (error) {
       console.error("Error adding new goal:", error);
@@ -97,26 +96,26 @@ const HomePage = () => {
 
   return (
     <main className="home-page">
-      {/* Hero Section */}
       <section className="home-page__hero">
         <div className="home-page__hero-content">
           <h1 className="home-page__hero-title">Unlock Your Full Potential</h1>
           <p className="home-page__hero-description">
             Start tracking your fitness journey today. Choose your workouts, set goals, and reach new heights.
           </p>
-          <button className="home-page__cta-button" onClick={handleStartNowClick}>Start Now</button>
+          <button className="home-page__cta-button" onClick={handleStartNowClick}>
+            Start Now
+          </button>
         </div>
       </section>
 
       <div className="home-page__container">
         <h2 className="home-page__highlight-title">Find Workouts and Explore Types</h2>
-        
-        {/* Search Bar Section */}
+
         <div className="home-page__search-section">
           <form className="home-page__search-bar" onSubmit={handleSearch}>
             <input
               type="text"
-              placeholder="Search by body part"
+              placeholder="Search by muscle group"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => setIsDropdownVisible(true)}
@@ -146,7 +145,6 @@ const HomePage = () => {
           </form>
         </div>
 
-        {/* Workout Slider */}
         <Swiper
           modules={[Pagination]}
           grabCursor={true}
@@ -168,7 +166,7 @@ const HomePage = () => {
               <Link to={`/workouts?workout_type=${encodeURIComponent(workout.name)}`}>
                 <div className="home-page__workout-card">
                   <img
-                    src={`${API_URL}${workout.imageUrl}`} 
+                    src={`${API_URL}${workout.imageUrl}`}
                     alt={workout.name}
                     className="home-page__workout-img"
                   />
@@ -182,21 +180,22 @@ const HomePage = () => {
         <div className="swiper-pagination"></div>
       </div>
 
-      {/* New Goals Section */}
       <section className="home-page__goals-section">
         <h2 className="home-page__goals-title">Your Fitness Goals</h2>
         {Array.isArray(goals) && goals.length > 0 ? (
           <div className="home-page__goals-list">
             {goals.map((goal) => (
-              <div key={goal.id} className="home-page__goal-card">
-                <h3 className="home-page__goal-name">{goal.name}</h3>
-                <p className="home-page__goal-progress">
-                  Progress: {goal.current_progress} / {goal.target} {goal.unit}
-                </p>
-                <p className="home-page__goal-deadline">
-                  Deadline: {new Date(goal.deadline_progress).toLocaleDateString()}
-                </p>
-              </div>
+              <Link className="home-page__goal-link" key={goal.id} to="/goals"> 
+                <div className="home-page__goal-card">
+                  <h3 className="home-page__goal-name">{goal.name}</h3>
+                  <p className="home-page__goal-progress">
+                    Progress: {goal.current_progress} / {goal.target} {goal.unit}
+                  </p>
+                  <p className="home-page__goal-deadline">
+                    Deadline: {new Date(goal.deadline_progress).toLocaleDateString()}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         ) : (
@@ -208,11 +207,10 @@ const HomePage = () => {
           </p>
         )}
         <button className="home-page__add-goal-button" onClick={() => setIsModalOpen(true)}>
-          Add New Goal
+          + New Goal
         </button>
       </section>
 
-      {/* Add Goal Modal */}
       <AddGoalModal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -228,3 +226,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

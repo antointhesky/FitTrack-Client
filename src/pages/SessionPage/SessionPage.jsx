@@ -26,7 +26,7 @@ const SessionPage = () => {
         }
 
         if (sessionId) {
-          const response = await axios.get(`${API_URL}/session/${sessionId}`);
+          const response = await axios.get(`${API_URL}/session/${sessionId}`); // Use API_URL
           setExercises(response.data.exercises);
         } else {
           const currentSessionResponse = await axios.get(
@@ -103,26 +103,18 @@ const SessionPage = () => {
 
   const handleSaveSession = async () => {
     try {
-      await axios.patch(`${API_URL}/session/${id}`, { exercises });
+      const response = await axios.patch(`${API_URL}/session/${id}`, {
+        exercises,
+      });
 
-      // Calculate totals for calories, reps, sets
-      const totalCaloriesBurned = exercises.reduce(
-        (total, exercise) => total + exercise.calories_burned,
-        0
-      );
-      const totalReps = exercises.reduce(
-        (total, exercise) => total + exercise.reps,
-        0
-      );
-      const totalSets = exercises.reduce(
-        (total, exercise) => total + exercise.sets,
-        0
-      );
+      console.log("Sending goals update:", { exercises });
+
+      await axios.patch(`${API_URL}/goals/update-goals-progress`, {
+        exercises,
+      });
 
       localStorage.removeItem("currentSession");
-      navigate("/progress", {
-        state: { totalCaloriesBurned, totalReps, totalSets },
-      });
+      navigate("/progress");
     } catch (error) {
       console.error("Error saving session and updating goals:", error);
       setError("Error saving session and updating goals");

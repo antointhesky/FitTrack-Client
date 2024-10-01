@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./BodyPartExercisesPage.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -52,10 +54,11 @@ const BodyPartExercisesPage = () => {
 
   return (
     <main className="body-part-exercises-page">
-      <h1 className="body-part-exercises-page__title">Exercises for {bodyPart}</h1>
-      <button className="body-part-exercises-page__go-back-button" onClick={() => navigate("/")}>
-        <span>← Go back to homepage</span>
+      <button className="body-part-exercises-page__go-back-button" onClick={() => navigate(-1)}>
+        <FontAwesomeIcon icon={faArrowLeft} />
       </button>
+
+      <h1 className="body-part-exercises-page__title">Exercises for {bodyPart}</h1>
 
       <div className="body-part-exercises-page__exercises-container">
         {exercises.map((exercise) => (
@@ -92,8 +95,8 @@ const BodyPartExercisesPage = () => {
 
       {selectedExercises.length > 0 && (
         <div className="body-part-exercises-page__go-to-session-container">
-          <button className="body-part-exercises-page__go-to-session">
-            <span> + Go to your session </span>
+          <button className="body-part-exercises-page__go-to-session" onClick={handleGoToSession}>
+            <span> Start your session </span>
           </button>
         </div>
       )}
@@ -102,4 +105,3 @@ const BodyPartExercisesPage = () => {
 };
 
 export default BodyPartExercisesPage;
-

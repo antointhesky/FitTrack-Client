@@ -8,31 +8,49 @@
   background-color: white;
   overflow: hidden;
 
-  /* Hero Section */
   &__hero {
-    background-color: $background-light;
-    height: 47vh;
+    position: relative;
+    height: 50vh; 
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     text-align: center;
     padding: 0 2rem;
     margin-bottom: 4rem;
+    overflow: hidden;
+
     @include tablet {
       height: 55vh;
-      margin-bottom: 6rem;
     }
     @include desktop {
-      height: 50vh;
+      height: 60vh;
     }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: $background-light;
+      clip-path: polygon(0 0, 100% 0, 100% 93%, 0 93%); 
+      z-index: 1;
+    }
+  }
+
+  &__hero-content {
+    position: relative;
+    z-index: 2; 
   }
 
   &__hero-title {
     font-size: 2rem;
     margin-top: 3rem;
     margin-bottom: 1rem;
+    color: white;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+
     @include tablet {
       margin-top: 5rem;
       margin-bottom: 2rem;
@@ -46,6 +64,8 @@
   &__hero-description {
     font-size: 1rem;
     margin-bottom: 1.5rem;
+    color: white;
+
     @include tablet {
       margin-bottom: 5.5rem;
     }
@@ -64,13 +84,18 @@
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    position: relative;
+    z-index: 3; 
+    margin-top: -1.5rem; 
+    border: 3px solid white;
 
     &:hover {
       background-color: darken($orange, 10%);
     }
+
     @include desktop {
       font-size: 1.5rem;
-    padding: 1rem 2rem;
+      padding: 1rem 2rem;
     }
   }
 
@@ -82,7 +107,6 @@
     font-weight: 700;
   }
 
-  /* Search Section */
   &__search-section {
     background-color: white;
     padding: 2rem 0;
@@ -100,15 +124,17 @@
   &__search-input {
     padding: 0.8rem 1.2rem;
     font-size: 1.1rem;
-    border: 2px solid $orange;
+    border: 2px solid $yellow;
     border-radius: 25px;
     outline: none;
     width: 300px;
     color: $font-light;
     background-color: white;
+
     &::placeholder {
       color: $font-light;
     }
+
     &:focus {
       border-color: lighten($orange, 10%);
     }
@@ -165,7 +191,6 @@
     }
   }
 
-  /* Workout Slider  */
   .swiper-slide {
     position: relative;
     width: 300px;
@@ -216,6 +241,7 @@
 
   .swiper {
     margin-bottom: 2rem;
+
     @include tablet {
       margin-bottom: 3rem;
     }
@@ -236,33 +262,33 @@
     text-align: center;
   }
 
-  /* New Goals Section */
   &__goals-section {
     background-color: white;
     padding: 2rem;
     margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
   }
-  
+
   &__goals-title {
     font-size: 1.5rem;
     color: $orange;
     margin-bottom: 2rem;
-    text-align: center; 
+    text-align: center;
+
     @include tablet {
       margin-bottom: 4rem;
     }
   }
-  
+
   &__goals-list {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
-    justify-content: center; 
+    justify-content: center;
   }
-  
+
   &__goal-card {
     background-color: white;
     color: $background-light;
@@ -271,13 +297,25 @@
     border-radius: 10px;
     flex: 1;
     max-width: 300px;
+    min-height: 180px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
     text-align: center;
   }
-  
+
   &__goal-name {
     margin-bottom: 0.5rem;
   }
-  
+
+  &__goal-progress, &__goal-deadline {
+    margin: 0.25rem 0;
+  }
+
+  &__goal-link {
+    text-decoration: none; 
+  }
+
   &__add-goal-button {
     color: white;
     background-color: $orange;
@@ -289,17 +327,19 @@
     transition: background-color 0.3s ease;
     margin-top: 1rem;
     margin-bottom: 2rem;
-    align-self: center; 
-  
+    align-self: center;
+
     &:hover {
       background-color: darken($yellow, 10%);
     }
+
     @include tablet {
       margin-top: 3rem;
     }
+
     @include desktop {
       font-size: 1.5rem;
-    padding: 1rem 2rem;
+      padding: 1rem 2rem;
     }
   }
-}  
+}

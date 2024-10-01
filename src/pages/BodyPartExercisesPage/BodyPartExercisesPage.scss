@@ -34,8 +34,14 @@
       background-color: darken($background-light, 10%);
     }
 
+    svg {
+      font-size: 1.5rem; 
+      color: inherit;
+    }
+
     span {
-      font-size: 1.5rem;
+      font-size: 1.5rem; 
+      color: inherit;
     }
   }
 
@@ -83,6 +89,7 @@
     font-size: 1rem;
     margin: 0.5rem 0;
     text-align: left;
+    font-weight: 400; 
   }
 
   &__video-wrapper {
@@ -95,7 +102,7 @@
 
     video {
       width: 100%;
-      border-radius: 20% 6px 0 0; 
+      border-radius: 20% 6px 0 0;
     }
   }
 
@@ -133,28 +140,29 @@
   &__go-to-session-container {
     margin-top: 2rem;
     text-align: center;
+  }
 
-    &__go-to-session {
-      background-color: $background-light;
-      color: white;
-      font-size: 1.2rem;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
+  &__go-to-session {
+    background-color: $background-light;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
 
-      &:hover {
-        background-color: darken($background-light, 10%);
-      }
+    &:hover {
+      background-color: darken($background-light, 10%);
+    }
 
-      span {
-        font-size: 1.5rem;
-      }
+    span {
+      font-size: 1.5rem;
     }
   }
 }
+
