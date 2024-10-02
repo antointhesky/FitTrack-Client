@@ -1,11 +1,19 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import "react-circular-progressbar/dist/styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faChevronUp,
+  faFire,
+  faDumbbell,
+  faSync,
+  faClock,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,7 +26,7 @@ import {
 } from "chart.js";
 import "./ProgressPage.scss";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 ChartJS.register(
   CategoryScale,
@@ -43,10 +51,23 @@ const ProgressPage = () => {
   const [setsData, setSetsData] = useState({ labels: [], data: [] });
   const [repsData, setRepsData] = useState({ labels: [], data: [] });
 
+  const location = useLocation();
+  const {
+    totalCaloriesBurned,
+    totalReps,
+    totalSets,
+    totalHours,
+    uniqueWorkoutTypes,
+    uniqueBodyParts,
+    showMessage,
+  } = location.state || {};
+  const [showToast, setShowToast] = useState(false);
+  const [goalStats, setGoalStats] = useState([]);
+
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await axios.get(`${API_URL}/session`); 
+        const response = await axios.get(`${API_URL}/session`);
         setSessions(response.data);
 
         const labels = response.data.map((session) =>
@@ -99,6 +120,77 @@ const ProgressPage = () => {
     }
   }, [selectedDate, sessions]);
 
+  useEffect(() => {
+    if (showMessage) {
+      setShowToast(true);
+      calculateGoalProgress();
+    }
+  }, [showMessage, totalCaloriesBurned, totalReps, totalSets, totalHours]);
+
+  const calculateGoalProgress = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/goals`);
+      const goals = response.data;
+      const goalStats = [];
+
+      // Calorie goals
+      const calorieGoal = goals.find((goal) => goal.unit === "cal");
+      if (calorieGoal) {
+        const progressPercentage =
+          totalCaloriesBurned > 0
+            ? ((totalCaloriesBurned / calorieGoal.target) * 100).toFixed(1)
+            : 0;
+        goalStats.push({
+          type: "calories",
+          burned: totalCaloriesBurned,
+          percentage: progressPercentage,
+        });
+      }
+
+      // Reps goals
+      const repsGoal = goals.find((goal) => goal.unit === "reps");
+      if (repsGoal) {
+        const progressPercentage =
+          totalReps > 0 ? ((totalReps / repsGoal.target) * 100).toFixed(1) : 0;
+        goalStats.push({
+          type: "reps",
+          completed: totalReps,
+          percentage: progressPercentage,
+        });
+      }
+
+      // Sets goals
+      const setsGoal = goals.find((goal) => goal.unit === "sets");
+      if (setsGoal) {
+        const progressPercentage =
+          totalSets > 0 ? ((totalSets / setsGoal.target) * 100).toFixed(1) : 0;
+        goalStats.push({
+          type: "sets",
+          completed: totalSets,
+          percentage: progressPercentage,
+        });
+      }
+
+      // Hours goals (converted from minutes)
+      const hoursGoal = goals.find((goal) => goal.unit === "hours");
+      if (hoursGoal) {
+        const progressPercentage =
+          totalHours > 0
+            ? ((totalHours / hoursGoal.target) * 100).toFixed(1)
+            : 0;
+        goalStats.push({
+          type: "hours",
+          completed: totalHours,
+          percentage: progressPercentage,
+        });
+      }
+
+      setGoalStats(goalStats);
+    } catch (error) {
+      console.error("Error calculating goal progress:", error);
+    }
+  };
+
   const toggleDetails = (sessionId) => {
     setExpandedSession(expandedSession === sessionId ? null : sessionId);
   };
@@ -141,101 +233,104 @@ const ProgressPage = () => {
     responsive: true,
     maintainAspectRatio: false,
     layout: {
-      padding: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10,
-      },
+      padding: { left: 10, right: 10, top: 10, bottom: 10 },
     },
     scales: {
       y1: {
         type: "linear",
         position: "left",
-        ticks: {
-          color: "#232940",
-          font: {
-            size: window.innerWidth < 768 ? 8 : 14,
-          },
-        },
+        ticks: { color: "#232940" },
         title: {
           display: true,
           text: "Calories Burned, Sets",
           color: "#232940",
-          font: {
-            size: window.innerWidth < 768 ? 10 : 16,
-          },
         },
       },
       y2: {
         type: "linear",
         position: "right",
-        ticks: {
-          color: "#232940",
-          font: {
-            size: window.innerWidth < 768 ? 8 : 14,
-          },
-        },
+        ticks: { color: "#232940" },
         title: {
           display: true,
           text: "Duration (Minutes) and Reps",
           color: "#232940",
-          font: {
-            size: window.innerWidth < 768 ? 10 : 16,
-          },
         },
-        grid: {
-          drawOnChartArea: false,
-        },
+        grid: { drawOnChartArea: false },
       },
     },
     plugins: {
       legend: {
         position: "top",
-        labels: {
-          color: "#232940",
-          font: {
-            size: window.innerWidth < 768 ? 8 : 14,
-          },
-        },
+        labels: { color: "#232940" },
       },
       title: {
         display: true,
         text: "Calories Burned, Duration, Sets, and Reps Over Time",
         color: "#232940",
-        font: {
-          size: window.innerWidth < 768 ? 12 : 18,
-        },
       },
     },
   };
 
   return (
     <main className="progress-page">
+      {showToast && goalStats.length > 0 && (
+        <>
+          <div
+            className="toast-overlay"
+            onClick={() => setShowToast(false)}
+          ></div>
+          <div className="progress-page__toast">
+            <button
+              onClick={() => setShowToast(false)}
+              className="progress-page__toast-close"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            {goalStats.map((goal, index) => (
+              <div key={index} className="progress-page__toast-message">
+                <FontAwesomeIcon
+                  icon={
+                    goal.type === "calories"
+                      ? faFire
+                      : goal.type === "reps"
+                      ? faSync
+                      : goal.type === "sets"
+                      ? faDumbbell
+                      : faClock
+                  }
+                  className="progress-page__toast-icon"
+                />
+                <p>
+                  You've {goal.type === "calories" ? "burned" : "completed"}{" "}
+                  {goal.burned || goal.completed} {goal.type}.
+                </p>
+                <p>
+                  You're {goal.percentage}% of the way to your {goal.type} goal.
+                </p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       <section className="progress-page__hero">
         <div className="progress-page__hero-content">
           <h1 className="progress-page__hero-content__title">
             Track Your Fitness Journey
           </h1>
           <p className="progress-page__hero-content__description">
-          You're building strength with every workout! Stay focused and see your progress grow over time.
-          </p>
-          <p className="progress-page__hero-content__motivation">
-            Consistency is key! Track your efforts, celebrate each small
-            victory, and push beyond your limits. You're closer to your goals
-            with every session!
+            You're building strength with every workout! Stay focused and see
+            your progress grow over time.
           </p>
         </div>
       </section>
 
       <h2 className="progress-page__subtitle">Your Progress</h2>
-
       <div className="progress-page__graphs">
         <Line options={chartOptions} data={combinedData} />
       </div>
 
       <h3 className="progress-page__subtitle">Your Workout Sessions</h3>
-
       <Calendar
         onChange={setSelectedDate}
         value={selectedDate}
@@ -283,23 +378,23 @@ const ProgressPage = () => {
                         key={exercise.id}
                         className="progress-page__session-details__exercise-details"
                       >
-                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                        <p>
                           <strong>Exercise:</strong> {exercise.name}
                         </p>
-                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                        <p>
                           <strong>Calories Burned:</strong>{" "}
                           {exercise.calories_burned}
                         </p>
-                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                        <p>
                           <strong>Workout Type:</strong> {exercise.workout_type}
                         </p>
-                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                        <p>
                           <strong>Duration:</strong> {exercise.duration} min
                         </p>
-                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                        <p>
                           <strong>Sets:</strong> {exercise.sets}
                         </p>
-                        <p className="progress-page__session-details__exercise-details__exercise-row">
+                        <p>
                           <strong>Reps:</strong> {exercise.reps}
                         </p>
                       </div>
@@ -320,4 +415,3 @@ const ProgressPage = () => {
 };
 
 export default ProgressPage;
-

@@ -6,7 +6,7 @@ import AddGoalModal from "../../components/AddGoalModal/AddGoalModal";
 import DeleteGoalModal from "../../components/DeleteGoalModal/DeleteGoalModal";
 import "./GoalsPage.scss";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Toast({ message, onClose }) {
   return (
@@ -36,12 +36,26 @@ export default function GoalsPage() {
   });
 
   useEffect(() => {
+    // Fetch goals when the page loads
     fetchGoals();
   }, []);
 
+  useEffect(() => {
+    // Re-fetch goals after a session is saved
+    const updateGoalsOnSessionSave = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/goals`);
+        setGoals(response.data); // Update the goals state
+      } catch (error) {
+        console.error("Error fetching goals after session save:", error);
+      }
+    };
+    updateGoalsOnSessionSave();
+  }, []); // Optionally, add dependencies if required
+
   const fetchGoals = async () => {
     try {
-      const response = await axios.get(`${API_URL}/goals`); 
+      const response = await axios.get(`${API_URL}/goals`);
       setGoals(response.data);
     } catch (error) {
       console.error("Error fetching goals:", error);
@@ -57,22 +71,13 @@ export default function GoalsPage() {
       const updatedGoal = {
         ...goalToEdit,
         current_progress: Number(goalToEdit.current_progress),
-        deadline_progress: new Date(goalToEdit.deadline_progress)
-          .toISOString()
-          .split("T")[0],
+        deadline_progress: new Date(goalToEdit.deadline_progress).toISOString().split("T")[0],
       };
 
-      const response = await axios.put(
-        `${API_URL}/goals/${goalToEdit.id}`, 
-        updatedGoal
-      );
+      const response = await axios.put(`${API_URL}/goals/${goalToEdit.id}`, updatedGoal);
 
       if (response.status === 200) {
-        setGoals(
-          goals.map((goal) =>
-            goal.id === goalToEdit.id ? { ...goal, ...updatedGoal } : goal
-          )
-        );
+        setGoals(goals.map((goal) => (goal.id === goalToEdit.id ? { ...goal, ...updatedGoal } : goal)));
         setGoalToEdit(null);
         setToastMessage("Goal updated successfully!");
         setShowToast(true);
@@ -93,7 +98,8 @@ export default function GoalsPage() {
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(`${API_URL}/goals/${goalToDelete}`); // Use API_URL
+      const response = await axios.delete(`${API_URL}/goals/${goalToDelete}`);
+
       if (response.status === 200) {
         setGoals(goals.filter((goal) => goal.id !== goalToDelete));
         setGoalToDelete(null);
@@ -128,49 +134,32 @@ export default function GoalsPage() {
       {/* Hero Section */}
       <section className="goals-page__hero">
         <div className="goals-page__hero-content">
-          <h1 className="goals-page__hero-content__title">
-            Track Your Fitness Goals with Ease
-          </h1>
-          <p className="goals-page__hero-content__description">
-            Stay motivated, set new targets, and watch your progress grow!
-          </p>
+          <h1 className="goals-page__hero-content__title">Track Your Fitness Goals with Ease</h1>
+          <p className="goals-page__hero-content__description">Stay motivated, set new targets, and watch your progress grow!</p>
         </div>
       </section>
 
       <h2 className="goals-page__title">Your Current Goals</h2>
 
-      <button
-        className="goals-page__add-goal-button"
-        onClick={() => setIsModalOpen(true)}
-      >
+      <button className="goals-page__add-goal-button" onClick={() => setIsModalOpen(true)}>
         Add New Goal
       </button>
 
-      <div
-        className={`goals-page__goals-container ${
-          isDeleteModalOpen ? "hide" : ""
-        }`}
-      >
+      <div className={`goals-page__goals-container ${isDeleteModalOpen ? "hide" : ""}`}>
         {goals.map((goal) => {
           const validTarget = Number(goal.target) || 1;
           const validProgress = extractNumericValue(goal.current_progress);
-
           const percentageCompleted = (validProgress / validTarget) * 100;
 
           return (
-            <div
-              key={goal.id}
-              className={`goal-card ${goalToEdit && goalToEdit.id === goal.id ? "editing" : ""}`}
-            >
+            <div key={goal.id} className={`goal-card ${goalToEdit && goalToEdit.id === goal.id ? "editing" : ""}`}>
               {goalToEdit && goalToEdit.id === goal.id ? (
                 <div className="edit-form">
                   <input
                     type="text"
                     name="name"
                     value={goalToEdit.name}
-                    onChange={(e) =>
-                      setGoalToEdit({ ...goalToEdit, name: e.target.value })
-                    }
+                    onChange={(e) => setGoalToEdit({ ...goalToEdit, name: e.target.value })}
                     required
                     className="add-goal-modal__input"
                   />
@@ -178,18 +167,14 @@ export default function GoalsPage() {
                     type="number"
                     name="target"
                     value={goalToEdit.target}
-                    onChange={(e) =>
-                      setGoalToEdit({ ...goalToEdit, target: e.target.value })
-                    }
+                    onChange={(e) => setGoalToEdit({ ...goalToEdit, target: e.target.value })}
                     required
                     className="add-goal-modal__input"
                   />
                   <select
                     name="unit"
                     value={goalToEdit.unit}
-                    onChange={(e) =>
-                      setGoalToEdit({ ...goalToEdit, unit: e.target.value })
-                    }
+                    onChange={(e) => setGoalToEdit({ ...goalToEdit, unit: e.target.value })}
                     required
                     className="add-goal-modal__input"
                   >
@@ -203,12 +188,7 @@ export default function GoalsPage() {
                     type="text"
                     name="current_progress"
                     value={goalToEdit.current_progress}
-                    onChange={(e) =>
-                      setGoalToEdit({
-                        ...goalToEdit,
-                        current_progress: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setGoalToEdit({ ...goalToEdit, current_progress: e.target.value })}
                     required
                     className="add-goal-modal__input"
                   />
@@ -216,26 +196,15 @@ export default function GoalsPage() {
                     type="date"
                     name="deadline_progress"
                     value={goalToEdit.deadline_progress}
-                    onChange={(e) =>
-                      setGoalToEdit({
-                        ...goalToEdit,
-                        deadline_progress: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setGoalToEdit({ ...goalToEdit, deadline_progress: e.target.value })}
                     required
                     className="add-goal-modal__input"
                   />
                   <div className="goals-page__edit-actions">
-                    <button
-                      className="goals-page__edit-actions__save-button"
-                      onClick={handleSaveEdit}
-                    >
+                    <button className="goals-page__edit-actions__save-button" onClick={handleSaveEdit}>
                       Save
                     </button>
-                    <button
-                      className="goals-page__edit-actions__cancel-button"
-                      onClick={handleCancelEdit}
-                    >
+                    <button className="goals-page__edit-actions__cancel-button" onClick={handleCancelEdit}>
                       Cancel
                     </button>
                   </div>
@@ -262,12 +231,7 @@ export default function GoalsPage() {
                       text={`${validProgress}/${validTarget}`}
                       styles={buildStyles({
                         textColor: "#0E3740",
-                        pathColor:
-                          percentageCompleted >= 100
-                            ? "#2f5c63"
-                            : percentageCompleted >= 0
-                            ? "#fd6827"
-                            : "#eee",
+                        pathColor: percentageCompleted >= 100 ? "#2f5c63" : "#fd6827",
                         trailColor: "#eee",
                         textSize: "0.8rem",
                       })}
@@ -275,12 +239,7 @@ export default function GoalsPage() {
                   </div>
 
                   <div className="goal-footer">
-                    <p className="goal-deadline">
-                      Deadline:{" "}
-                      {new Date(goal.deadline_progress).toLocaleDateString(
-                        "en-GB"
-                      )}
-                    </p>
+                    <p className="goal-deadline">Deadline: {new Date(goal.deadline_progress).toLocaleDateString("en-GB")}</p>
                   </div>
                 </>
               )}
@@ -289,9 +248,7 @@ export default function GoalsPage() {
         })}
       </div>
 
-      {showToast && (
-        <Toast message={toastMessage} onClose={() => setShowToast(false)} />
-      )}
+      {showToast && <Toast message={toastMessage} onClose={() => setShowToast(false)} />}
 
       <AddGoalModal
         isOpen={isModalOpen}
@@ -303,22 +260,21 @@ export default function GoalsPage() {
         }}
         handleAddNewGoal={async (e) => {
           e.preventDefault();
-        
+
           const deadlineDate = new Date(newGoal.deadline_progress);
-          
           if (isNaN(deadlineDate.getTime())) {
             console.error("Invalid Date for deadline_progress:", newGoal.deadline_progress);
-            return; 
+            return;
           }
-        
+
           const formattedDeadline = deadlineDate.toISOString().split("T")[0];
-        
+
           try {
-            const response = await axios.post(`${API_URL}/goals`, { 
+            const response = await axios.post(`${API_URL}/goals`, {
               ...newGoal,
-              deadline_progress: formattedDeadline, 
+              deadline_progress: formattedDeadline,
             });
-        
+
             if (response.status === 201) {
               setGoals([...goals, response.data]);
               setIsModalOpen(false);
@@ -328,7 +284,7 @@ export default function GoalsPage() {
           } catch (error) {
             console.error("Error adding new goal:", error);
           }
-        }}        
+        }}
       />
 
       <DeleteGoalModal
@@ -339,4 +295,5 @@ export default function GoalsPage() {
     </main>
   );
 }
+
 
