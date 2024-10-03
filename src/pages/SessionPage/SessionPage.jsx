@@ -135,11 +135,8 @@ const SessionPage = () => {
   const handleSaveSession = async () => {
     try {
       await axios.patch(`${API_URL}/session/${id}`, { exercises });
-      await axios.patch(`${API_URL}/goals/update-goals-progress`, {
-        exercises,
-      });
+      await axios.patch(`${API_URL}/goals/update-goals-progress`, { exercises });
 
-      // Calculate total units for toast message
       const totalCaloriesBurned = exercises.reduce(
         (total, exercise) => total + (exercise.calories_burned || 0),
         0

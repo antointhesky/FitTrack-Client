@@ -10,7 +10,7 @@
     background-color: $yellow;
     color: white;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
 
     &-title {
       font-size: 2rem;
@@ -95,6 +95,14 @@
     margin-bottom: 1rem;
     width: 72%;
     margin-left: 1.5rem;
+    @include tablet {
+      margin-left: 4.25rem;
+    }
+    @include desktop {
+      margin-left: 6rem;
+      margin-bottom: 2.5rem;
+      width: 70%;
+    }
 
     &-title {
       background-color: $background-light;
@@ -188,6 +196,12 @@
     transition: background-color 0.3s ease;
     z-index: 1000;
     margin-bottom: 3.5rem;
+    @include tablet {
+      margin-right: 3rem;
+    }
+    @include desktop {
+      margin-right: 6rem;
+    }
 
     &:hover {
       background-color: darken($orange, 10%);

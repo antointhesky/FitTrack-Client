@@ -68,36 +68,57 @@ const ProgressPage = () => {
     const fetchSessions = async () => {
       try {
         const response = await axios.get(`${API_URL}/session`);
-        setSessions(response.data);
+        const sessionsByDate = response.data.reduce((acc, session) => {
+          const sessionDate = new Date(session.date).toLocaleDateString(
+            "en-GB"
+          );
 
-        const labels = response.data.map((session) =>
-          new Date(session.date).toLocaleDateString()
-        );
-        const calories = response.data.map((session) =>
-          session.exercises.reduce(
-            (total, exercise) => total + exercise.calories_burned,
+          // Initialize the date entry if it doesn't exist
+          if (!acc[sessionDate]) {
+            acc[sessionDate] = {
+              calories: 0,
+              duration: 0,
+              sets: 0,
+              reps: 0,
+              sessions: [], // To store all sessions for this date
+            };
+          }
+
+          // Sum up the session's data into the grouped date
+          const sessionCalories = session.exercises.reduce(
+            (total, exercise) => total + (exercise.calories_burned || 0),
             0
-          )
-        );
-        const durations = response.data.map((session) =>
-          session.exercises.reduce(
+          );
+          const sessionDuration = session.exercises.reduce(
             (total, exercise) => total + parseFloat(exercise.duration || 0),
             0
-          )
-        );
-        const sets = response.data.map((session) =>
-          session.exercises.reduce(
+          );
+          const sessionSets = session.exercises.reduce(
             (total, exercise) => total + (exercise.sets || 0),
             0
-          )
-        );
-        const reps = response.data.map((session) =>
-          session.exercises.reduce(
+          );
+          const sessionReps = session.exercises.reduce(
             (total, exercise) => total + (exercise.reps || 0),
             0
-          )
-        );
+          );
 
+          acc[sessionDate].calories += sessionCalories;
+          acc[sessionDate].duration += sessionDuration;
+          acc[sessionDate].sets += sessionSets;
+          acc[sessionDate].reps += sessionReps;
+          acc[sessionDate].sessions.push(session); // Store the entire session for later use
+
+          return acc;
+        }, {});
+
+        const labels = Object.keys(sessionsByDate); // Get the unique dates
+        const calories = labels.map((date) => sessionsByDate[date].calories);
+        const durations = labels.map((date) => sessionsByDate[date].duration);
+        const sets = labels.map((date) => sessionsByDate[date].sets);
+        const reps = labels.map((date) => sessionsByDate[date].reps);
+
+        // Update the state with grouped data
+        setSessions(sessionsByDate); // Store sessions grouped by date
         setCaloriesData({ labels, data: calories });
         setExerciseDurationData({ labels, data: durations });
         setSetsData({ labels, data: sets });
@@ -111,12 +132,9 @@ const ProgressPage = () => {
 
   useEffect(() => {
     if (selectedDate) {
-      const filtered = sessions.filter(
-        (session) =>
-          new Date(session.date).toLocaleDateString() ===
-          selectedDate.toLocaleDateString()
-      );
-      setFilteredSessions(filtered);
+      // Use sessions from the selected date and display all sessions
+      const formattedDate = selectedDate.toLocaleDateString("en-GB");
+      setFilteredSessions(sessions[formattedDate]?.sessions || []);
     }
   }, [selectedDate, sessions]);
 
@@ -335,10 +353,8 @@ const ProgressPage = () => {
         onChange={setSelectedDate}
         value={selectedDate}
         tileClassName={({ date }) => {
-          const isSessionDay = sessions.some(
-            (session) =>
-              new Date(session.date).toLocaleDateString() ===
-              date.toLocaleDateString()
+          const isSessionDay = Object.keys(sessions).some(
+            (sessionDate) => sessionDate === date.toLocaleDateString("en-GB")
           );
           return isSessionDay ? "session-day" : null;
         }}
@@ -360,47 +376,34 @@ const ProgressPage = () => {
                     year: "numeric",
                   })}
                 </h4>
-                <button
-                  onClick={() => toggleDetails(session.id)}
-                  className="progress-page__session-list__session-item__session-toggle"
-                >
-                  {expandedSession === session.id ? (
-                    <FontAwesomeIcon icon={faChevronUp} />
-                  ) : (
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  )}
-                </button>
-
-                {expandedSession === session.id && (
-                  <div className="progress-page__session-details">
-                    {session.exercises.map((exercise) => (
-                      <div
-                        key={exercise.id}
-                        className="progress-page__session-details__exercise-details"
-                      >
-                        <p>
-                          <strong>Exercise:</strong> {exercise.name}
-                        </p>
-                        <p>
-                          <strong>Calories Burned:</strong>{" "}
-                          {exercise.calories_burned}
-                        </p>
-                        <p>
-                          <strong>Workout Type:</strong> {exercise.workout_type}
-                        </p>
-                        <p>
-                          <strong>Duration:</strong> {exercise.duration} min
-                        </p>
-                        <p>
-                          <strong>Sets:</strong> {exercise.sets}
-                        </p>
-                        <p>
-                          <strong>Reps:</strong> {exercise.reps}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="progress-page__session-details">
+                  {session.exercises.map((exercise) => (
+                    <div
+                      key={exercise.id}
+                      className="progress-page__session-details__exercise-details"
+                    >
+                      <p>
+                        <strong>Exercise:</strong> {exercise.name}
+                      </p>
+                      <p>
+                        <strong>Calories Burned:</strong>{" "}
+                        {exercise.calories_burned}
+                      </p>
+                      <p>
+                        <strong>Workout Type:</strong> {exercise.workout_type}
+                      </p>
+                      <p>
+                        <strong>Duration:</strong> {exercise.duration} min
+                      </p>
+                      <p>
+                        <strong>Sets:</strong> {exercise.sets}
+                      </p>
+                      <p>
+                        <strong>Reps:</strong> {exercise.reps}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </li>
             ))
           ) : (
@@ -415,3 +418,4 @@ const ProgressPage = () => {
 };
 
 export default ProgressPage;
+
