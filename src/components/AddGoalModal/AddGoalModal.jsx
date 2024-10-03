@@ -15,7 +15,7 @@ export default function AddGoalModal({
 }) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-  const units = ["cal", "reps", "sets", "hours", "name", "body part", "workout type"];
+  const units = ["cal", "reps", "sets"];
   
   const handleDropdownItemClick = (item) => {
     handleNewGoalInputChange({ target: { name: "unit", value: item } });

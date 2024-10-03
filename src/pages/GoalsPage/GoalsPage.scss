@@ -10,10 +10,14 @@
     padding: 3rem 0;
     width: 100%;
     margin-bottom: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &-content {
       max-width: 1200px;
       margin: 0 auto;
+      text-align: center;
       padding: 0 1rem;
 
       @include tablet {
@@ -28,7 +32,7 @@
 
       &__title {
         font-size: 2rem;
-        color: $orange;
+        color: white;
         margin-bottom: 1rem;
 
         @include desktop {
@@ -42,12 +46,35 @@
         margin-bottom: 0.5rem;
 
         @include tablet {
-          font-size: 1.5rem;
+          font-size: 1rem;
         }
 
         @include desktop {
-          font-size: 1.75rem;
+          font-size: 1.2rem;
         }
+      }
+    }
+  }
+
+  &__hero-button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+
+    .goals-page__add-goal-button {
+      display: inline-block;
+      background-color: #fd6827;
+      color: white;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($background-light, 10%);
       }
     }
   }
@@ -56,24 +83,6 @@
     font-size: 1.5rem;
     margin-bottom: 2rem;
     color: $orange;
-  }
-
-  &__add-goal-button {
-    display: inline-block;
-    margin-top: 1.5rem;
-    margin-bottom: 3rem;
-    background-color: #fd6827;
-    color: white;
-    font-size: 1.2rem;
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: darken($background-light, 10%);
-    }
   }
 
   &__goals-container {
@@ -97,23 +106,29 @@
     border: 2px solid $font-light;
     box-shadow: 1px 22px 44px rgba(0, 0, 0, 0.2);
     border-radius: 20% 6px 20% 6px;
-    padding: 25px 25px 30px;
+    padding: 25px 25px 50px; // Increased padding for more height
     font-size: 1.2rem;
     font-weight: 600;
     position: relative;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
+    height: 450px;
+    @include tablet {
+      height: 550px;
+    }
 
     &.editing {
       background-color: lighten($yellow, 10%);
       padding: 40px;
+      height: auto;
     }
 
     .goal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
+      margin-top: 1rem;
 
       .goal-name {
         font-size: 1rem;
@@ -135,7 +150,7 @@
 
           i {
             font-size: 1.6rem;
-            color: $background-light; 
+            color: $background-light;
             transition: color 0.3s ease;
           }
         }
@@ -169,7 +184,7 @@
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
-      
+
         &__save-button,
         &__cancel-button {
           padding: 10px 20px;
@@ -178,54 +193,57 @@
           font-size: 1rem;
           border: none;
         }
-      
+
         &__save-button {
           background-color: $orange;
           color: white;
-      
+
           &:hover {
             background-color: darken($orange, 10%);
           }
         }
-      
+
         &__cancel-button {
           background-color: $background-light;
           color: white;
-      
+
           &:hover {
             background-color: darken($background-light, 10%);
           }
         }
-      }      
+      }
     }
   }
+
   .toast {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: $font-light;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    background-color: $background-light;
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 5px;
+    padding: 2rem 3rem; 
+    border-radius: 10px; 
     box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: opacity 0.3s ease;
-    max-width: 300px;
+    max-width: 400px; 
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    opacity: 1; 
-  
+    opacity: 1;
+
     &--hidden {
       opacity: 0;
       pointer-events: none;
     }
-  
+
     &__message {
       margin: 0;
-      flex-grow: 1; 
+      flex-grow: 1;
     }
-  
+
     &__close-button {
       background: none;
       border: none;
@@ -239,9 +257,9 @@
       padding: 0;
       line-height: 1;
     }
-  
+
     &__close-button:hover {
       color: $orange;
     }
-  }  
+  }
 }

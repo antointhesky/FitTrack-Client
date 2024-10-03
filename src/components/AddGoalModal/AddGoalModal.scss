@@ -15,6 +15,14 @@
   max-width: 500px;
   width: 100%;
 
+  @include tablet {
+    max-width: 800px; // Increase size for tablet
+  }
+
+  @include desktop {
+    max-width: 800px; // Same size as tablet for desktop
+  }
+
   &__overlay {
     position: fixed;
     top: 0;
@@ -90,7 +98,7 @@
   }
 
   &__dropdown-item {
-    padding: 0 1rem;
+    padding: 1rem 1rem;
     font-size: 1rem;
     color: $font-light;
     cursor: pointer;

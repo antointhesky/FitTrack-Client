@@ -10,7 +10,7 @@
 
   &__hero {
     position: relative;
-    height: 50vh; 
+    height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,30 +18,31 @@
     padding: 0 2rem;
     margin-bottom: 4rem;
     overflow: hidden;
+    padding-bottom: 1rem;
 
     @include tablet {
-      height: 55vh;
+      height: 60vh;
     }
     @include desktop {
       height: 60vh;
     }
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       width: 100%;
-      height: 100%;
+      height: 90%;
       top: 0;
       left: 0;
       background-color: $background-light;
-      clip-path: polygon(0 0, 100% 0, 100% 93%, 0 93%); 
+      clip-path: polygon(0 0, 100% 0, 100% 95vh, 0 95vh);
       z-index: 1;
     }
   }
 
   &__hero-content {
     position: relative;
-    z-index: 2; 
+    z-index: 2;
   }
 
   &__hero-title {
@@ -85,8 +86,8 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     position: relative;
-    z-index: 3; 
-    margin-top: -1.5rem; 
+    z-index: 3;
+    margin-top: -1.5rem;
     border: 3px solid white;
 
     &:hover {
@@ -296,11 +297,11 @@
     padding: 1rem;
     border-radius: 10px;
     flex: 1;
-    max-width: 300px;
-    min-height: 180px; 
+    width: 300px;
+    height: 180px;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: center;
     text-align: center;
   }
 
@@ -308,12 +309,13 @@
     margin-bottom: 0.5rem;
   }
 
-  &__goal-progress, &__goal-deadline {
+  &__goal-progress,
+  &__goal-deadline {
     margin: 0.25rem 0;
   }
 
   &__goal-link {
-    text-decoration: none; 
+    text-decoration: none;
   }
 
   &__add-goal-button {
@@ -325,8 +327,7 @@
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
     align-self: center;
 
     &:hover {

@@ -10,7 +10,13 @@
     background-color: $yellow;
     padding: 3rem 0;
     width: 100%;
-    
+    @include tablet {
+      padding: 4rem 0;
+    }
+    @include desktop {
+      padding: 7rem 0;
+    }
+
     &-content {
       max-width: 1200px;
       margin: 0 auto;
@@ -22,7 +28,7 @@
 
       &__title {
         font-size: 2rem;
-        color: $orange;
+        color: white;
         margin-bottom: 1rem;
         @include desktop {
           font-size: 3rem;
@@ -74,14 +80,23 @@
     }
 
     @include tablet {
+      width: 80%; // Aligned with the calendar width
+      margin: 0 auto;
       canvas {
         height: 500px;
       }
     }
 
     @include desktop {
+      width: 70%; // Aligned with the calendar width
+      margin: 0 auto;
       canvas {
         height: 600px;
+      }
+
+      // Increase font sizes for the graph on desktop
+      .chartjs-render-monitor {
+        font-size: 1.2rem;
       }
     }
   }
@@ -97,11 +112,25 @@
       width: 80%; 
       margin: 0 auto;
       margin-bottom: 2rem;
+      .react-calendar__tile {
+        aspect-ratio: 1/1; 
+        padding: 0.3rem;
+        border-radius: 6px; 
+      }
     }
 
     @include desktop {
+      width: 70%; 
       margin: 0 auto;
       margin-bottom: 2.5rem;
+
+      .react-calendar__tile {
+        font-size: 1.2rem; 
+      }
+  
+      .react-calendar__navigation__label {
+        font-size: 1.5rem;
+      }
     }
 
     .react-calendar__month-view__days__day {
@@ -116,17 +145,16 @@
     .session-day {
       background-color: $yellow; 
       color: $font; 
-      border-radius: 50%;
+      border-radius: 6px; 
     }
 
     .react-calendar__tile {
-      border-radius: 10px;
+      border-radius: 6px; 
       transition: background-color 0.3s ease, transform 0.2s ease;
 
       &:hover {
         background-color: $yellow;
         color: $font;
-        transform: scale(1.05);
       }
     }
 
@@ -138,6 +166,7 @@
     .react-calendar__tile--active {
       background-color: $font-light; 
       color: white;
+      border-radius: 6px; 
     }
   }
 
