@@ -4,21 +4,20 @@ const Camera = ({ onPhotoUploaded }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [hasPhoto, setHasPhoto] = useState(false);
-  const [stream, setStream] = useState(null); // Store the stream here
+  const [stream, setStream] = useState(null); 
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          setStream(stream); // Save the stream
+          setStream(stream); 
         }
       })
       .catch(err => {
         console.error("Error accessing the camera: ", err);
       });
 
-    // Cleanup the stream when the component unmounts
     return () => {
       stopCamera();
     };
