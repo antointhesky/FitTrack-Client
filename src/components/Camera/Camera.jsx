@@ -4,18 +4,34 @@ const Camera = ({ onPhotoUploaded }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [hasPhoto, setHasPhoto] = useState(false);
+  const [stream, setStream] = useState(null); // Store the stream here
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then(stream => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          setStream(stream); // Save the stream
         }
       })
       .catch(err => {
         console.error("Error accessing the camera: ", err);
       });
+
+    // Cleanup the stream when the component unmounts
+    return () => {
+      stopCamera();
+    };
   }, []);
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop()); // Stop all tracks
+      if (videoRef.current) {
+        videoRef.current.srcObject = null; // Clear the video element
+      }
+    }
+  };
 
   const takeSnapshot = () => {
     const video = videoRef.current;
@@ -50,6 +66,7 @@ const Camera = ({ onPhotoUploaded }) => {
           console.log('Image uploaded:', data);
           setHasPhoto(false); // Reset after uploading
           onPhotoUploaded();  // Call the prop function to refresh the gallery
+          stopCamera();       // Stop the camera stream after upload
         })
         .catch(error => console.error('Error uploading image:', error));
     }, 'image/png');
@@ -74,3 +91,4 @@ const Camera = ({ onPhotoUploaded }) => {
 };
 
 export default Camera;
+

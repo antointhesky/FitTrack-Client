@@ -29,7 +29,7 @@ export default function AdvicePage() {
   const [reloadGallery, setReloadGallery] = useState(false);
 
   const handlePhotoUploaded = () => {
-    setReloadGallery(!reloadGallery);  // Trigger gallery reload
+    setReloadGallery(prev => !prev);  // Toggle the state to trigger reload
   };
 
   return (
@@ -41,12 +41,10 @@ export default function AdvicePage() {
         <Camera onPhotoUploaded={handlePhotoUploaded} />
       </div>
 
-      {/* Single Gallery Section */}
       <div className="advice__gallery">
         <Gallery reload={reloadGallery} />
       </div>
 
-      {/* Advice List */}
       <div className="advice__list">
         {adviceData.map((advice, index) => (
           <AdviceCard

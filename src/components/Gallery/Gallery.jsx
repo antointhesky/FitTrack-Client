@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-const Gallery = () => {
+const Gallery = ({ reload }) => {  // Add reload prop here
   const [photos, setPhotos] = useState([]);
 
-  // Fetch the uploaded images when the component loads
   useEffect(() => {
     fetchPhotos();
-  }, []);
+  }, [reload]);  // Add reload as dependency
 
-  // Function to fetch the photos from the server
   const fetchPhotos = () => {
     fetch('http://localhost:5050/gallery')
       .then(response => response.json())
@@ -18,7 +16,6 @@ const Gallery = () => {
       .catch(err => console.error('Error fetching gallery:', err));
   };
 
-  // Function to handle photo deletion
   const deletePhoto = (photoPath) => {
     fetch(`http://localhost:5050/delete-photo`, {
       method: 'DELETE',
@@ -30,7 +27,7 @@ const Gallery = () => {
       .then(response => response.json())
       .then(data => {
         console.log('Image deleted:', data);
-        fetchPhotos(); // Refresh the gallery after deleting
+        fetchPhotos(); 
       })
       .catch(err => console.error('Error deleting image:', err));
   };
