@@ -30,7 +30,7 @@ export default function BottomNavBar() {
         className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
       >
         <FaLightbulb className="icon" /> 
-        <span>Advice</span>
+        <span>Snapshot & Tips</span>
       </NavLink>
 
       {hasOngoingSession && (

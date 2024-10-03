@@ -49,7 +49,7 @@ export default function Header() {
               : "header__nav-link"
           }
         >
-          Advice
+          Snapshot & Tips
         </NavLink>
         <NavLink
           to="/progress"
