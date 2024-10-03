@@ -1,43 +1,286 @@
-@use "../../styles/partials/colors" as *;
 @use "../../styles/partials/breakpoints" as *;
 
+$orange: #fd6827;
+$yellow: #fe9938;
+$font: #052024;
+$font-light: #0E3740;
+$background-light: #2f5c63;
+$white: #ffffff;
+
 .advice {
-  padding: 1.5rem;
-  margin-bottom: 5rem;
+  padding: 1rem;
+  color: $font-light;
 
   &__title {
     text-align: center;
-    margin-bottom: 40px;
-    font-size: 2rem;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
     color: $orange;
 
     @include tablet {
-      font-size: 3rem;
-      margin-top: 2rem;
+      font-size: 2.5rem;
+      margin-top: 1.5rem;
     }
+
     @include desktop {
-      font-size: 4rem;
-      margin-top: 4rem;
-      margin-bottom: 4rem;
+      font-size: 3.5rem;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
+  }
+
+  &__camera {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__gallery {
+    margin-top: 2rem;
+    text-align: center;
+
+    .gallery__grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .gallery__item img {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 2px solid $yellow;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    p {
+      font-size: 1.4rem;
+      color: $white;
+    }
+
+    @include tablet {
+      .gallery__item img {
+        width: 250px;
+      }
+    }
+
+    @include desktop {
+      .gallery__item img {
+        width: 300px;
+      }
     }
   }
 
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
 
     @include tablet {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-around;
-      gap: 4rem;
+      gap: 3rem;
+      margin-top: 6rem;
     }
 
     @include desktop {
-      justify-content: center;  
+      justify-content: center;
       align-items: center;
-      gap: 6rem;     
+      gap: 4rem;
+      margin-top: 8rem;
     }
+
+    @media (min-width: 1280px) {
+      justify-content: space-between;
+      gap: 2.5rem;
+    }
+  }
+
+@include tablet {
+  .advice {
+    padding: 2rem;
+  }
+}
+
+@include desktop {
+  .advice {
+    padding: 3rem;
+  }
+}
+
+
+  &__favorites {
+    margin-top: 2rem;
+    text-align: center;
+
+    &-item {
+      padding: 1.5rem;
+      border: 2px solid $yellow;
+      border-radius: 12px;
+      max-width: 90%;
+      margin: 0 auto;
+      background-color: $white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      @include tablet {
+        max-width: 320px;
+      }
+
+      @include desktop {
+        max-width: 400px;
+      }
+
+      &-details {
+        h3 {
+          font-size: 1.5rem;
+          color: $font;
+        }
+
+        p {
+          font-size: 1.2rem;
+          color: $font-light;
+        }
+      }
+    }
+
+    &-no-favorites {
+      color: $white;
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 1.5rem;
+    color: $yellow;
+    margin-top: 2rem;
+    text-align: center;
+  }
+}
+
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+
+  .camera-video,
+  .camera-canvas {
+    border: 2px solid $orange;
+    border-radius: 10px;
+    width: 300px;
+    height: auto;
+    margin-bottom: 1rem;
+    @include tablet {
+      width: 450px;
+    }
+    @include tablet {
+      width: 900px;
+    }
+  }
+
+  .camera-button {
+    background-color: $orange;
+    color: $white;
+    padding: 12px 25px;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($orange, 10%);
+    }
+  }
+
+  @include tablet {
+    .camera-canvas {
+      max-width: 350px;
+    }
+  }
+
+  @include desktop {
+    .camera-canvas {
+      max-width: 400px;
+    }
+  }
+}
+
+.gallery {
+  margin-top: 3rem;
+  text-align: center;
+
+  h2 {
+    color: $yellow;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .gallery__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .gallery__item {
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 2px solid $yellow;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  p {
+    font-size: 1.4rem;
+    color: $white;
+  }
+
+  @include tablet {
+    .gallery__item img {
+      width: 250px;
+    }
+  }
+
+  @include desktop {
+    .gallery__item img {
+      width: 300px;
+    }
+  }
+}
+
+@include tablet {
+  .advice {
+    padding: 2rem;
+  }
+}
+
+@include desktop {
+  .advice {
+    padding: 3rem;
   }
 }

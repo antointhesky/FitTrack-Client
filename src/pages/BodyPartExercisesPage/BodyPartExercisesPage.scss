@@ -35,12 +35,12 @@
     }
 
     svg {
-      font-size: 1.5rem; 
+      font-size: 1.5rem;
       color: inherit;
     }
 
     span {
-      font-size: 1.5rem; 
+      font-size: 1.5rem;
       color: inherit;
     }
   }
@@ -50,6 +50,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 1.5rem;
+    margin-bottom: 6rem;
   }
 
   &__exercise-card {
@@ -138,8 +139,12 @@
   }
 
   &__go-to-session-container {
-    margin-top: 2rem;
+    position: fixed;
+    bottom: 20px; /* Adjust this to move it up/down */
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
+    z-index: 1000; /* Make sure it stays on top */
   }
 
   &__go-to-session {
@@ -165,4 +170,3 @@
     }
   }
 }
-

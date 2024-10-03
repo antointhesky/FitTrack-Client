@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdviceCard from "../../components/AdviceCard/AdviceCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Camera from "../../components/Camera/Camera";
+import Gallery from "../../components/Gallery/Gallery";
 import "./AdvicePage.scss";
 
 const adviceData = [
@@ -26,23 +26,27 @@ const adviceData = [
 ];
 
 export default function AdvicePage() {
-  const [favoriteExercises, setFavoriteExercises] = useState([
-    { id: 1, name: "Push-Ups", calories: 100, sets: 3, reps: 12 },
-    { id: 2, name: "Squats", calories: 120, sets: 4, reps: 15 },
-  ]);
+  const [reloadGallery, setReloadGallery] = useState(false);
 
-  // Handle removing an exercise from the favorite section
-  const handleRemoveExercise = (exerciseId) => {
-    const updatedExercises = favoriteExercises.filter(
-      (exercise) => exercise.id !== exerciseId
-    );
-    setFavoriteExercises(updatedExercises);
+  const handlePhotoUploaded = () => {
+    setReloadGallery(!reloadGallery);  // Trigger gallery reload
   };
 
   return (
     <div className="advice">
       <h1 className="advice__title">Fitness & Health Advice</h1>
+      
+      {/* Camera Section */}
+      <div className="advice__camera">
+        <Camera onPhotoUploaded={handlePhotoUploaded} />
+      </div>
 
+      {/* Single Gallery Section */}
+      <div className="advice__gallery">
+        <Gallery reload={reloadGallery} />
+      </div>
+
+      {/* Advice List */}
       <div className="advice__list">
         {adviceData.map((advice, index) => (
           <AdviceCard
@@ -50,34 +54,10 @@ export default function AdvicePage() {
             title={advice.title}
             description={advice.description}
             linkUrl={advice.linkUrl}
+            className="advice__card"
           />
         ))}
       </div>
-
-      <h2 className="advice__title">Your Favorite Exercises</h2>
-
-      {favoriteExercises.length > 0 ? (
-        <div className="advice__favorites">
-          {favoriteExercises.map((exercise) => (
-            <div key={exercise.id} className="advice__favorite-item">
-              <div className="advice__favorite-details">
-                <h3>{exercise.name}</h3>
-                <p>Calories: {exercise.calories}</p>
-                <p>Sets: {exercise.sets}</p>
-                <p>Reps: {exercise.reps}</p>
-              </div>
-              <div
-                className="advice__favorite-delete"
-                onClick={() => handleRemoveExercise(exercise.id)}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="advice__no-favorites">No favorite exercises yet.</p>
-      )}
     </div>
   );
 }

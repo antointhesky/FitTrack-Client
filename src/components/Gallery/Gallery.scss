@@ -1,0 +1,67 @@
+.gallery {
+  margin-top: 3rem;
+  text-align: center;
+
+  .gallery__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .gallery__item {
+    position: relative;
+
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 2px solid $yellow;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    /* Delete Button Styling */
+    .gallery__delete-button {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background-color: $orange;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken($orange, 10%);
+      }
+
+      svg {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  p {
+    font-size: 1.4rem;
+    color: white;
+  }
+
+  @include tablet {
+    .gallery__item img {
+      width: 250px;
+    }
+  }
+
+  @include desktop {
+    .gallery__item img {
+      width: 300px;
+    }
+  }
+}

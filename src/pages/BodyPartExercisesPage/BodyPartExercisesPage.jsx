@@ -3,14 +3,13 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./BodyPartExercisesPage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
-import { faArrowLeft, faHeart } from "@fortawesome/free-solid-svg-icons"; 
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const BodyPartExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
   const [selectedExercises, setSelectedExercises] = useState([]);
-  const [favoriteExercises, setFavoriteExercises] = useState([]);
   const [searchParams] = useSearchParams();
   const bodyPart = searchParams.get("body_part");
   const navigate = useNavigate();
@@ -36,14 +35,6 @@ const BodyPartExercisesPage = () => {
       setSelectedExercises(selectedExercises.filter((id) => id !== exerciseId));
     } else {
       setSelectedExercises([...selectedExercises, exerciseId]);
-    }
-  };
-
-  const handleToggleFavorite = (exerciseId) => {
-    if (favoriteExercises.includes(exerciseId)) {
-      setFavoriteExercises(favoriteExercises.filter((id) => id !== exerciseId));
-    } else {
-      setFavoriteExercises([...favoriteExercises, exerciseId]);
     }
   };
 
@@ -93,26 +84,12 @@ const BodyPartExercisesPage = () => {
             <p className="body-part-exercises-page__exercise-detail">Calories Burned: {exercise.calories_burned}</p>
             <p className="body-part-exercises-page__exercise-detail">Duration: {exercise.duration}</p>
 
-            <div className="body-part-exercises-page__actions">
-              <div
-                className={`body-part-exercises-page__exercise-toggle ${
-                  selectedExercises.includes(exercise.id) ? "active" : ""
-                }`}
-              >
-                <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
-              </div>
-
-              {/* Heart Icon for Favorites */}
-              <FontAwesomeIcon
-                icon={faHeart}
-                className={`body-part-exercises-page__favorite-icon ${
-                  favoriteExercises.includes(exercise.id) ? "active" : ""
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent clicking the card while clicking the heart
-                  handleToggleFavorite(exercise.id);
-                }}
-              />
+            <div
+              className={`body-part-exercises-page__exercise-toggle ${
+                selectedExercises.includes(exercise.id) ? "active" : ""
+              }`}
+            >
+              <span>{selectedExercises.includes(exercise.id) ? "−" : "+"}</span>
             </div>
           </div>
         ))}
