@@ -11,8 +11,8 @@ export default function Header() {
   useEffect(() => {
     const fetchCurrentSession = async () => {
       try {
-        const response = await axios.get(`${API_URL}/session/current`); 
-        setCurrentSession(response.data); 
+        const response = await axios.get(`${API_URL}/session/current`);
+        setCurrentSession(response.data);
       } catch (error) {
         if (error.response && error.response.status === 404) {
           setCurrentSession(null);
@@ -73,17 +73,16 @@ export default function Header() {
         </NavLink>
 
         <NavLink
-          to={currentSession ? `/session/${currentSession.id}` : "/session/start"}
+          to="/session"
           className={({ isActive }) =>
             isActive
               ? "header__nav-link header__nav-link--active"
               : "header__nav-link"
           }
         >
-          {currentSession ? "Current Session" : "Start Your Session Now"}
+          Current Session
         </NavLink>
       </nav>
     </header>
   );
 }
-
