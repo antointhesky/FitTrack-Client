@@ -9,7 +9,7 @@ Many fitness enthusiasts struggle with tracking their workouts consistently and 
 ### Installation
 To run FitTrack fully, you need to clone both the client and server repositories:
 1. Clone the client repository: git clone https://github.com/antointhesky/FitTrack-Client.git
-2. Clone the server repository: git clone https://github.com/antointhesky/FitTrack-Server.git
+2. Clone the server repository: git clone https://github.com/antointhesky/FitTrack-server.git
 
 ### Run Locally
 1. Navigate to the server folder: cd FitTrack-Server
