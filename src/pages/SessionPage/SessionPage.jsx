@@ -29,38 +29,39 @@ const SessionPage = () => {
     const fetchOrCreateSession = async () => {
       try {
         let sessionId = id;
-        const storedSession = JSON.parse(
-          localStorage.getItem("currentSession")
-        );
-
-        if (storedSession) {
-          sessionId = storedSession.session_id;
+  
+        if (!sessionId) {
+          const currentSessionRes = await axios.get(`${API_URL}/session/current`);
+          if (currentSessionRes.data) {
+            sessionId = currentSessionRes.data.id;
+            localStorage.setItem("currentSession", JSON.stringify({ session_id: sessionId }));
+            navigate(`/session/${sessionId}`, { replace: true });
+            return; // important: return early
+          } else {
+            const newSessionRes = await axios.post(`${API_URL}/session`);
+            sessionId = newSessionRes.data.session_id;
+            localStorage.setItem("currentSession", JSON.stringify({ session_id: sessionId }));
+            navigate(`/session/${sessionId}`, { replace: true });
+            return; // important: return early
+          }
         }
-
-        if (sessionId) {
-          const response = await axios.get(`${API_URL}/session/${sessionId}`);
-          setExercises(response.data.exercises);
-        } else {
-          const newSessionResponse = await axios.post(`${API_URL}/session`, {
-            exercises: [],
-          });
-          const newSessionId = newSessionResponse.data.session_id;
-          localStorage.setItem(
-            "currentSession",
-            JSON.stringify({ session_id: newSessionId })
-          );
-          navigate(`/session/${newSessionId}`);
-        }
-      } catch (error) {
+  
+        // if sessionId exists
+        const response = await axios.get(`${API_URL}/session/${sessionId}`);
+        setExercises(response.data.exercises);
+      } catch (err) {
+        console.error("Error fetching or creating session:", err);
         setError("Error fetching or creating session");
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchOrCreateSession();
   }, [id, navigate]);
 
+  if (loading) return <p>Loading your session...</p>;
+  
   useEffect(() => {
     const fetchAllExercises = async () => {
       try {

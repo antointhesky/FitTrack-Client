@@ -128,7 +128,7 @@ const ProgressPage = () => {
       }
     };
     fetchSessions();
-  }, []);
+  }, [location.state]);
 
   useEffect(() => {
     if (selectedDate) {
