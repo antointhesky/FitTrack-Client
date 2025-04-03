@@ -29,24 +29,23 @@ const SessionPage = () => {
     const fetchOrCreateSession = async () => {
       try {
         let sessionId = id;
-  
+
         if (!sessionId) {
           const currentSessionRes = await axios.get(`${API_URL}/session/current`);
           if (currentSessionRes.data) {
             sessionId = currentSessionRes.data.id;
             localStorage.setItem("currentSession", JSON.stringify({ session_id: sessionId }));
             navigate(`/session/${sessionId}`, { replace: true });
-            return; // important: return early
+            return;
           } else {
             const newSessionRes = await axios.post(`${API_URL}/session`);
             sessionId = newSessionRes.data.session_id;
             localStorage.setItem("currentSession", JSON.stringify({ session_id: sessionId }));
             navigate(`/session/${sessionId}`, { replace: true });
-            return; // important: return early
+            return;
           }
         }
-  
-        // if sessionId exists
+
         const response = await axios.get(`${API_URL}/session/${sessionId}`);
         setExercises(response.data.exercises);
       } catch (err) {
@@ -56,12 +55,12 @@ const SessionPage = () => {
         setLoading(false);
       }
     };
-  
+
     fetchOrCreateSession();
   }, [id, navigate]);
 
   if (loading) return <p>Loading your session...</p>;
-  
+
   useEffect(() => {
     const fetchAllExercises = async () => {
       try {
@@ -131,6 +130,32 @@ const SessionPage = () => {
       await axios.patch(`${API_URL}/goals/update-goals-progress`, {
         exercises,
       });
+
+      const totalCaloriesBurned = exercises.reduce(
+        (total, exercise) => total + (exercise.calories_burned || 0),
+        0
+      );
+      const totalReps = exercises.reduce(
+        (total, exercise) => total + (exercise.reps || 0),
+        0
+      );
+      const totalSets = exercises.reduce(
+        (total, exercise) => total + (exercise.sets || 0),
+        0
+      );
+      const totalHours = exercises.reduce(
+        (total, exercise) => total + (exercise.duration || 0) / 60,
+        0
+      );
+
+      const uniqueWorkoutTypes = [
+        ...new Set(exercises.map((exercise) => exercise.workout_type)),
+      ];
+      const uniqueBodyParts = [
+        ...new Set(exercises.map((exercise) => exercise.body_part)),
+      ];
+
+      localStorage.removeItem("currentSession");
 
       navigate("/progress", {
         state: {
@@ -242,8 +267,7 @@ const SessionPage = () => {
             className="session-page__accordion-title"
             onClick={() => setActiveTab(workoutType)}
           >
-            <FontAwesomeIcon icon={getIconForWorkoutType(workoutType)} />{" "}
-            {workoutType}
+            <FontAwesomeIcon icon={getIconForWorkoutType(workoutType)} /> {workoutType}
           </h3>
           {activeTab === workoutType && (
             <div className="session-page__exercise-list">
@@ -287,3 +311,4 @@ const SessionPage = () => {
 };
 
 export default SessionPage;
+
