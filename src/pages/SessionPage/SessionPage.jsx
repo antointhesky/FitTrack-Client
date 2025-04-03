@@ -29,19 +29,26 @@ const SessionPage = () => {
     const fetchOrCreateSession = async () => {
       try {
         let sessionId = id;
-        const storedSession = JSON.parse(localStorage.getItem("currentSession"));
-  
+        const storedSession = JSON.parse(
+          localStorage.getItem("currentSession")
+        );
+
         if (storedSession) {
           sessionId = storedSession.session_id;
         }
-  
+
         if (sessionId) {
           const response = await axios.get(`${API_URL}/session/${sessionId}`);
           setExercises(response.data.exercises);
         } else {
-          const newSessionResponse = await axios.post(`${API_URL}/session`, { exercises: [] });
+          const newSessionResponse = await axios.post(`${API_URL}/session`, {
+            exercises: [],
+          });
           const newSessionId = newSessionResponse.data.session_id;
-          localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
+          localStorage.setItem(
+            "currentSession",
+            JSON.stringify({ session_id: newSessionId })
+          );
           navigate(`/session/${newSessionId}`);
         }
       } catch (error) {
@@ -50,9 +57,9 @@ const SessionPage = () => {
         setLoading(false);
       }
     };
-  
+
     fetchOrCreateSession();
-  }, [id, navigate]);  
+  }, [id, navigate]);
 
   useEffect(() => {
     const fetchAllExercises = async () => {
@@ -90,7 +97,9 @@ const SessionPage = () => {
       });
       setAvailableExercises(updatedAvailableExercises);
     } catch (error) {
-      setError("Error adding exercise");
+      setError(
+        "Error adding exercise, please start your session from the homepage"
+      );
     }
   };
 
@@ -118,8 +127,10 @@ const SessionPage = () => {
   const handleSaveSession = async () => {
     try {
       await axios.patch(`${API_URL}/session/${id}`, { exercises });
-      await axios.patch(`${API_URL}/goals/update-goals-progress`, { exercises });
-  
+      await axios.patch(`${API_URL}/goals/update-goals-progress`, {
+        exercises,
+      });
+
       navigate("/progress", {
         state: {
           showMessage: true,
@@ -131,11 +142,10 @@ const SessionPage = () => {
           uniqueBodyParts,
         },
       });
-  
     } catch (error) {
       setError("Error saving session and updating goals");
     }
-  };  
+  };
 
   const getIconForWorkoutType = (workoutType) => {
     switch (workoutType) {
