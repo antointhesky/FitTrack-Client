@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import "./Header.scss";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Header() {
   const [currentSession, setCurrentSession] = useState(null);
@@ -11,19 +11,19 @@ export default function Header() {
   useEffect(() => {
     const fetchCurrentSession = async () => {
       try {
-        const response = await axios.get(`${API_URL}/session/current`);
-        setCurrentSession(response.data);
+        const response = await axios.get(`${API_URL}/session`);
+        const savedSessions = response.data.filter((s) => !s.is_draft);
+        const latest = savedSessions.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        )[0];
+        setCurrentSession(latest || null);
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          setCurrentSession(null);
-        } else {
-          console.error("Error fetching current session:", error);
-        }
+        console.error("Error fetching current session:", error);
+        setCurrentSession(null);
       }
     };
 
     fetchCurrentSession();
-
     const intervalId = setInterval(fetchCurrentSession, 3000);
     return () => clearInterval(intervalId);
   }, []);
