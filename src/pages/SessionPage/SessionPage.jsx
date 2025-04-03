@@ -29,38 +29,20 @@ const SessionPage = () => {
     const fetchOrCreateSession = async () => {
       try {
         let sessionId = id;
-        const storedSession = JSON.parse(
-          localStorage.getItem("currentSession")
-        );
-
+        const storedSession = JSON.parse(localStorage.getItem("currentSession"));
+  
         if (storedSession) {
           sessionId = storedSession.session_id;
         }
-
+  
         if (sessionId) {
           const response = await axios.get(`${API_URL}/session/${sessionId}`);
           setExercises(response.data.exercises);
         } else {
-          const currentSessionResponse = await axios.get(
-            `${API_URL}/session/current`
-          );
-
-          if (currentSessionResponse.data) {
-            const currentSessionId = currentSessionResponse.data.id;
-            localStorage.setItem(
-              "currentSession",
-              JSON.stringify({ session_id: currentSessionId })
-            );
-            navigate(`/session/${currentSessionId}`);
-          } else {
-            const newSessionResponse = await axios.post(`${API_URL}/session`);
-            const newSessionId = newSessionResponse.data.session_id;
-            localStorage.setItem(
-              "currentSession",
-              JSON.stringify({ session_id: newSessionId })
-            );
-            navigate(`/session/${newSessionId}`);
-          }
+          const newSessionResponse = await axios.post(`${API_URL}/session`, { exercises: [] });
+          const newSessionId = newSessionResponse.data.session_id;
+          localStorage.setItem("currentSession", JSON.stringify({ session_id: newSessionId }));
+          navigate(`/session/${newSessionId}`);
         }
       } catch (error) {
         setError("Error fetching or creating session");
@@ -68,8 +50,9 @@ const SessionPage = () => {
         setLoading(false);
       }
     };
+  
     fetchOrCreateSession();
-  }, [id, navigate]);
+  }, [id, navigate]);  
 
   useEffect(() => {
     const fetchAllExercises = async () => {
@@ -136,31 +119,7 @@ const SessionPage = () => {
     try {
       await axios.patch(`${API_URL}/session/${id}`, { exercises });
       await axios.patch(`${API_URL}/goals/update-goals-progress`, { exercises });
-
-      const totalCaloriesBurned = exercises.reduce(
-        (total, exercise) => total + (exercise.calories_burned || 0),
-        0
-      );
-      const totalReps = exercises.reduce(
-        (total, exercise) => total + (exercise.reps || 0),
-        0
-      );
-      const totalSets = exercises.reduce(
-        (total, exercise) => total + (exercise.sets || 0),
-        0
-      );
-      const totalHours = exercises.reduce(
-        (total, exercise) => total + (exercise.duration || 0) / 60,
-        0 // convert minutes to hours
-      );
-
-      const uniqueWorkoutTypes = [
-        ...new Set(exercises.map((exercise) => exercise.workout_type)),
-      ];
-      const uniqueBodyParts = [
-        ...new Set(exercises.map((exercise) => exercise.body_part)),
-      ];
-
+  
       navigate("/progress", {
         state: {
           showMessage: true,
@@ -172,13 +131,11 @@ const SessionPage = () => {
           uniqueBodyParts,
         },
       });
-
-      localStorage.removeItem("currentSession");
+  
     } catch (error) {
-      console.error("Error saving session and updating goals:", error);
       setError("Error saving session and updating goals");
     }
-  };
+  };  
 
   const getIconForWorkoutType = (workoutType) => {
     switch (workoutType) {
